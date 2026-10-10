@@ -284,3 +284,55 @@ def test_inheritance_combined_budget_and_invalid_color_are_atomic():
     with pytest.raises(ValueError):
         set_border(cell, "right", Border(color=color))
     assert cell == before
+
+
+@pytest.mark.parametrize("owner", ["table", "cell"])
+@pytest.mark.parametrize("location", ["record", "side", "array"])
+@pytest.mark.parametrize("replacement", ["none", "nil"])
+def test_opaque_kind_changes_are_not_interpreted_as_line_suppression(owner, location, replacement):
+    document, table, cell, _ = _fixture()
+    node = table if owner == "table" else cell
+    record = get_borders(node)
+    payload = {"kind": "line", "sides": {"top": {"kind": "line"}}}
+    if location == "record":
+        record = replace(record, extra={"opaque": payload})
+    else:
+        side = "left" if owner == "table" else "diagonal-down"
+        record.sides[side] = replace(record.sides[side], extra={"opaque": [payload] if location == "array" else payload})
+    set_borders(node, record)
+    target = clone_model(document)
+    target_node = target.sections[0].blocks[0] if owner == "table" else target.sections[0].blocks[0].rows[0].cells[0]
+    updated = get_borders(target_node)
+    payload = updated.extra["opaque"] if location == "record" else updated.sides[side].extra["opaque"]
+    if location == "array":
+        payload = payload[0]
+    payload["kind"] = replacement
+    payload["sides"]["top"]["kind"] = replacement
+    set_borders(target_node, updated)
+    issues = [issue for issue in compare_documents(document, target).issues if issue.code.startswith("table-border-")]
+    assert len(issues) == 1
+    assert issues[0].code == "table-border-change" and issues[0].severity == IssueSeverity.WARNING
+
+
+@pytest.mark.parametrize("owner", ["table", "cell"])
+@pytest.mark.parametrize("replacement", ["none", "nil"])
+def test_unspecified_line_suppression_is_still_loss(owner, replacement):
+    document, table, cell, _ = _fixture()
+    node = table if owner == "table" else cell
+    set_border(node, "left", Border())
+    target = clone_model(document)
+    target_node = target.sections[0].blocks[0] if owner == "table" else target.sections[0].blocks[0].rows[0].cells[0]
+    set_border(target_node, "left", Border(replacement))
+    assert any(issue.code == "table-border-loss" for issue in compare_documents(document, target).issues)
+
+
+@pytest.mark.parametrize("payload", [{"kind": "line"}, {"nested": None}, [None, {"kind": "line"}]])
+def test_unknown_data_removal_is_still_loss(payload):
+    document, table, _, _ = _fixture()
+    record = get_borders(table)
+    set_border(table, "left", replace(record.sides["left"], extra={"opaque": payload}))
+    target = clone_model(document)
+    target_table = target.sections[0].blocks[0]
+    updated = get_borders(target_table)
+    set_border(target_table, "left", replace(updated.sides["left"], extra={}))
+    assert any(issue.code == "table-border-loss" for issue in compare_documents(document, target).issues)

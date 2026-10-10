@@ -43,4 +43,12 @@ set_border(cell, "top", None)
 assert resolve_borders(cell, inherited=fallback).sides["top"] == line
 set_borders(cell, None)
 assert get_borders(cell) is None
+record = get_borders(table)
+set_borders(table, replace(record, extra={**record.extra, "opaque": {"kind": "line"}}))
+baseline = document_from_json(document_to_json(document))
+record = get_borders(table)
+record.extra["opaque"]["kind"] = "none"
+set_borders(table, record)
+border_issues = [issue for issue in compare_documents(baseline, document).issues if issue.code.startswith("table-border-")]
+assert len(border_issues) == 1 and border_issues[0].code == "table-border-change"
 print("Table/cell borders: declarations, unknown fields, inheritance and JSON cycles OK")

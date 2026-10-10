@@ -225,23 +225,32 @@ def _border_snapshot(table: Table, limits: DocumentLimits | None) -> dict[str, A
     return {"table": snapshot(table), "cells": cells}
 
 
-def _borders_removed(source: Any, target: Any) -> bool:
+def _fields_removed(source: Any, target: Any) -> bool:
     if isinstance(source, dict):
         if not isinstance(target, dict):
             return True
-        return any(
-            key not in target
-            or key == "kind"
-            and value == "line"
-            and target[key] in ("none", "nil")
-            or _borders_removed(value, target[key])
-            for key, value in source.items()
-        )
+        return any(key not in target or _fields_removed(value, target[key]) for key, value in source.items())
     if isinstance(source, list):
         if not isinstance(target, list):
             return True
-        return len(source) > len(target) or any(_borders_removed(value, target[index]) for index, value in enumerate(source))
+        return len(source) > len(target) or any(_fields_removed(value, target[index]) for index, value in enumerate(source))
     return source is not None and target is None
+
+
+def _borders_removed(source: dict[str, Any], target: dict[str, Any]) -> bool:
+    if _fields_removed(source, target):
+        return True
+    records = [(source["table"], target["table"])]
+    records.extend((record, target["cells"][key]) for key, record in source["cells"].items())
+    # Only schema-owned side records define line suppression. Extra data stays inert.
+    return any(
+        before is not None
+        and any(
+            border["kind"] == "line" and after["sides"][side]["kind"] in ("none", "nil")
+            for side, border in before["sides"].items()
+        )
+        for before, after in records
+    )
 
 
 __all__ = [
