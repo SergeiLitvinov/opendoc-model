@@ -480,6 +480,36 @@ from .semantics import set_heading as set_heading
 from .storage import ArtifactLimitError as ArtifactLimitError
 from .styles import effective_text_style as effective_text_style
 from .styles import resolve_style as resolve_style
+from .table_borders import (
+    CELL_BORDERS_PROPERTY as CELL_BORDERS_PROPERTY,
+)
+from .table_borders import (
+    TABLE_BORDERS_PROPERTY as TABLE_BORDERS_PROPERTY,
+)
+from .table_borders import (
+    Border as Border,
+)
+from .table_borders import (
+    BorderSet as BorderSet,
+)
+from .table_borders import (
+    BorderSide as BorderSide,
+)
+from .table_borders import (
+    BorderStyle as BorderStyle,
+)
+from .table_borders import (
+    get_borders as get_borders,
+)
+from .table_borders import (
+    resolve_borders as resolve_borders,
+)
+from .table_borders import (
+    set_border as set_border,
+)
+from .table_borders import (
+    set_borders as set_borders,
+)
 from .table_semantics import (
     TABLE_CELL_SEMANTICS_PROPERTY as TABLE_CELL_SEMANTICS_PROPERTY,
 )
@@ -571,6 +601,16 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "CELL_BORDERS_PROPERTY",
+    "TABLE_BORDERS_PROPERTY",
+    "Border",
+    "BorderSet",
+    "BorderSide",
+    "BorderStyle",
+    "get_borders",
+    "set_borders",
+    "set_border",
+    "resolve_borders",
     "OUTLINE_PROPERTY",
     "Outline",
     "OutlineEntry",

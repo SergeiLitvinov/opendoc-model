@@ -293,6 +293,9 @@ def _compare_objects(
     for match in matches:
         before, after = match["source"], match["target"]
         changes = [name for name in ("content_hash", "geometry", "style_id", "location") if before.get(name) != after.get(name)]
+        if before.get("type") == "table" and "table_borders" in before and "table_borders" in after:
+            if before["table_borders"] != after["table_borders"]:
+                changes.append("table_borders")
         if before.get("type") == "table" and "preferred_widths" in before and "preferred_widths" in after:
             if before["preferred_widths"] != after["preferred_widths"]:
                 changes.append("preferred_widths")
@@ -349,6 +352,18 @@ def _compare_objects(
         for item in lost
     ]
     for item in changed:
+        if "table_borders" in item["changes"]:
+            from opendoc_model.table_borders import _borders_removed
+
+            removed = _borders_removed(item["source"]["table_borders"], item["target"]["table_borders"])
+            issues.append(
+                ConversionIssue(
+                    IssueSeverity.LOSS if removed else IssueSeverity.WARNING,
+                    "table-border-loss" if removed else "table-border-change",
+                    "Table/cell border declaration removed" if removed else "Table/cell border declaration changed",
+                    item["source"]["location"],
+                )
+            )
         if "table_semantics" in item["changes"]:
             source_semantics, target_semantics = item["source"]["table_semantics"], item["target"]["table_semantics"]
             removed = _table_semantics_removed(source_semantics, target_semantics)

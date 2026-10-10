@@ -148,6 +148,9 @@ def _object_entry(
             "cells": [[preference(cell) for cell in row.cells] for row in value.rows],
         }
         semantic_data["table_semantics"] = _table_snapshot(value, limits)
+        from opendoc_model.table_borders import _border_snapshot
+
+        semantic_data["table_borders"] = _border_snapshot(value, limits)
     return {
         **semantic_data,
         **formula_data,

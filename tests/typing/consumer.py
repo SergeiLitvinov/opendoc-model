@@ -158,6 +158,14 @@ def main() -> None:
     assert_type(preservation_result(model), CheckResult)
     profile = CapabilityProfile("typed-profile", 1)
     assert_type(negotiate_capabilities(profile, profile), dict[str, tuple[PreservationState, ...]])
+    from opendoc_model import Border, BorderSet, get_borders, resolve_borders, set_border, set_borders
+
+    bordered = Table([])
+    set_borders(bordered, BorderSet({"inside-horizontal": Border(width_pt=0.75)}))
+    set_border(bordered, "top", Border("none"))
+    assert_type(get_borders(bordered), BorderSet | None)
+    assert_type(resolve_borders(bordered), BorderSet)
+    assert resolve_borders(bordered).sides["top"].kind == "none"
     print("Installed typed consumer: runtime and named result fields OK")
 
 

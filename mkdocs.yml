@@ -48,6 +48,7 @@ nav:
       - Объединение и извлечение: docs/guide/composition.md
       - Свойства и стили: docs/guide/styles.md
       - Семантика таблиц: docs/guide/table-semantics.md
+      - Границы таблиц и ячеек: docs/guide/table-borders.md
       - Ресурсы и переносимость: docs/guide/resources.md
       - Проверка в памяти: docs/guide/checks.md
       - Семантические заголовки: docs/guide/headings.md

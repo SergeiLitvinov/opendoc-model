@@ -281,6 +281,13 @@ PROBE += (
 )
 
 
+PROBE += (
+    "\nrunpy.run_path("
+    + repr(str(Path(__file__).resolve().parent.parent / "examples/table_borders.py"))
+    + ", run_name='__main__')\n"
+)
+
+
 def verify(python: str) -> None:
     with tempfile.TemporaryDirectory(prefix="document-core-probe-") as directory:
         subprocess.run([str(Path(python).absolute()), "-I", "-c", PROBE], cwd=directory, check=True)

@@ -115,6 +115,9 @@ def _commit_edit(
     values[index : index + removed] = added
     try:
         _check_tree(root, limits)
+        from opendoc_model.table_borders import _validate_borders
+
+        _validate_borders(root, limits)
         if table_semantics:
             _validate_tables(root, limits)
         if isinstance(root, DocumentModel):
@@ -302,6 +305,9 @@ def transform_elements(
     _check_tree(result, budget)
     if table_semantics or _has_table_semantics(result, budget):
         _validate_tables(result, budget)
+    from opendoc_model.table_borders import _validate_borders
+
+    _validate_borders(result, budget)
     if isinstance(result, DocumentModel):
         _guard_integration_edit(result, snapshot, budget)
     return result

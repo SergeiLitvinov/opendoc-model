@@ -19,6 +19,8 @@ ExtensionScope: TypeAlias = Literal["metadata", "properties"]
 UnknownExtensionPolicy: TypeAlias = Literal["error", "preserve"]
 _KEY = re.compile(r"[a-z][a-z0-9_-]*(?:\.[a-z][a-z0-9_-]*)+")
 _BUILTINS = {
+    "opendoc.table-borders",
+    "opendoc.cell-borders",
     "opendoc.table-semantics",
     "opendoc.table-row-semantics",
     "opendoc.table-cell-semantics",
@@ -31,6 +33,8 @@ _BUILTINS = {
     "opendoc.footnote-reference",
 }
 _BUILTIN_OWNERS = {
+    "opendoc.table-borders": {"Table"},
+    "opendoc.cell-borders": {"TableCell"},
     "opendoc.table-semantics": {"Table"},
     "opendoc.table-row-semantics": {"TableRow"},
     "opendoc.table-cell-semantics": {"TableCell"},

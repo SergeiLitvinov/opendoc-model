@@ -138,6 +138,12 @@ def _comparison_issue(issue: ConversionIssue, comparison: DocumentComparison) ->
                 measurement.update(
                     source_number=change["source"].get("list_number"), target_number=change["target"].get("list_number")
                 )
+    elif issue.feature.startswith("table-border-"):
+        change = next(
+            (item for item in comparison.object_diff.get("changed", []) if item["source"].get("location") == issue.location), None
+        )
+        if change is not None:
+            measurement = {"source": change["source"].get("table_borders"), "target": change["target"].get("table_borders")}
     elif issue.feature.startswith("table-width-"):
         change = next(
             (item for item in comparison.object_diff.get("changed", []) if item["source"].get("location") == issue.location), None
