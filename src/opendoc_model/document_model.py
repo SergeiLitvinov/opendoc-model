@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from copy import deepcopy
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import TYPE_CHECKING, Any, TypeAlias
@@ -70,13 +71,14 @@ class Provenance:
     events: list[ProvenanceEvent] = field(default_factory=list)
 
     def transformed(self, operation: str, *, detail: str = "", fallback_reason: str | None = None) -> Provenance:
+        """Append an event to an independent history; neither list nor old events alias the input."""
         return Provenance(
             source_format=self.source_format,
             source_path=self.source_path,
             page=self.page,
             object_id=self.object_id,
             package_part=self.package_part,
-            events=[*self.events, ProvenanceEvent(operation, detail, fallback_reason)],
+            events=[*deepcopy(self.events), ProvenanceEvent(operation, detail, fallback_reason)],
         )
 
 
