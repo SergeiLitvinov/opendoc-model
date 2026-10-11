@@ -106,6 +106,41 @@ def test_known_resource_must_match_anchored_object():
     assert mapping.sources[0].resource_id == "vector"
 
 
+def test_native_only_publication_uses_final_locators_atomically():
+    mapping = ObjectMapping(
+        sources=(ObjectOccurrence("input", provenance=Provenance("fixture")),),
+        targets=(ObjectOccurrence("output", native_locator=NativeObjectLocator("pdf", "xref-10", extra={"future": [1]})),),
+        entries=(
+            ObjectMappingEntry(
+                "group",
+                ("input",),
+                PreservationState.SEMANTIC,
+                DiagnosticIssue("fixture.kept", IssueSeverity.INFO, "Declared kept"),
+                ("output",),
+            ),
+        ),
+        publication="staged",
+        output_format="pdf",
+        assessment_complete=True,
+        result_id="native-run-1",
+    )
+    before = object_mapping_to_dict(mapping)
+    locator = NativeObjectLocator("pdf", "xref-20", extra={"future": [2]})
+    published = with_mapping_publication(mapping, "published", target_locators={"output": locator})
+    assert published.targets[0].native_locator == locator
+    assert published.result_id == mapping.result_id and published.assessment_complete
+    for _ in range(2):
+        published = object_mapping_from_dict(json.loads(json.dumps(object_mapping_to_dict(published))))
+    assert published.targets[0].native_locator.value == "xref-20"
+    published.targets[0].native_locator.extra["future"].append(3)
+    assert locator.extra["future"] == [2]
+    for replacements in (None, {"output": None}, {"missing": locator}, {"output": NativeObjectLocator("docx", "wrong")}):
+        with pytest.raises(ValueError):
+            with_mapping_publication(mapping, "published", target_locators=replacements)
+        assert object_mapping_to_dict(mapping) == before
+    assert with_mapping_publication(mapping, "rejected").targets == ()
+
+
 def test_exact_envelope_unknown_fields_independence_and_document_compatibility():
     mapping, _, _ = _fixture()
     raw = object_mapping_to_dict(mapping)

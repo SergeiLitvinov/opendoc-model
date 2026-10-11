@@ -338,12 +338,24 @@ def with_mapping_publication(
         _error("publication", "a new result requires a fresh mapping")
     if not active and target_locators:
         _error("target_locators", "inactive result cannot retain target locators")
+    if target_locators is not None and (
+        type(target_locators) is not dict or set(target_locators) - {item.id for item in copied.targets}
+    ):
+        _error("target_locators", "unknown target occurrence")
     changed = publication != copied.publication
     result = replace(
         copied,
         publication=publication,
         publication_issue=issue,
-        targets=tuple(replace(item, native_locator=None) if changed else item for item in copied.targets) if active else (),
+        targets=tuple(
+            replace(
+                item,
+                native_locator=(target_locators or {}).get(item.id, None if changed else item.native_locator),
+            )
+            for item in copied.targets
+        )
+        if active
+        else (),
         entries=copied.entries
         if active
         else tuple(
@@ -356,8 +368,6 @@ def with_mapping_publication(
         ),
         assessment_complete=copied.assessment_complete if active else False,
     )
-    if target_locators is not None and active:
-        result = remap_object_mapping(result, target_locators=target_locators, limits=budget)
     return object_mapping_from_dict(object_mapping_to_dict(result, limits=budget), limits=budget)
 
 

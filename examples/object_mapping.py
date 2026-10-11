@@ -73,6 +73,14 @@ staged = replace(mapping, publication="staged")
 published = with_mapping_publication(staged, "published")
 assert published.result_id == staged.result_id
 assert all(item.native_locator is None for item in published.targets)
+native_only = replace(staged, targets=tuple(replace(item, node_id=None, resource_id=None) for item in staged.targets))
+native_published = with_mapping_publication(
+    native_only,
+    "published",
+    target_locators={item.id: NativeObjectLocator("fixture", f"final/{index}") for index, item in enumerate(native_only.targets)},
+)
+assert native_published.assessment_complete
+assert native_published.targets[0].native_locator.value == "final/0"
 rejected = with_mapping_publication(
     staged,
     "rejected",
