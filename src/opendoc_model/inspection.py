@@ -288,11 +288,29 @@ def _compare_objects(
         for item in (*source_objects, *target_objects)
         if item.get("type") == "paragraph"
     )
+    from opendoc_model.text_colors import _text_colors_valid
+
+    colors_available = all(
+        "text_colors" in item and _text_colors_valid(item["text_colors"])
+        for item in (*source_objects, *target_objects)
+        if item.get("type") == "paragraph"
+    )
     retained: list[dict[str, Any]] = []
     changed: list[dict[str, Any]] = []
     for match in matches:
         before, after = match["source"], match["target"]
+        color_changed = (
+            colors_available
+            and before.get("type") == "paragraph"
+            and isinstance(before.get("text_hash"), str)
+            and before.get("text_hash") == after.get("text_hash")
+            and "text_colors" in before
+            and "text_colors" in after
+            and before["text_colors"] != after["text_colors"]
+        )
         changes = [name for name in ("content_hash", "geometry", "style_id", "location") if before.get(name) != after.get(name)]
+        if color_changed:
+            changes.append("text_colors")
         for owner, spacing_field in (("table", "table_indent"), ("paragraph", "tab_stops")):
             if (
                 before.get("type") == owner
@@ -360,6 +378,18 @@ def _compare_objects(
         for item in lost
     ]
     for item in changed:
+        if "text_colors" in item["changes"]:
+            from opendoc_model.text_colors import _text_colors_removed
+
+            removed = _text_colors_removed(item["source"]["text_colors"], item["target"]["text_colors"])
+            issues.append(
+                ConversionIssue(
+                    IssueSeverity.LOSS if removed else IssueSeverity.WARNING,
+                    "text-color-loss" if removed else "text-color-change",
+                    "Text color declaration lost" if removed else "Text color declaration changed",
+                    item["source"]["location"],
+                )
+            )
         for spacing_field, feature in (("table_indent", "table-indent"), ("tab_stops", "tab-stops")):
             if spacing_field in item["changes"]:
                 from opendoc_model.spacing import _spacing_removed
@@ -453,6 +483,7 @@ def _compare_objects(
         "changed_list_numbers": sum("list_number" in item["changes"] for item in changed) if list_numbers_available else None,
         "headings_available": headings_available,
         "changed_headings": sum("heading" in item["changes"] for item in changed) if headings_available else None,
+        "text_colors_available": colors_available,
         "source_count": len(source_objects),
         "target_count": len(target_objects),
         "available": True,
@@ -882,6 +913,10 @@ def inspect_document_model(
     referenced_resources: set[str] = set()
     content_cache: dict[int, str | None] = {}
 
+    from opendoc_model.text_colors import _TextColors
+
+    colors = _TextColors(document, _resolve_limits(limits))
+
     for reference in _walk_locations(document, _resolve_limits(limits)):
         node, location = reference.node, reference.path
         if isinstance(node, Section):
@@ -916,6 +951,7 @@ def inspect_document_model(
                     emphasis=emphasis,
                     content_cache=content_cache,
                     limits=limits,
+                    colors=colors,
                 )
             )
         if isinstance(node, Paragraph):

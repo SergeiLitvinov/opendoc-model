@@ -16,6 +16,7 @@
 | Изменить структуру | [operations.py](../../examples/operations.py) | Копирование, вставку/замену/удаление и преобразование |
 | Объединить или извлечь | [composition.py](../../examples/composition.py) | Отказ при конфликте, карты переименований, сохранение зависимостей |
 | Управлять свойствами и стилями | [styles.py](../../examples/styles.py) | Наследование, явные overrides, строгую ошибку и сохранность bags |
+| Явный auto и наследование цвета | [text_colors.py](../../examples/text_colors.py) | Существующий API, два JSON-цикла и расположенную потерю |
 | Задать предпочтительную ширину | [table_widths.py](../../examples/table_widths.py) | Пункты/доли, JSON, приоритет явной legacy-правки и диагностику изменения |
 | Отступ таблицы и табуляция | [spacing.py](../../examples/spacing.py) | Два JSON-цикла, явное подавление позиции, удаление и fallback |
 | Подпись и заголовочные ячейки | [table_semantics.py](../../examples/table_semantics.py) | Владельца подписи, headers, группы, JSON и композицию |

@@ -160,8 +160,8 @@ def _validate_fraction(value: float, name: str) -> None:
 
 
 def color_to_css(value: ColorLike | None) -> str | None:
-    """Return safe CSS for a canonical color or a compatible legacy token."""
-    if value is None:
+    """Return CSS for a color/legacy token; unresolved 'auto' returns None."""
+    if value is None or value == "auto":
         return None
     if isinstance(value, ColorValue):
         return value.to_css()

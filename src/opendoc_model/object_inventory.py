@@ -11,6 +11,7 @@ from opendoc_model.limits import DocumentLimits
 from opendoc_model.lists import LIST_PROPERTY, _list_payload
 from opendoc_model.semantics import HEADING_PROPERTY, _heading_payload
 from opendoc_model.storage import ArtifactLimitError
+from opendoc_model.text_colors import _TextColors
 from opendoc_model.text_flow import TextFlowFingerprint
 from opendoc_model.traversal import ModelNode, NodeLocation, walk_model
 
@@ -67,6 +68,7 @@ def _object_entry(
     emphasis: EmphasisInventory | None = None,
     content_cache: dict[int, str | None] | None = None,
     limits: DocumentLimits | None = None,
+    colors: _TextColors | None = None,
 ) -> dict[str, Any]:
     provenance = getattr(value, "provenance", None)
     provenance_data = None
@@ -126,6 +128,12 @@ def _object_entry(
 
         semantic_data["tab_stops" if isinstance(value, Paragraph) else "table_indent"] = _spacing_snapshot(value, limits)
     if isinstance(value, Paragraph):
+        if colors is None:
+            from opendoc_model.document_model import DocumentModel
+            from opendoc_model.limits import _resolve_limits
+
+            colors = _TextColors(DocumentModel(), _resolve_limits(limits))
+        semantic_data["text_colors"] = colors.paragraph(value)
         heading = _heading_payload(value.properties.get(HEADING_PROPERTY), f"{location}.properties[{HEADING_PROPERTY!r}]")
         semantic_data["heading"] = heading.level if heading is not None else None
         item = _list_payload(value.properties.get(LIST_PROPERTY), f"{location}.properties[{LIST_PROPERTY!r}]")

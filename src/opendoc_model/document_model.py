@@ -133,6 +133,11 @@ class ImageCrop:
 
 @dataclass
 class TextStyle:
+    """Declared text attributes; color/background='auto' is explicit, None inherits.
+
+    Automatic tokens remain unresolved; the model never guesses their RGB value.
+    """
+
     font_family: str | None = None
     font_size: Length | None = None
     bold: bool | None = None
