@@ -166,6 +166,20 @@ def main() -> None:
     assert_type(get_borders(bordered), BorderSet | None)
     assert_type(resolve_borders(bordered), BorderSet)
     assert resolve_borders(bordered).sides["top"].kind == "none"
+    from opendoc_model import (
+        ObjectMapping,
+        object_mapping_from_dict,
+        object_mapping_to_dict,
+        remap_object_mapping,
+        validate_object_mapping,
+        with_mapping_publication,
+    )
+
+    mapping = ObjectMapping()
+    assert_type(object_mapping_from_dict(object_mapping_to_dict(mapping)), ObjectMapping)
+    assert_type(remap_object_mapping(mapping), ObjectMapping)
+    validate_object_mapping(mapping)
+    assert_type(with_mapping_publication(mapping, "attempted"), ObjectMapping)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

@@ -156,6 +156,18 @@
 | `iter_list_items` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L135) |
 | `iter_list_numbers` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L142) |
 | `set_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L111) |
+| `OBJECT_MAPPING_FORMAT` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
+| `MappingPublication` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
+| `MappingReplacement` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L40) |
+| `NativeObjectLocator` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L21) |
+| `ObjectMapping` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L61) |
+| `ObjectMappingEntry` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L49) |
+| `ObjectOccurrence` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L29) |
+| `object_mapping_from_dict` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L192) |
+| `object_mapping_to_dict` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L175) |
+| `remap_object_mapping` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L261) |
+| `validate_object_mapping` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L216) |
+| `with_mapping_publication` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L325) |
 | `MatchingLimits` | `opendoc_model.object_matching` | [src/opendoc_model/object_matching.py](../../src/opendoc_model/object_matching.py#L23) |
 | `ObjectLossPolicy` | `opendoc_model.object_quality_policy` | [src/opendoc_model/object_quality_policy.py](../../src/opendoc_model/object_quality_policy.py#L14) |
 | `clone_model` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L41) |
@@ -1072,6 +1084,86 @@ set_list_item(paragraph: Paragraph, item: ListItem | None, *, limits: DocumentLi
 ```
 
 Set/remove membership in place after checking; do not overwrite opaque data.
+
+### MappingReplacement
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L40)
+
+Declared intermediate representation, referring to an explicitly scoped model resource.
+
+### NativeObjectLocator
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L21)
+
+Opaque, measured address scoped to a format; never parsed or executed by the model.
+
+### ObjectMapping
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L61)
+
+Standalone caller-declared evidence. Validity does not verify output publication or fidelity.
+
+### ObjectMappingEntry
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L49)
+
+One group: explicit many-to-many correspondence, or unknown/confirmed absent targets.
+
+### ObjectOccurrence
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L29)
+
+Report-local stable occurrence ID; a resource ID alone is not occurrence identity.
+
+### object_mapping_from_dict
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L192)
+
+```python
+object_mapping_from_dict(data: Any, *, limits: DocumentLimits | None=None)
+```
+
+Read only the explicit v1 schema; no names in data select imports or executable code.
+
+### object_mapping_to_dict
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L175)
+
+```python
+object_mapping_to_dict(mapping: ObjectMapping, *, limits: DocumentLimits | None=None)
+```
+
+Return an independent, bounded v1 JSON envelope; never mutate input on failure.
+
+### remap_object_mapping
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L261)
+
+```python
+remap_object_mapping(mapping: ObjectMapping, *, source_nodes: dict[str, str] | None=None, target_nodes: dict[str, str] | None=None, source_resources: dict[str, str] | None=None, target_resources: dict[str, str] | None=None, target_locators: dict[str, NativeObjectLocator | None] | None=None, limits: DocumentLimits | None=None)
+```
+
+Explicit independent remap; occurrence IDs stay stable. Native addresses require fresh evidence.
+
+### validate_object_mapping
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L216)
+
+```python
+validate_object_mapping(mapping: ObjectMapping, *, source: DocumentModel | None=None, target: DocumentModel | None=None, limits: DocumentLimits | None=None)
+```
+
+Validate declarations and references against supplied snapshots, without native/file I/O.
+
+### with_mapping_publication
+
+[src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L325)
+
+```python
+with_mapping_publication(mapping: ObjectMapping, publication: MappingPublication, *, issue: DiagnosticIssue | None=None, target_locators: dict[str, NativeObjectLocator | None] | None=None, limits: DocumentLimits | None=None)
+```
+
+Copy caller-declared lifecycle evidence; never publish a file or revive an invalidated result.
 
 ### MatchingLimits
 

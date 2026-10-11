@@ -378,6 +378,38 @@ from .lists import get_list_item as get_list_item
 from .lists import iter_list_items as iter_list_items
 from .lists import iter_list_numbers as iter_list_numbers
 from .lists import set_list_item as set_list_item
+from .object_mapping import (
+    OBJECT_MAPPING_FORMAT as OBJECT_MAPPING_FORMAT,
+)
+from .object_mapping import MappingPublication as MappingPublication
+from .object_mapping import (
+    MappingReplacement as MappingReplacement,
+)
+from .object_mapping import (
+    NativeObjectLocator as NativeObjectLocator,
+)
+from .object_mapping import (
+    ObjectMapping as ObjectMapping,
+)
+from .object_mapping import (
+    ObjectMappingEntry as ObjectMappingEntry,
+)
+from .object_mapping import (
+    ObjectOccurrence as ObjectOccurrence,
+)
+from .object_mapping import (
+    object_mapping_from_dict as object_mapping_from_dict,
+)
+from .object_mapping import (
+    object_mapping_to_dict as object_mapping_to_dict,
+)
+from .object_mapping import (
+    remap_object_mapping as remap_object_mapping,
+)
+from .object_mapping import (
+    validate_object_mapping as validate_object_mapping,
+)
+from .object_mapping import with_mapping_publication as with_mapping_publication
 from .object_matching import MatchingLimits as MatchingLimits
 from .object_quality_policy import (
     ObjectLossPolicy as ObjectLossPolicy,
@@ -601,6 +633,18 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "OBJECT_MAPPING_FORMAT",
+    "MappingReplacement",
+    "NativeObjectLocator",
+    "ObjectMapping",
+    "ObjectMappingEntry",
+    "ObjectOccurrence",
+    "object_mapping_from_dict",
+    "object_mapping_to_dict",
+    "remap_object_mapping",
+    "validate_object_mapping",
+    "MappingPublication",
+    "with_mapping_publication",
     "CELL_BORDERS_PROPERTY",
     "TABLE_BORDERS_PROPERTY",
     "Border",
