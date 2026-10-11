@@ -301,6 +301,10 @@ PROBE += (
     + ", run_name='__main__')\n"
 )
 
+PROBE += (
+    "\nrunpy.run_path(" + repr(str(Path(__file__).resolve().parent.parent / "examples/spacing.py")) + ", run_name='__main__')\n"
+)
+
 
 def verify(python: str) -> None:
     with tempfile.TemporaryDirectory(prefix="document-core-probe-") as directory:

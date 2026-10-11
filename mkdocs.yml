@@ -50,6 +50,7 @@ nav:
       - Свойства и стили: docs/guide/styles.md
       - Семантика таблиц: docs/guide/table-semantics.md
       - Границы таблиц и ячеек: docs/guide/table-borders.md
+      - Отступ таблицы и табуляция: docs/guide/spacing.md
       - Соответствие объектов: docs/guide/object-mapping.md
       - Ресурсы и переносимость: docs/guide/resources.md
       - Проверка в памяти: docs/guide/checks.md

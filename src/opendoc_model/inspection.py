@@ -293,6 +293,14 @@ def _compare_objects(
     for match in matches:
         before, after = match["source"], match["target"]
         changes = [name for name in ("content_hash", "geometry", "style_id", "location") if before.get(name) != after.get(name)]
+        for owner, spacing_field in (("table", "table_indent"), ("paragraph", "tab_stops")):
+            if (
+                before.get("type") == owner
+                and spacing_field in before
+                and spacing_field in after
+                and before[spacing_field] != after[spacing_field]
+            ):
+                changes.append(spacing_field)
         if before.get("type") == "table" and "table_borders" in before and "table_borders" in after:
             if before["table_borders"] != after["table_borders"]:
                 changes.append("table_borders")
@@ -352,6 +360,19 @@ def _compare_objects(
         for item in lost
     ]
     for item in changed:
+        for spacing_field, feature in (("table_indent", "table-indent"), ("tab_stops", "tab-stops")):
+            if spacing_field in item["changes"]:
+                from opendoc_model.spacing import _spacing_removed
+
+                removed = _spacing_removed(item["source"][spacing_field], item["target"][spacing_field], spacing_field)
+                issues.append(
+                    ConversionIssue(
+                        IssueSeverity.LOSS if removed else IssueSeverity.WARNING,
+                        feature + ("-loss" if removed else "-change"),
+                        "Spacing declaration removed or suppressed" if removed else "Spacing declaration changed",
+                        item["source"]["location"],
+                    )
+                )
         if "table_borders" in item["changes"]:
             from opendoc_model.table_borders import _borders_removed
 

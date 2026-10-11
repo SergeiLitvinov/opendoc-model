@@ -509,6 +509,20 @@ from .semantics import Heading as Heading
 from .semantics import get_heading as get_heading
 from .semantics import iter_headings as iter_headings
 from .semantics import set_heading as set_heading
+from .spacing import TAB_STOPS_PROPERTY as TAB_STOPS_PROPERTY
+from .spacing import TABLE_INDENT_PROPERTY as TABLE_INDENT_PROPERTY
+from .spacing import TabAlignment as TabAlignment
+from .spacing import TabLeader as TabLeader
+from .spacing import TableIndent as TableIndent
+from .spacing import TabStop as TabStop
+from .spacing import TabStops as TabStops
+from .spacing import get_tab_stops as get_tab_stops
+from .spacing import get_table_indent as get_table_indent
+from .spacing import resolve_tab_stops as resolve_tab_stops
+from .spacing import resolve_table_indent as resolve_table_indent
+from .spacing import set_tab_stop as set_tab_stop
+from .spacing import set_tab_stops as set_tab_stops
+from .spacing import set_table_indent as set_table_indent
 from .storage import ArtifactLimitError as ArtifactLimitError
 from .styles import effective_text_style as effective_text_style
 from .styles import resolve_style as resolve_style
@@ -638,6 +652,20 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "TABLE_INDENT_PROPERTY",
+    "TAB_STOPS_PROPERTY",
+    "TableIndent",
+    "TabAlignment",
+    "TabLeader",
+    "TabStop",
+    "TabStops",
+    "get_table_indent",
+    "set_table_indent",
+    "resolve_table_indent",
+    "get_tab_stops",
+    "set_tab_stops",
+    "set_tab_stop",
+    "resolve_tab_stops",
     "OBJECT_MAPPING_FORMAT",
     "MappingReplacement",
     "NativeObjectLocator",

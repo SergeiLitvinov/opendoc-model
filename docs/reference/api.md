@@ -8,7 +8,7 @@
 |---|---|---|
 | `CheckPolicy` | `opendoc_model.checks` | [src/opendoc_model/checks.py](../../src/opendoc_model/checks.py) |
 | `check_document` | `opendoc_model.checks` | [src/opendoc_model/checks.py](../../src/opendoc_model/checks.py#L40) |
-| `compare_documents` | `opendoc_model.checks` | [src/opendoc_model/checks.py](../../src/opendoc_model/checks.py#L162) |
+| `compare_documents` | `opendoc_model.checks` | [src/opendoc_model/checks.py](../../src/opendoc_model/checks.py#L169) |
 | `ColorSpace` | `opendoc_model.color` | [src/opendoc_model/color.py](../../src/opendoc_model/color.py#L22) |
 | `ColorValue` | `opendoc_model.color` | [src/opendoc_model/color.py](../../src/opendoc_model/color.py#L28) |
 | `DocumentIdMap` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L55) |
@@ -97,7 +97,7 @@
 | `DocumentComparison` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L95) |
 | `DocumentInspection` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L45) |
 | `compare_inspections` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L142) |
-| `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L825) |
+| `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L846) |
 | `INTEGRATION_PROPERTY` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `INTEGRATION_VERSION` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L537) |
@@ -223,6 +223,20 @@
 | `get_heading` | `opendoc_model.semantics` | [src/opendoc_model/semantics.py](../../src/opendoc_model/semantics.py#L42) |
 | `iter_headings` | `opendoc_model.semantics` | [src/opendoc_model/semantics.py](../../src/opendoc_model/semantics.py#L83) |
 | `set_heading` | `opendoc_model.semantics` | [src/opendoc_model/semantics.py](../../src/opendoc_model/semantics.py#L56) |
+| `TAB_STOPS_PROPERTY` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py) |
+| `TABLE_INDENT_PROPERTY` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py) |
+| `TabAlignment` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py) |
+| `TabLeader` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py) |
+| `TableIndent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L40) |
+| `TabStop` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L55) |
+| `TabStops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L80) |
+| `get_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L187) |
+| `get_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L162) |
+| `resolve_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L222) |
+| `resolve_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L172) |
+| `set_tab_stop` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L197) |
+| `set_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L192) |
+| `set_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L167) |
 | `ArtifactLimitError` | `opendoc_model.storage` | [src/opendoc_model/storage.py](../../src/opendoc_model/storage.py#L10) |
 | `effective_text_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L87) |
 | `resolve_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L62) |
@@ -293,7 +307,7 @@ and hashes. DocumentLimits exhaustion continues to raise ArtifactLimitError.
 
 ### compare_documents
 
-[src/opendoc_model/checks.py](../../src/opendoc_model/checks.py#L162)
+[src/opendoc_model/checks.py](../../src/opendoc_model/checks.py#L169)
 
 ```python
 compare_documents(source: DocumentModel, target: DocumentModel, *, policies: Iterable[CheckPolicy] | None=None, limits: DocumentLimits | None=None, extensions: Iterable[ExtensionSchema] | None=None, unknown_extensions: UnknownExtensionPolicy='error', matching_limits: MatchingLimits | None=None)
@@ -774,7 +788,7 @@ compare_inspections(source: DocumentInspection, target: DocumentInspection, *, m
 
 ### inspect_document_model
 
-[src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L825)
+[src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L846)
 
 ```python
 inspect_document_model(document: DocumentModel, *, source_path: str | Path | None=None, source_format: str | None=None, limits: DocumentLimits | None=None, check_external_sources: bool=True)
@@ -1623,6 +1637,108 @@ Assign/remove a heading in place, preserving unknown tagged fields.
 
 Failure leaves properties intact; an opaque value occupying the key is
 never overwritten. Removal drops only the explicitly tagged heading bag.
+
+### TableIndent
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L40)
+
+Signed displacement from the containing content area&#x27;s logical start, in pt.
+
+None is a direct unknown value, distinct from zero and a missing declaration.
+Direction and physical coordinates are supplied by the consumer.
+
+### TabStop
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L55)
+
+Position from paragraph content area&#x27;s logical start; clear suppresses fallback.
+
+Alignment names describe text alignment at the stop, not writing direction.
+Unknown alignment/leader is None; leader=&#x27;none&#x27; explicitly requests no leader.
+
+### TabStops
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L80)
+
+Unique explicit positions; inherit=False replaces the supplied fallback set.
+
+An empty replacing set means no explicit stops, not removal of tab characters
+or suppression of an application&#x27;s automatic/default tab interval.
+
+### get_tab_stops
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L187)
+
+```python
+get_tab_stops(node: Paragraph, *, limits: DocumentLimits | None=None)
+```
+
+Read an independent direct set, including clear declarations and unknown fields.
+
+### get_table_indent
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L162)
+
+```python
+get_table_indent(node: Table, *, limits: DocumentLimits | None=None)
+```
+
+Read an independent tagged declaration; absent/opaque data returns None.
+
+### resolve_tab_stops
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L222)
+
+```python
+resolve_tab_stops(node: Paragraph, *, inherited: TabStops | None=None, limits: DocumentLimits | None=None)
+```
+
+Resolve only the supplied fallback by exact position, without default interval/layout.
+
+Direct stops replace whole fallback stops. Clear removes a fallback position.
+Result is sorted, detached, inherit=False and contains no clear declarations.
+
+### resolve_table_indent
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L172)
+
+```python
+resolve_table_indent(node: Table, *, inherited: TableIndent | None=None, limits: DocumentLimits | None=None)
+```
+
+Use explicit fallback only when direct indentation is missing; no style cascade.
+
+### set_tab_stop
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L197)
+
+```python
+set_tab_stop(node: Paragraph, position_pt: float, value: TabStop | None, *, limits: DocumentLimits | None=None)
+```
+
+Edit/remove one direct position; use kind=&#x27;clear&#x27; to block its inheritance.
+
+Other positions and unknown fields of the edited declaration are preserved.
+
+### set_tab_stops
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L192)
+
+```python
+set_tab_stops(node: Paragraph, value: TabStops | None, *, limits: DocumentLimits | None=None)
+```
+
+Atomically replace/remove direct tab declarations, retaining envelope extensions.
+
+### set_table_indent
+
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L167)
+
+```python
+set_table_indent(node: Table, value: TableIndent | None, *, limits: DocumentLimits | None=None)
+```
+
+Atomically set direct indentation or remove it; preserve envelope extensions.
 
 ### ArtifactLimitError
 

@@ -121,6 +121,10 @@ def _object_entry(
 
         formula_data = {"formula_hash": formula_fingerprint(value), "formula_fingerprint_version": FORMULA_FINGERPRINT_VERSION}
     semantic_data: dict[str, Any] = {}
+    if isinstance(value, (Paragraph, Table)):
+        from opendoc_model.spacing import _spacing_snapshot
+
+        semantic_data["tab_stops" if isinstance(value, Paragraph) else "table_indent"] = _spacing_snapshot(value, limits)
     if isinstance(value, Paragraph):
         heading = _heading_payload(value.properties.get(HEADING_PROPERTY), f"{location}.properties[{HEADING_PROPERTY!r}]")
         semantic_data["heading"] = heading.level if heading is not None else None

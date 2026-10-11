@@ -616,12 +616,14 @@ def _validate_model(
                 measurement={"identifier": identifier},
             )
     if not validator.errors:
+        from opendoc_model.spacing import _validate_spacing
         from opendoc_model.table_borders import _validate_borders
         from opendoc_model.table_semantics import _validate_tables
 
         try:
             _validate_tables(document, validator.limits)
             _validate_borders(document, validator.limits)
+            _validate_spacing(document, validator.limits)
         except ArtifactLimitError:
             raise
         except ValueError as error:

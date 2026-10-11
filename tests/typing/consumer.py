@@ -184,6 +184,28 @@ def main() -> None:
 
     measured_profile = TextFlowProfile("typed-v1", "selected-text-v1", measured=True, complete=True)
     assert_type(text_flow_profile_from_dict(text_flow_profile_to_dict(measured_profile)), TextFlowProfile)
+    from opendoc_model import (
+        TableIndent,
+        TabStop,
+        TabStops,
+        get_tab_stops,
+        get_table_indent,
+        resolve_tab_stops,
+        resolve_table_indent,
+        set_tab_stop,
+        set_tab_stops,
+        set_table_indent,
+    )
+
+    spacing_table = Table([])
+    spacing_paragraph = Paragraph([])
+    set_table_indent(spacing_table, TableIndent(30))
+    assert_type(get_table_indent(spacing_table), TableIndent | None)
+    assert_type(resolve_table_indent(spacing_table), TableIndent | None)
+    set_tab_stops(spacing_paragraph, TabStops((TabStop(396, alignment="right", leader="line"),)))
+    set_tab_stop(spacing_paragraph, 396, TabStop(396, "clear"))
+    assert_type(get_tab_stops(spacing_paragraph), TabStops | None)
+    assert_type(resolve_tab_stops(spacing_paragraph), TabStops)
     print("Installed typed consumer: runtime and named result fields OK")
 
 
