@@ -295,6 +295,13 @@ def _compare_objects(
         for item in (*source_objects, *target_objects)
         if item.get("type") == "paragraph"
     )
+    from opendoc_model.spacing import _line_spacing_valid
+
+    line_spacing_available = all(
+        "line_spacing" in item and _line_spacing_valid(item["line_spacing"])
+        for item in (*source_objects, *target_objects)
+        if item.get("type") == "paragraph"
+    )
     retained: list[dict[str, Any]] = []
     changed: list[dict[str, Any]] = []
     for match in matches:
@@ -311,6 +318,13 @@ def _compare_objects(
         changes = [name for name in ("content_hash", "geometry", "style_id", "location") if before.get(name) != after.get(name)]
         if color_changed:
             changes.append("text_colors")
+        if (
+            before.get("type") == "paragraph"
+            and _line_spacing_valid(before.get("line_spacing"))
+            and _line_spacing_valid(after.get("line_spacing"))
+            and before["line_spacing"] != after["line_spacing"]
+        ):
+            changes.append("line_spacing")
         for owner, spacing_field in (("table", "table_indent"), ("paragraph", "tab_stops")):
             if (
                 before.get("type") == owner
@@ -378,6 +392,18 @@ def _compare_objects(
         for item in lost
     ]
     for item in changed:
+        if "line_spacing" in item["changes"]:
+            from opendoc_model.spacing import _line_spacing_removed
+
+            removed = _line_spacing_removed(item["source"]["line_spacing"], item["target"]["line_spacing"])
+            issues.append(
+                ConversionIssue(
+                    IssueSeverity.LOSS if removed else IssueSeverity.WARNING,
+                    "line-spacing-loss" if removed else "line-spacing-change",
+                    "Line spacing declaration lost" if removed else "Line spacing declaration changed",
+                    item["source"]["location"],
+                )
+            )
         if "text_colors" in item["changes"]:
             from opendoc_model.text_colors import _text_colors_removed
 
@@ -484,6 +510,7 @@ def _compare_objects(
         "headings_available": headings_available,
         "changed_headings": sum("heading" in item["changes"] for item in changed) if headings_available else None,
         "text_colors_available": colors_available,
+        "line_spacing_available": line_spacing_available,
         "source_count": len(source_objects),
         "target_count": len(target_objects),
         "available": True,
@@ -916,6 +943,9 @@ def inspect_document_model(
     from opendoc_model.text_colors import _TextColors
 
     colors = _TextColors(document, _resolve_limits(limits))
+    from opendoc_model.spacing import _LineSpacings
+
+    line_spacings = _LineSpacings(document, _resolve_limits(limits))
 
     for reference in _walk_locations(document, _resolve_limits(limits)):
         node, location = reference.node, reference.path
@@ -952,6 +982,7 @@ def inspect_document_model(
                     content_cache=content_cache,
                     limits=limits,
                     colors=colors,
+                    line_spacings=line_spacings,
                 )
             )
         if isinstance(node, Paragraph):

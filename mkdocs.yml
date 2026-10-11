@@ -36,6 +36,7 @@ nav:
       - Расширенная модель документа: docs/guide/integration.md
       - Геометрия страниц: docs/guide/page-geometry.md
       - Фиксированная компоновка: docs/guide/fixed-layout.md
+      - Межстрочный интервал: docs/guide/line-spacing.md
       - Оглавление и закладки: docs/guide/outline.md
       - Непрозрачные пакеты: docs/guide/packages.md
       - Лимиты документа: docs/guide/limits.md

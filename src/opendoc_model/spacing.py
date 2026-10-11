@@ -1,4 +1,4 @@
-"""Format-neutral table indentation and explicit paragraph tab stops; no layout engine."""
+"""Format-neutral indentation, tab stops and line spacing; no layout engine."""
 
 from __future__ import annotations
 
@@ -10,13 +10,15 @@ from typing import Any, Literal, TypeVar, cast
 from opendoc_model._integration_codec import _convert
 from opendoc_model._json_validation import _json_tree
 from opendoc_model.diagnostics import _DiagnosticError
-from opendoc_model.document_model import DocumentModel, Paragraph, Table
+from opendoc_model.document_model import DocumentModel, Paragraph, Table, TextRun, TextStyle
 from opendoc_model.integration_types import IntegrationRecord
 from opendoc_model.limits import DocumentLimits, _guard_model, _resolve_limits
 from opendoc_model.traversal import ModelNode, _walk_locations
 
 TABLE_INDENT_PROPERTY = "opendoc.table-indent"
 TAB_STOPS_PROPERTY = "opendoc.tab-stops"
+LINE_SPACING_PROPERTY = "opendoc.line-spacing"
+LineSpacingRule = Literal["minimum", "exact", "relative"]
 TabAlignment = Literal["left", "right", "center", "decimal", "bar"]
 TabLeader = Literal["none", "dot", "dash", "line", "heavy", "middle-dot"]
 
@@ -96,11 +98,36 @@ class TabStops(IntegrationRecord):
             _error("tab_stops.stops", "duplicate positions")
 
 
-_Record = TypeVar("_Record", TableIndent, TabStops)
+@dataclass(frozen=True)
+class LineSpacing(IntegrationRecord):
+    """Declared line advance: minimum/exact points or a relative natural-line multiplier.
+
+    Both None mean explicit unknown, blocking inheritance. This is not a measured
+    glyph height; natural line metrics and native layout belong to the consumer.
+    """
+
+    rule: LineSpacingRule | None = None
+    value: float | None = None
+
+    def __post_init__(self) -> None:
+        if self.rule not in (None, "minimum", "exact", "relative"):
+            _error("line_spacing.rule", "expected minimum, exact or relative")
+        if (self.rule is None) != (self.value is None):
+            _error("line_spacing", "rule and value must both be known or both unknown")
+        if self.value is not None:
+            _points(self.value, "line_spacing.value")
+            if self.value <= 0:
+                _error("line_spacing.value", "expected positive value")
 
 
-def _owner(node: Table | Paragraph, key: str) -> None:
-    if not isinstance(node, Table if key == TABLE_INDENT_PROPERTY else Paragraph):
+_Record = TypeVar("_Record", TableIndent, TabStops, LineSpacing)
+
+
+def _owner(node: Table | Paragraph | TextStyle, key: str) -> None:
+    expected = (
+        (Paragraph, TextStyle) if key == LINE_SPACING_PROPERTY else (Table,) if key == TABLE_INDENT_PROPERTY else (Paragraph,)
+    )
+    if not isinstance(node, expected):
         _error(key, "declaration has wrong owner")
 
 
@@ -120,7 +147,7 @@ def _encode(value: _Record, schema: type[_Record], key: str, budget: DocumentLim
     return cast(dict[str, Any], raw)
 
 
-def _get(node: Table | Paragraph, schema: type[_Record], key: str, budget: DocumentLimits) -> _Record | None:
+def _get(node: Table | Paragraph | TextStyle, schema: type[_Record], key: str, budget: DocumentLimits) -> _Record | None:
     _owner(node, key)
     if not isinstance(node.properties, Mapping):
         _error(key, "expected property mapping")
@@ -142,7 +169,9 @@ def _get(node: Table | Paragraph, schema: type[_Record], key: str, budget: Docum
     return cast(_Record, record)
 
 
-def _set(node: Table | Paragraph, value: _Record | None, schema: type[_Record], key: str, budget: DocumentLimits) -> None:
+def _set(
+    node: Table | Paragraph | TextStyle, value: _Record | None, schema: type[_Record], key: str, budget: DocumentLimits
+) -> None:
     previous = _get(node, schema, key, budget)
     if not isinstance(node.properties, MutableMapping):
         _error(key, "expected mutable property mapping")
@@ -253,16 +282,72 @@ def resolve_tab_stops(node: Paragraph, *, inherited: TabStops | None = None, lim
     return result
 
 
+def get_line_spacing(node: Paragraph | TextStyle, *, limits: DocumentLimits | None = None) -> LineSpacing | None:
+    """Read an independent direct declaration; absent/opaque data returns None."""
+    return _get(node, LineSpacing, LINE_SPACING_PROPERTY, _resolve_limits(limits))
+
+
+def set_line_spacing(node: Paragraph | TextStyle, value: LineSpacing | None, *, limits: DocumentLimits | None = None) -> None:
+    """Atomically replace/remove the declaration, preserving its unknown fields."""
+    _set(node, value, LineSpacing, LINE_SPACING_PROPERTY, _resolve_limits(limits))
+
+
+def resolve_line_spacing(
+    node: Paragraph | TextStyle,
+    *,
+    document: DocumentModel | None = None,
+    inherited: LineSpacing | None = None,
+    limits: DocumentLimits | None = None,
+) -> LineSpacing | None:
+    """Resolve direct > named model style chain > explicit fallback, without native defaults.
+
+    A document is required for style references. Run styles do not set paragraph
+    line spacing. Unknown tagged values block fallback; removal permits it again.
+    """
+    from opendoc_model.styles import _require_document, _resolved
+
+    budget = _resolve_limits(limits)
+    direct = get_line_spacing(node, limits=budget)
+    fallback = _encode(inherited, LineSpacing, LINE_SPACING_PROPERTY, budget) if inherited is not None else None
+    if document is not None:
+        _require_document(document, budget)
+    reference = node.style_id if isinstance(node, Paragraph) else node.properties.get("base_style_id")
+    if reference is not None and document is None:
+        _error(LINE_SPACING_PROPERTY, "document required for style references")
+    style = get_line_spacing(_resolved(document, reference, budget), limits=budget) if document is not None else None
+    if direct is not None or style is not None:
+        return direct if direct is not None else style
+    if fallback is None:
+        return None
+    return cast(
+        LineSpacing,
+        _convert(
+            {k: v for k, v in fallback.items() if k not in {"format", "version"}}, LineSpacing, "line_spacing", encode=False
+        ),
+    )
+
+
 def _validate_spacing(root: ModelNode, limits: DocumentLimits) -> None:
+    def line_owner(owner: Paragraph | TextStyle, path: str) -> None:
+        try:
+            get_line_spacing(owner, limits=limits)
+        except _DiagnosticError as error:
+            _error(path + "." + error.location, error.message)
+
+    if isinstance(root, DocumentModel):
+        for identifier, style in root.styles.items():
+            line_owner(style, f"styles[{identifier!r}].properties")
     for location in _walk_locations(root, limits=limits):
         node = location.node
+        if isinstance(node, TextRun):
+            line_owner(node.style, location.path + ".style.properties")
         bags = [("properties", getattr(node, "properties", {}))]
         if isinstance(node, DocumentModel):
             bags.append(("metadata", node.metadata))
         for scope, bag in bags:
             if not isinstance(bag, Mapping):
                 continue
-            for key in (TABLE_INDENT_PROPERTY, TAB_STOPS_PROPERTY):
+            for key in (TABLE_INDENT_PROPERTY, TAB_STOPS_PROPERTY, LINE_SPACING_PROPERTY):
                 raw = bag.get(key)
                 if not isinstance(raw, dict) or raw.get("format") != key:
                     continue
@@ -272,8 +357,10 @@ def _validate_spacing(root: ModelNode, limits: DocumentLimits) -> None:
                 try:
                     if key == TABLE_INDENT_PROPERTY:
                         get_table_indent(cast(Table, node), limits=limits)
-                    else:
+                    elif key == TAB_STOPS_PROPERTY:
                         get_tab_stops(cast(Paragraph, node), limits=limits)
+                    else:
+                        get_line_spacing(cast(Paragraph, node), limits=limits)
                 except _DiagnosticError as error:
                     _error(path + "." + error.location, error.message)
 
@@ -309,7 +396,67 @@ def _spacing_removed(source: dict[str, Any] | None, target: dict[str, Any] | Non
     return False
 
 
+class _LineSpacings:
+    """Validated model style context; cache only within one inspection."""
+
+    def __init__(self, document: DocumentModel, limits: DocumentLimits) -> None:
+        self.document = document
+        self.limits = limits
+        self.cache: dict[str | None, TextStyle] = {None: TextStyle()}
+
+    def paragraph(self, node: Paragraph) -> dict[str, Any] | None:
+        from opendoc_model.styles import _resolved
+
+        if node.style_id is not None and node.style_id not in self.document.styles:
+            return None
+        if node.style_id not in self.cache:
+            self.cache[node.style_id] = _resolved(self.document, node.style_id, self.limits)
+        style = self.cache[node.style_id]
+        direct = get_line_spacing(node, limits=self.limits)
+        inherited = get_line_spacing(style, limits=self.limits)
+        for owner, declaration in ((node, direct), (style, inherited)):
+            if declaration is None and (
+                LINE_SPACING_PROPERTY in owner.properties
+                or any(key in owner.properties for key in ("line_spacing", "line_spacing_pt", "docx_line_spacing_rule"))
+            ):
+                return None
+
+        def value(item: LineSpacing | None) -> dict[str, Any] | None:
+            return {"rule": item.rule, "value": item.value} if item is not None else None
+
+        return {"direct": value(direct), "resolved": value(direct if direct is not None else inherited)}
+
+
+def _line_spacing_valid(value: Any) -> bool:
+    if not isinstance(value, dict) or not {"direct", "resolved"} <= value.keys():
+        return False
+    for key in ("direct", "resolved"):
+        item = value[key]
+        if item is None:
+            continue
+        if not isinstance(item, dict) or not {"rule", "value"} <= item.keys():
+            return False
+        try:
+            LineSpacing(item["rule"], item["value"])
+        except ValueError:
+            return False
+    return True
+
+
+def _line_spacing_removed(source: dict[str, Any], target: dict[str, Any]) -> bool:
+    return any(
+        source[key] is not None and (target[key] is None or source[key]["rule"] is not None and target[key]["rule"] is None)
+        for key in ("direct", "resolved")
+    )
+
+
 __all__ = [
+    "LINE_SPACING_PROPERTY",
+    "LineSpacingRule",
+    "LineSpacing",
+    "get_line_spacing",
+    "set_line_spacing",
+    "resolve_line_spacing",
     "TABLE_INDENT_PROPERTY",
     "TAB_STOPS_PROPERTY",
     "TableIndent",

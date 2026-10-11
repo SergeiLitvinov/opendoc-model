@@ -206,6 +206,11 @@ def main() -> None:
     set_tab_stop(spacing_paragraph, 396, TabStop(396, "clear"))
     assert_type(get_tab_stops(spacing_paragraph), TabStops | None)
     assert_type(resolve_tab_stops(spacing_paragraph), TabStops)
+    from opendoc_model import LineSpacing, get_line_spacing, resolve_line_spacing, set_line_spacing
+
+    set_line_spacing(spacing_paragraph, LineSpacing("relative", 1.5))
+    assert_type(get_line_spacing(spacing_paragraph), LineSpacing | None)
+    assert_type(resolve_line_spacing(spacing_paragraph), LineSpacing | None)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

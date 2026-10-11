@@ -19,6 +19,7 @@
 | Явный auto и наследование цвета | [text_colors.py](../../examples/text_colors.py) | Существующий API, два JSON-цикла и расположенную потерю |
 | Задать предпочтительную ширину | [table_widths.py](../../examples/table_widths.py) | Пункты/доли, JSON, приоритет явной legacy-правки и диагностику изменения |
 | Отступ таблицы и табуляция | [spacing.py](../../examples/spacing.py) | Два JSON-цикла, явное подавление позиции, удаление и fallback |
+| Межстрочный интервал | [line_spacing.py](../../examples/line_spacing.py) | minimum/exact/relative, модельное наследование, удаление и два JSON-цикла |
 | Подпись и заголовочные ячейки | [table_semantics.py](../../examples/table_semantics.py) | Владельца подписи, headers, группы, JSON и композицию |
 | Преобразовать геометрию страницы | [page_geometry.py](../../examples/page_geometry.py) | Области, повороты, обратные координаты, JSON и сохранность аннотаций |
 | Сохранить фиксированную компоновку | [fixed_layout.py](../../examples/fixed_layout.py) | Две страницы, координаты, линии, provenance и Unicode-интервалы через два JSON-цикла |

@@ -144,12 +144,14 @@ def _comparison_issue(issue: ConversionIssue, comparison: DocumentComparison) ->
         )
         if change is not None:
             measurement = {"source": change["source"].get("text_colors"), "target": change["target"].get("text_colors")}
-    elif issue.feature.startswith(("table-indent-", "tab-stops-")):
+    elif issue.feature.startswith(("table-indent-", "tab-stops-", "line-spacing-")):
         change = next(
             (item for item in comparison.object_diff.get("changed", []) if item["source"].get("location") == issue.location), None
         )
         if change is not None:
             field = "table_indent" if issue.feature.startswith("table-indent-") else "tab_stops"
+            if issue.feature.startswith("line-spacing-"):
+                field = "line_spacing"
             measurement = {"source": change["source"].get(field), "target": change["target"].get(field)}
     elif issue.feature.startswith("table-border-"):
         change = next(
