@@ -18,8 +18,10 @@ from opendoc_model import (
     Resource,
     ResourceKind,
     Section,
+    merge_documents,
     object_mapping_from_dict,
     object_mapping_to_dict,
+    remap_object_mapping,
     set_anchor,
     validate_object_mapping,
     with_mapping_publication,
@@ -88,4 +90,14 @@ rejected = with_mapping_publication(
 )
 assert not rejected.targets and not rejected.assessment_complete
 assert staged.targets and staged.assessment_complete
+composed_source = merge_documents([source, source], conflicts="rename")
+rebased = remap_object_mapping(
+    mapping,
+    source_nodes=composed_source.id_maps[1].anchors,
+    source_resources=composed_source.id_maps[1].resources,
+)
+validate_object_mapping(rebased, source=composed_source.document, target=target)
+assert rebased.sources[0].node_id == "source-0~2"
+assert rebased.entries[0].replacement.resource_id == "fallback~2"
+assert mapping.sources[0].node_id == "source-0"
 print("Object mapping: distinct occurrences, raster declarations, scoped references and two JSON cycles OK")

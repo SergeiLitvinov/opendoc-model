@@ -275,7 +275,7 @@ def remap_object_mapping(
         if values is not None:
             _json_tree(values, "remap", budget)
             if type(values) is not dict or any(
-                type(key) is not str or type(value) is not str or not value for key, value in values.items()
+                type(key) is not str or not key or type(value) is not str or not value for key, value in values.items()
             ):
                 _error("remap", "expected nonempty identifier substitutions")
     if target_locators is not None and (
