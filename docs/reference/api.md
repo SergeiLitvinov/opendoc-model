@@ -16,8 +16,8 @@
 | `IdentifierConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `MetadataConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `PackagePolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
-| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L550) |
-| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L286) |
+| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L551) |
+| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L287) |
 | `CheckResult` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L97) |
 | `ConversionIssue` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L25) |
 | `ConversionReport` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L33) |
@@ -275,7 +275,7 @@
 | `TextFlowProfile` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L19) |
 | `text_flow_profile_from_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L67) |
 | `text_flow_profile_to_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L50) |
-| `TextPreservationPolicy` | `opendoc_model.text_quality_policy` | [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L26) |
+| `TextPreservationPolicy` | `opendoc_model.text_quality_policy` | [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L27) |
 | `SECTION_CONTENT_FIELDS` | `opendoc_model.traversal` | [src/opendoc_model/traversal.py](../../src/opendoc_model/traversal.py) |
 | `Element` | `opendoc_model.traversal` | [src/opendoc_model/traversal.py](../../src/opendoc_model/traversal.py) |
 | `ModelNode` | `opendoc_model.traversal` | [src/opendoc_model/traversal.py](../../src/opendoc_model/traversal.py) |
@@ -348,7 +348,7 @@ Independent merged model and per-input identifier snapshots.
 
 ### extract_document
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L550)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L551)
 
 ```python
 extract_document(document: DocumentModel, location: NodeLocation[ModelNode], *, package_policy: PackagePolicy='error', additional_styles: Iterable[str]=(), additional_resources: Iterable[str]=(), limits: DocumentLimits | None=None)
@@ -364,7 +364,7 @@ partial extraction and keeps the entire opaque graph, without pruning bytes.
 
 ### merge_documents
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L286)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L287)
 
 ```python
 merge_documents(documents: Iterable[DocumentModel], *, conflicts: IdentifierConflictPolicy='error', metadata_conflicts: MetadataConflictPolicy='error', package_policy: PackagePolicy='error', mode: ConversionMode | None=None, limits: DocumentLimits | None=None)
@@ -1796,7 +1796,10 @@ Atomically set direct indentation or remove it; preserve envelope extensions.
 
 [src/opendoc_model/storage.py](../../src/opendoc_model/storage.py#L10)
 
-Raised when a document or consumer artifact exceeds its byte quota.
+Budget exhaustion with optional path, quota name and configured maximum.
+
+Positional args and their string representation retain ValueError semantics.
+Legacy caller-created errors have unknown fields; no message parsing occurs.
 
 ### effective_text_style
 
@@ -1990,7 +1993,7 @@ Copy a bounded v1 profile envelope, preserving inert unknown fields.
 
 ### TextPreservationPolicy
 
-[src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L26)
+[src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L27)
 
 Check source paragraphs exactly, or the complete whitespace-normalized flow.
 

@@ -120,7 +120,8 @@ def _require_document(document: DocumentModel, limits: DocumentLimits, label: st
     try:
         size = _guard_model(document, limits)
     except ArtifactLimitError as error:
-        raise ArtifactLimitError(f"{label}: {error}") from error
+        path = None if error.path is None else label + error.path[1:] if error.path.startswith("$") else f"{label}.{error.path}"
+        raise ArtifactLimitError(f"{label}: {error}", path=path, quota=error.quota, maximum=error.maximum) from error
     except ValueError as error:
         raise ValueError(f"{label}: {error}") from error
     errors = _validate_model(document, limits, preflight=False)

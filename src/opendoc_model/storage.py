@@ -8,12 +8,22 @@ from pathlib import Path
 
 
 class ArtifactLimitError(ValueError):
-    """Raised when a document or consumer artifact exceeds its byte quota."""
+    """Budget exhaustion with optional path, quota name and configured maximum.
+
+    Positional args and their string representation retain ValueError semantics.
+    Legacy caller-created errors have unknown fields; no message parsing occurs.
+    """
+
+    def __init__(self, *args: object, path: str | None = None, quota: str | None = None, maximum: int | None = None) -> None:
+        super().__init__(*args)
+        self.path = path
+        self.quota = quota
+        self.maximum = maximum
 
 
 def atomic_write_text(path: str | Path, content: str, encoding: str = "utf-8", *, max_bytes: int = 100 * 1024 * 1024) -> Path:
     if len(content.encode(encoding)) > max_bytes:
-        raise ArtifactLimitError(f"artifact quota exceeded ({max_bytes} bytes)")
+        raise ArtifactLimitError(f"artifact quota exceeded ({max_bytes} bytes)", path=str(path), quota="bytes", maximum=max_bytes)
     return _atomic_write_chunks(path, [content], encoding=encoding, max_bytes=max_bytes)
 
 
@@ -29,11 +39,15 @@ def _atomic_write_chunks(path: str | Path, chunks: Iterable[str], *, encoding: s
                 data = encoder.encode(chunk)
                 size += len(data)
                 if size > max_bytes:
-                    raise ArtifactLimitError(f"artifact quota exceeded ({max_bytes} bytes)")
+                    raise ArtifactLimitError(
+                        f"artifact quota exceeded ({max_bytes} bytes)", path=str(target), quota="bytes", maximum=max_bytes
+                    )
                 stream.write(data)
             final = encoder.encode("", final=True)
             if size + len(final) > max_bytes:
-                raise ArtifactLimitError(f"artifact quota exceeded ({max_bytes} bytes)")
+                raise ArtifactLimitError(
+                    f"artifact quota exceeded ({max_bytes} bytes)", path=str(target), quota="bytes", maximum=max_bytes
+                )
             stream.write(final)
         os.replace(partial, target)
     finally:

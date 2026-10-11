@@ -252,6 +252,8 @@ def compare_documents(
     for policy in selected:
         if isinstance(policy, QualityPolicy):
             policy.evaluate(result)
+        elif isinstance(policy, TextPreservationPolicy):
+            policy.evaluate(result, comparison, limits=resolved)
         else:
             policy.evaluate(result, comparison)
     return result

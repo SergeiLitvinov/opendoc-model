@@ -32,7 +32,9 @@ class MatchingLimits:
 
 class _MatchingLimitError(ArtifactLimitError):
     def __init__(self, maximum: int, used: int, requested: int) -> None:
-        super().__init__(f"matching work quota exceeded ({maximum}); used {used}, next charge {requested}")
+        super().__init__(
+            f"matching work quota exceeded ({maximum}); used {used}, next charge {requested}", quota="work", maximum=maximum
+        )
         self.measurement = {"max_work": maximum, "used_work": used, "requested_work": requested}
 
 

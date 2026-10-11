@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any
 
 from opendoc_model.diagnostics import CheckResult, ConversionReport, IssueSeverity
 from opendoc_model.footnotes import _note_content_available
+from opendoc_model.limits import DocumentLimits, _resolve_limits
 from opendoc_model.object_inventory import OBJECT_INVENTORY_SCOPE
 from opendoc_model.text_edit_budget import evaluate_text_edit_budget
 from opendoc_model.text_flow import TEXT_FLOW_VERSION
@@ -43,9 +44,16 @@ class TextPreservationPolicy:
             if type(self.max_text_edits) is not int or self.max_text_edits < 0 or self.mode != "flow":
                 raise ValueError("Допуск правок — целое неотрицательное число, применимое только к последовательности текста")
 
-    def evaluate(self, report: ConversionReport | CheckResult, comparison: "DocumentComparison | None") -> bool:
+    def evaluate(
+        self,
+        report: ConversionReport | CheckResult,
+        comparison: "DocumentComparison | None",
+        *,
+        limits: DocumentLimits | None = None,
+    ) -> bool:
+        _resolve_limits(limits)
         if self.mode == "flow":
-            return self._evaluate_flow(report, comparison)
+            return self._evaluate_flow(report, comparison, limits)
         available = comparison is not None and comparison.valid
         if available and comparison is not None:
             available = _note_content_available(comparison.source.metadata, comparison.target.metadata)
@@ -88,7 +96,9 @@ class TextPreservationPolicy:
             report.add(IssueSeverity.ERROR, "text-quality", message)
         return accepted
 
-    def _evaluate_flow(self, report: ConversionReport | CheckResult, comparison: "DocumentComparison | None") -> bool:
+    def _evaluate_flow(
+        self, report: ConversionReport | CheckResult, comparison: "DocumentComparison | None", limits: DocumentLimits | None
+    ) -> bool:
         source = comparison.source.metadata.get("text_flow", {}) if comparison is not None else {}
         target = comparison.target.metadata.get("text_flow", {}) if comparison is not None else {}
         explicit = comparison is not None and any(
@@ -99,7 +109,7 @@ class TextPreservationPolicy:
             and comparison.valid
             and _note_content_available(comparison.source.metadata, comparison.target.metadata)
             and (
-                _profiles_compatible(comparison.source.metadata, comparison.target.metadata)
+                _profiles_compatible(comparison.source.metadata, comparison.target.metadata, limits)
                 if explicit
                 else all(
                     side.metadata.get("object_inventory_scope") == OBJECT_INVENTORY_SCOPE

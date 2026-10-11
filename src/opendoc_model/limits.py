@@ -43,7 +43,7 @@ def _resolve_limits(limits: DocumentLimits | None) -> DocumentLimits:
 
 
 def _quota(path: str, name: str, maximum: int) -> None:
-    raise ArtifactLimitError(f"{path}: {name} quota exceeded ({maximum})")
+    raise ArtifactLimitError(f"{path}: {name} quota exceeded ({maximum})", path=path, quota=name, maximum=maximum)
 
 
 def _utf8_size(value: str, maximum: int, path: str, *, used: int = 0) -> int:

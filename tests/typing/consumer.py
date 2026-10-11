@@ -211,6 +211,12 @@ def main() -> None:
     set_line_spacing(spacing_paragraph, LineSpacing("relative", 1.5))
     assert_type(get_line_spacing(spacing_paragraph), LineSpacing | None)
     assert_type(resolve_line_spacing(spacing_paragraph), LineSpacing | None)
+    from opendoc_model import ArtifactLimitError
+
+    quota_error = ArtifactLimitError("own", path="$", quota="bytes", maximum=1)
+    assert_type(quota_error.path, str | None)
+    assert_type(quota_error.quota, str | None)
+    assert_type(quota_error.maximum, int | None)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

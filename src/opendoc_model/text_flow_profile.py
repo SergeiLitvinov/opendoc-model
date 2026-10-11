@@ -91,8 +91,8 @@ def _digest(value: Any) -> bool:
     return type(value) is str and len(value) == 64 and all(char in "0123456789abcdef" for char in value)
 
 
-def _measured_flow(flow: Any) -> bool:
-    _json_tree(flow, "text_flow", _resolve_limits(None))
+def _measured_flow(flow: Any, limits: DocumentLimits | None = None) -> bool:
+    _json_tree(flow, "text_flow", _resolve_limits(limits))
     if type(flow) is not dict or flow.get("version") != TEXT_FLOW_VERSION or not _digest(flow.get("sha256")):
         return False
     if any(type(flow.get(key)) is not int or flow[key] < 0 for key in ("characters", "paragraphs", "token_count")):
@@ -127,11 +127,11 @@ def _flows_consistent(source: dict[str, Any], target: dict[str, Any]) -> bool:
     )
 
 
-def _profiles_compatible(source: dict[str, Any], target: dict[str, Any]) -> bool:
+def _profiles_compatible(source: dict[str, Any], target: dict[str, Any], limits: DocumentLimits | None = None) -> bool:
     try:
-        profiles = [text_flow_profile_from_dict(side.get(TEXT_FLOW_PROFILE_KEY)) for side in (source, target)]
+        profiles = [text_flow_profile_from_dict(side.get(TEXT_FLOW_PROFILE_KEY), limits=limits) for side in (source, target)]
         flows = [cast(dict[str, Any], side.get("text_flow")) for side in (source, target)]
-        if not all(_measured_flow(flow) for flow in flows):
+        if not all(_measured_flow(flow, limits) for flow in flows):
             return False
         return all(item.measured and item.complete and item.recipe == TEXT_FLOW_VERSION for item in profiles) and (
             profiles[0].profile,

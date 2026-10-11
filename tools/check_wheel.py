@@ -43,8 +43,8 @@ core.ObjectLossPolicy(max_lost_objects=0).evaluate(report, comparison)
 assert report.success, report.to_dict()
 try:
     core.document_from_json('{}', limits=core.DocumentLimits(max_bytes=1))
-except core.ArtifactLimitError:
-    pass
+except core.ArtifactLimitError as error:
+    assert (error.path, error.quota, error.maximum) == ('$', 'bytes', 1)
 else:
     raise AssertionError('Installed wheel must enforce the explicit input budget')
 latex = core.Formula('x^2', core.FormulaFormat.LATEX)
