@@ -142,6 +142,46 @@ def test_equal_hash_with_inconsistent_counts_and_cycles_is_unavailable():
     assert _gate(source, target)[1]["verified"] is False
 
 
+@pytest.mark.parametrize("budget", [None, 0, 1])
+def test_identical_words_with_different_flow_hash_cannot_be_verified(budget):
+    source, target = _inspection("one two"), _inspection("one two")
+    target.metadata["text_flow"]["sha256"] = "0" * 64
+    before = deepcopy(target.metadata)
+    accepted, gate = _gate(source, target, budget)
+    assert not accepted and gate["verified"] is False and gate["reason"] == "unavailable"
+    assert target.metadata == before
+
+
+@pytest.mark.parametrize("budget", [None, 0, 1])
+def test_model_flow_also_rejects_contradictory_words_and_hash(budget):
+    source = inspect_document_model(DocumentModel())
+    target = deepcopy(source)
+    target.metadata["text_flow"]["sha256"] = "0" * 64
+    assert _gate(source, target, budget)[1]["verified"] is False
+
+
+def test_legacy_equal_hash_does_not_treat_unknown_tokens_as_contradictory():
+    source = inspect_document_model(DocumentModel())
+    target = deepcopy(source)
+    target.metadata["text_flow"]["tokens"] = None
+    assert _gate(source, target)[0]
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("characters", 2),
+        ("sha256", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"),
+        ("tokens", ["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"] * 2),
+    ],
+)
+def test_nonempty_flow_rejects_impossible_counts_and_empty_hashes(field, value):
+    source, target = _inspection("one two"), _inspection("one two")
+    for side in (source, target):
+        side.metadata["text_flow"][field] = value
+    assert _gate(source, target)[1]["verified"] is False
+
+
 def test_fragment_resegmentation_and_token_limit_preserve_exact_fingerprint():
     source, target = _inspection("one two"), _inspection("one two")
     flow = TextFlowFingerprint()

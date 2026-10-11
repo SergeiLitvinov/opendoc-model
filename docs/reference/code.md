@@ -715,9 +715,9 @@ Streaming fingerprint of paragraph text in document traversal order.
 
 Caller-measured text scope, independent of recursive model object inventory.
 
-- `TextFlowProfile` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L18)
-- `text_flow_profile_to_dict` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L49)
-- `text_flow_profile_from_dict` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L66)
+- `TextFlowProfile` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L19)
+- `text_flow_profile_to_dict` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L50)
+- `text_flow_profile_from_dict` — [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L67)
 
 Импорты: [opendoc_model._integration_codec](#opendoc_model-_integration_codec), [opendoc_model._json_validation](#opendoc_model-_json_validation), [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.integration_types](#opendoc_model-integration_types), [opendoc_model.limits](#opendoc_model-limits), [opendoc_model.text_flow](#opendoc_model-text_flow).
 
@@ -731,7 +731,7 @@ Caller-measured text scope, independent of recursive model object inventory.
 Exact preservation of source paragraph text, independent of object identity.
 
 - `TextPreservationPolicy` — [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L26)
-- `resolve_text_policy` — [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L140)
+- `resolve_text_policy` — [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L141)
 
 Импорты: [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.footnotes](#opendoc_model-footnotes), [opendoc_model.inspection](#opendoc_model-inspection), [opendoc_model.object_inventory](#opendoc_model-object_inventory), [opendoc_model.text_edit_budget](#opendoc_model-text_edit_budget), [opendoc_model.text_flow](#opendoc_model-text_flow), [opendoc_model.text_flow_profile](#opendoc_model-text_flow_profile).
 

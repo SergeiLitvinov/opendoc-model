@@ -12,6 +12,7 @@ from opendoc_model.text_flow import MAX_TEXT_TOKENS, TEXT_FLOW_VERSION
 
 TEXT_FLOW_PROFILE_FORMAT = "opendoc.text-flow-profile"
 TEXT_FLOW_PROFILE_KEY = "text_flow_profile"
+_EMPTY_TEXT_HASH = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 
 @dataclass(frozen=True)
@@ -101,16 +102,29 @@ def _measured_flow(flow: Any) -> bool:
         return False
     tokens = flow.get("tokens")
     if count <= MAX_TEXT_TOKENS:
-        if type(tokens) is not list or len(tokens) != count or not all(_digest(token) for token in tokens):
+        if (
+            type(tokens) is not list
+            or len(tokens) != count
+            or not all(_digest(token) and token != _EMPTY_TEXT_HASH for token in tokens)
+        ):
             return False
     elif tokens is not None or "tokens" not in flow:
         return False
     if count == 0:
-        return bool(
-            flow["characters"] == flow["paragraphs"] == 0
-            and flow["sha256"] == ("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+        return bool(flow["characters"] == flow["paragraphs"] == 0 and flow["sha256"] == _EMPTY_TEXT_HASH)
+    return bool(flow["paragraphs"] > 0 and flow["characters"] >= 2 * count - 1 and flow["sha256"] != _EMPTY_TEXT_HASH)
+
+
+def _flows_consistent(source: dict[str, Any], target: dict[str, Any]) -> bool:
+    """Reject contradictory known declarations, without inferring missing measurements."""
+    if source["sha256"] == target["sha256"]:
+        return not any(
+            source.get(key) is not None and target.get(key) is not None and source[key] != target[key]
+            for key in ("characters", "token_count", "tokens")
         )
-    return bool(flow["paragraphs"] > 0)
+    return not (
+        type(source.get("tokens")) is list and type(target.get("tokens")) is list and source["tokens"] == target["tokens"]
+    )
 
 
 def _profiles_compatible(source: dict[str, Any], target: dict[str, Any]) -> bool:
@@ -118,10 +132,6 @@ def _profiles_compatible(source: dict[str, Any], target: dict[str, Any]) -> bool
         profiles = [text_flow_profile_from_dict(side.get(TEXT_FLOW_PROFILE_KEY)) for side in (source, target)]
         flows = [cast(dict[str, Any], side.get("text_flow")) for side in (source, target)]
         if not all(_measured_flow(flow) for flow in flows):
-            return False
-        if flows[0]["sha256"] == flows[1]["sha256"] and any(
-            flows[0][key] != flows[1][key] for key in ("characters", "token_count", "tokens")
-        ):
             return False
         return all(item.measured and item.complete and item.recipe == TEXT_FLOW_VERSION for item in profiles) and (
             profiles[0].profile,

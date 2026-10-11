@@ -252,9 +252,9 @@
 | `set_table_semantics` | `opendoc_model.table_semantics` | [src/opendoc_model/table_semantics.py](../../src/opendoc_model/table_semantics.py#L192) |
 | `TEXT_FLOW_PROFILE_FORMAT` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py) |
 | `TEXT_FLOW_PROFILE_KEY` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py) |
-| `TextFlowProfile` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L18) |
-| `text_flow_profile_from_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L66) |
-| `text_flow_profile_to_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L49) |
+| `TextFlowProfile` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L19) |
+| `text_flow_profile_from_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L67) |
+| `text_flow_profile_to_dict` | `opendoc_model.text_flow_profile` | [src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L50) |
 | `TextPreservationPolicy` | `opendoc_model.text_quality_policy` | [src/opendoc_model/text_quality_policy.py](../../src/opendoc_model/text_quality_policy.py#L26) |
 | `SECTION_CONTENT_FIELDS` | `opendoc_model.traversal` | [src/opendoc_model/traversal.py](../../src/opendoc_model/traversal.py) |
 | `Element` | `opendoc_model.traversal` | [src/opendoc_model/traversal.py](../../src/opendoc_model/traversal.py) |
@@ -1793,7 +1793,7 @@ Set a bounded independent declaration; document validation checks links.
 
 ### TextFlowProfile
 
-[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L18)
+[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L19)
 
 Measured completeness applies only to the named scope and extraction profile.
 
@@ -1802,7 +1802,7 @@ Neither measurement nor document completeness is inferred by the library.
 
 ### text_flow_profile_from_dict
 
-[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L66)
+[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L67)
 
 ```python
 text_flow_profile_from_dict(data: Any, *, limits: DocumentLimits | None=None)
@@ -1812,7 +1812,7 @@ Read the closed v1 schema. Unknown recipes remain data, not available evidence.
 
 ### text_flow_profile_to_dict
 
-[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L49)
+[src/opendoc_model/text_flow_profile.py](../../src/opendoc_model/text_flow_profile.py#L50)
 
 ```python
 text_flow_profile_to_dict(profile: TextFlowProfile, *, limits: DocumentLimits | None=None)

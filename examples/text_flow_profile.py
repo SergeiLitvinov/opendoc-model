@@ -1,6 +1,7 @@
 """Own measured declarations: no native extractor, PDF engine or full object inventory."""
 
 import json
+from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
 
@@ -46,4 +47,9 @@ unknown = compare_inspections(inspection("one two"), inspection("one two", repla
 unknown_report = ConversionReport(Path("unused.fixture"))
 assert not TextPreservationPolicy("flow", 0).evaluate(unknown_report, unknown)
 assert unknown_report.metrics["text_quality_gate"]["verified"] is False
+contradictory = deepcopy(comparison.target)
+contradictory.metadata["text_flow"]["sha256"] = "0" * 64
+contradictory_report = ConversionReport(Path("unused.fixture"))
+assert not TextPreservationPolicy("flow", 0).evaluate(contradictory_report, compare_inspections(comparison.source, contradictory))
+assert contradictory_report.metrics["text_quality_gate"]["verified"] is False
 print("Measured text profile: exact declared scope, unknown coverage and independent object gate OK")

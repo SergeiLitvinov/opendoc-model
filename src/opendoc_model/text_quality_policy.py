@@ -9,7 +9,7 @@ from opendoc_model.footnotes import _note_content_available
 from opendoc_model.object_inventory import OBJECT_INVENTORY_SCOPE
 from opendoc_model.text_edit_budget import evaluate_text_edit_budget
 from opendoc_model.text_flow import TEXT_FLOW_VERSION
-from opendoc_model.text_flow_profile import TEXT_FLOW_PROFILE_KEY, _profiles_compatible
+from opendoc_model.text_flow_profile import TEXT_FLOW_PROFILE_KEY, _flows_consistent, _profiles_compatible
 
 if TYPE_CHECKING:
     from opendoc_model.inspection import DocumentComparison
@@ -109,6 +109,7 @@ class TextPreservationPolicy:
                     for side, flow in ((comparison.source, source), (comparison.target, target))
                 )
             )
+            and _flows_consistent(source, target)
         )
         if self.max_text_edits is not None:
             accepted = evaluate_text_edit_budget(report, source, target, available, self.max_text_edits)
