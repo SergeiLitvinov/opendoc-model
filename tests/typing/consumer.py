@@ -180,6 +180,10 @@ def main() -> None:
     assert_type(remap_object_mapping(mapping), ObjectMapping)
     validate_object_mapping(mapping)
     assert_type(with_mapping_publication(mapping, "attempted"), ObjectMapping)
+    from opendoc_model import TextFlowProfile, text_flow_profile_from_dict, text_flow_profile_to_dict
+
+    measured_profile = TextFlowProfile("typed-v1", "selected-text-v1", measured=True, complete=True)
+    assert_type(text_flow_profile_from_dict(text_flow_profile_to_dict(measured_profile)), TextFlowProfile)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

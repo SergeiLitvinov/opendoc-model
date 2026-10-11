@@ -584,6 +584,11 @@ from .table_semantics import (
 from .table_semantics import (
     set_table_semantics as set_table_semantics,
 )
+from .text_flow_profile import TEXT_FLOW_PROFILE_FORMAT as TEXT_FLOW_PROFILE_FORMAT
+from .text_flow_profile import TEXT_FLOW_PROFILE_KEY as TEXT_FLOW_PROFILE_KEY
+from .text_flow_profile import TextFlowProfile as TextFlowProfile
+from .text_flow_profile import text_flow_profile_from_dict as text_flow_profile_from_dict
+from .text_flow_profile import text_flow_profile_to_dict as text_flow_profile_to_dict
 from .text_quality_policy import (
     TextPreservationPolicy as TextPreservationPolicy,
 )
@@ -645,6 +650,11 @@ __all__ = [
     "validate_object_mapping",
     "MappingPublication",
     "with_mapping_publication",
+    "TEXT_FLOW_PROFILE_FORMAT",
+    "TEXT_FLOW_PROFILE_KEY",
+    "TextFlowProfile",
+    "text_flow_profile_from_dict",
+    "text_flow_profile_to_dict",
     "CELL_BORDERS_PROPERTY",
     "TABLE_BORDERS_PROPERTY",
     "Border",

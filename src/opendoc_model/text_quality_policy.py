@@ -2,16 +2,24 @@
 
 from collections import Counter
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from opendoc_model.diagnostics import CheckResult, ConversionReport, IssueSeverity
 from opendoc_model.footnotes import _note_content_available
 from opendoc_model.object_inventory import OBJECT_INVENTORY_SCOPE
 from opendoc_model.text_edit_budget import evaluate_text_edit_budget
 from opendoc_model.text_flow import TEXT_FLOW_VERSION
+from opendoc_model.text_flow_profile import TEXT_FLOW_PROFILE_KEY, _profiles_compatible
 
 if TYPE_CHECKING:
     from opendoc_model.inspection import DocumentComparison
+
+
+def _record_profile_scope(report: ConversionReport | CheckResult, metadata: dict[str, Any], available: bool) -> None:
+    profile = metadata[TEXT_FLOW_PROFILE_KEY] if available else {}
+    report.metrics["text_quality_gate"].update(
+        coverage="declared-text-scope", profile=profile.get("profile"), scope=profile.get("scope")
+    )
 
 
 @dataclass(frozen=True)
@@ -83,20 +91,30 @@ class TextPreservationPolicy:
     def _evaluate_flow(self, report: ConversionReport | CheckResult, comparison: "DocumentComparison | None") -> bool:
         source = comparison.source.metadata.get("text_flow", {}) if comparison is not None else {}
         target = comparison.target.metadata.get("text_flow", {}) if comparison is not None else {}
+        explicit = comparison is not None and any(
+            TEXT_FLOW_PROFILE_KEY in side.metadata for side in (comparison.source, comparison.target)
+        )
         available = (
             comparison is not None
             and comparison.valid
             and _note_content_available(comparison.source.metadata, comparison.target.metadata)
-            and all(
-                side.metadata.get("object_inventory_scope") == OBJECT_INVENTORY_SCOPE
-                and isinstance(flow, dict)
-                and flow.get("version") == TEXT_FLOW_VERSION
-                and isinstance(flow.get("sha256"), str)
-                for side, flow in ((comparison.source, source), (comparison.target, target))
+            and (
+                _profiles_compatible(comparison.source.metadata, comparison.target.metadata)
+                if explicit
+                else all(
+                    side.metadata.get("object_inventory_scope") == OBJECT_INVENTORY_SCOPE
+                    and isinstance(flow, dict)
+                    and flow.get("version") == TEXT_FLOW_VERSION
+                    and isinstance(flow.get("sha256"), str)
+                    for side, flow in ((comparison.source, source), (comparison.target, target))
+                )
             )
         )
         if self.max_text_edits is not None:
-            return evaluate_text_edit_budget(report, source, target, available, self.max_text_edits)
+            accepted = evaluate_text_edit_budget(report, source, target, available, self.max_text_edits)
+            if explicit and comparison is not None:
+                _record_profile_scope(report, comparison.source.metadata, available)
+            return accepted
         accepted = available and source["sha256"] == target["sha256"]
         report.metrics["text_quality_gate"] = {
             "basis": TEXT_FLOW_VERSION,
@@ -107,6 +125,8 @@ class TextPreservationPolicy:
             "target_characters": target.get("characters") if available else None,
             "reason": "accepted" if accepted else "text-flow-changed" if available else "unavailable",
         }
+        if explicit and comparison is not None:
+            _record_profile_scope(report, comparison.source.metadata, available)
         if not accepted:
             message = (
                 "Последовательность текста изменилась после нормализации пробелов и границ абзацев."

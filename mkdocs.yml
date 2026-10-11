@@ -42,6 +42,7 @@ nav:
       - Проверка типов: docs/guide/typing.md
       - Валидация модели: docs/guide/validation.md
       - Сравнение и качество: docs/guide/quality.md
+      - Измеренный текстовый поток: docs/guide/text-flow-profile.md
       - Формулы и optional math: docs/guide/formulas.md
       - Обход и поиск: docs/guide/traversal.md
       - Копирование и изменения: docs/guide/operations.md
