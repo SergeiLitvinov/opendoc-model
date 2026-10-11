@@ -153,6 +153,8 @@ def _set(node: Table | Paragraph, value: _Record | None, schema: type[_Record], 
         return
     if type(value) is not schema:
         _error(key, f"expected {schema.__name__} or None")
+    if type(value.extra) is not dict:
+        _error(key + ".extra", "expected dictionary")
     if previous is not None:
         value = replace(value, extra={**previous.extra, **value.extra})
     raw = _encode(value, schema, key, budget)
@@ -208,6 +210,8 @@ def set_tab_stop(node: Paragraph, position_pt: float, value: TabStop | None, *, 
     else:
         if type(value) is not TabStop or value.position_pt != position_pt:
             _error("tab_stop", "expected TabStop at the requested position")
+        if type(value.extra) is not dict:
+            _error("tab_stop.extra", "expected dictionary")
         if position_pt in stops:
             value = replace(value, extra={**stops[position_pt].extra, **value.extra})
         stops[position_pt] = value

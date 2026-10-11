@@ -230,13 +230,13 @@
 | `TableIndent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L40) |
 | `TabStop` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L55) |
 | `TabStops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L80) |
-| `get_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L187) |
-| `get_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L162) |
-| `resolve_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L222) |
-| `resolve_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L172) |
-| `set_tab_stop` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L197) |
-| `set_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L192) |
-| `set_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L167) |
+| `get_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L189) |
+| `get_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L164) |
+| `resolve_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L226) |
+| `resolve_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L174) |
+| `set_tab_stop` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L199) |
+| `set_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L194) |
+| `set_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L169) |
 | `ArtifactLimitError` | `opendoc_model.storage` | [src/opendoc_model/storage.py](../../src/opendoc_model/storage.py#L10) |
 | `effective_text_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L87) |
 | `resolve_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L62) |
@@ -1667,7 +1667,7 @@ or suppression of an application&#x27;s automatic/default tab interval.
 
 ### get_tab_stops
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L187)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L189)
 
 ```python
 get_tab_stops(node: Paragraph, *, limits: DocumentLimits | None=None)
@@ -1677,7 +1677,7 @@ Read an independent direct set, including clear declarations and unknown fields.
 
 ### get_table_indent
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L162)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L164)
 
 ```python
 get_table_indent(node: Table, *, limits: DocumentLimits | None=None)
@@ -1687,7 +1687,7 @@ Read an independent tagged declaration; absent/opaque data returns None.
 
 ### resolve_tab_stops
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L222)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L226)
 
 ```python
 resolve_tab_stops(node: Paragraph, *, inherited: TabStops | None=None, limits: DocumentLimits | None=None)
@@ -1700,7 +1700,7 @@ Result is sorted, detached, inherit=False and contains no clear declarations.
 
 ### resolve_table_indent
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L172)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L174)
 
 ```python
 resolve_table_indent(node: Table, *, inherited: TableIndent | None=None, limits: DocumentLimits | None=None)
@@ -1710,7 +1710,7 @@ Use explicit fallback only when direct indentation is missing; no style cascade.
 
 ### set_tab_stop
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L197)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L199)
 
 ```python
 set_tab_stop(node: Paragraph, position_pt: float, value: TabStop | None, *, limits: DocumentLimits | None=None)
@@ -1722,7 +1722,7 @@ Other positions and unknown fields of the edited declaration are preserved.
 
 ### set_tab_stops
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L192)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L194)
 
 ```python
 set_tab_stops(node: Paragraph, value: TabStops | None, *, limits: DocumentLimits | None=None)
@@ -1732,7 +1732,7 @@ Atomically replace/remove direct tab declarations, retaining envelope extensions
 
 ### set_table_indent
 
-[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L167)
+[src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L169)
 
 ```python
 set_table_indent(node: Table, value: TableIndent | None, *, limits: DocumentLimits | None=None)

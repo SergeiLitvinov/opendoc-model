@@ -621,13 +621,13 @@ Format-neutral table indentation and explicit paragraph tab stops; no layout eng
 - `TableIndent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L40)
 - `TabStop` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L55)
 - `TabStops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L80)
-- `get_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L162)
-- `set_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L167)
-- `resolve_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L172)
-- `get_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L187)
-- `set_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L192)
-- `set_tab_stop` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L197)
-- `resolve_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L222)
+- `get_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L164)
+- `set_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L169)
+- `resolve_table_indent` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L174)
+- `get_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L189)
+- `set_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L194)
+- `set_tab_stop` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L199)
+- `resolve_tab_stops` — [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L226)
 
 Импорты: [opendoc_model._integration_codec](#opendoc_model-_integration_codec), [opendoc_model._json_validation](#opendoc_model-_json_validation), [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.document_model](#opendoc_model-document_model), [opendoc_model.integration_types](#opendoc_model-integration_types), [opendoc_model.limits](#opendoc_model-limits), [opendoc_model.traversal](#opendoc_model-traversal).
 

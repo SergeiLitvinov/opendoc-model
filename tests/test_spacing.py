@@ -296,3 +296,17 @@ def test_metadata_is_not_a_spacing_owner():
     assert any(
         issue.code == "semantic.spacing.invalid" and "metadata" in issue.location for issue in check_document(document).issues
     )
+
+
+@pytest.mark.parametrize("extra", [None, [], "invalid"])
+def test_invalid_extension_containers_are_value_errors_and_atomic(extra):
+    document, table, paragraph = _fixture()
+    before = deepcopy(document)
+    for edit in (
+        lambda: set_table_indent(table, TableIndent(0, extra=extra)),
+        lambda: set_tab_stops(paragraph, TabStops(extra=extra)),
+        lambda: set_tab_stop(paragraph, 396, TabStop(396, extra=extra)),
+    ):
+        with pytest.raises(ValueError):
+            edit()
+        assert document == before
