@@ -1,6 +1,6 @@
 """Document structures, serialization and comparison without application backends."""
 
-__version__ = "0.10.2"
+__version__ = "0.11.0"
 
 from .checks import CheckPolicy as CheckPolicy
 from .checks import check_document as check_document
