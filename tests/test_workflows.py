@@ -1,5 +1,6 @@
 """End-to-end model workflows combining structure, dependencies and safe edits."""
 
+from dataclasses import replace
 from pathlib import Path
 from socket import socket
 
@@ -8,6 +9,8 @@ import pytest
 from opendoc_model import (
     Anchor,
     ArtifactLimitError,
+    Border,
+    BorderSet,
     DocumentLimits,
     DocumentModel,
     Image,
@@ -19,27 +22,39 @@ from opendoc_model import (
     Section,
     Table,
     TableCell,
+    TableCellSemantics,
     TableRow,
+    TableSemantics,
     TextPosition,
     TextRange,
     TextRun,
     TextStyle,
+    WidthMeasure,
     compare_documents,
     document_from_json,
     document_to_json,
     edit_anchored_text,
     extract_document,
     extract_text,
+    get_borders,
     get_integration,
     get_internal_link,
+    get_preferred_width,
+    get_table_cell_semantics,
+    get_table_semantics,
     iter_elements,
     iter_internal_links,
     merge_documents,
     remove_node,
     resolve_anchor,
     set_anchor,
+    set_border,
+    set_borders,
     set_integration,
     set_internal_link,
+    set_preferred_width,
+    set_table_cell_semantics,
+    set_table_semantics,
     transform_elements,
 )
 
@@ -150,3 +165,50 @@ def test_large_unicode_report_roundtrip_edit_and_quota_failure_keep_input():
     with pytest.raises(ArtifactLimitError, match="nodes"):
         transform_elements(original, TextRun, lambda item: TextRun("changed"), limits=DocumentLimits(max_nodes=1000))
     assert document_to_json(original) == before == document_to_json(restored)
+
+
+@pytest.mark.parametrize("disabled", ["none", "nil"])
+def test_table_width_semantics_and_borders_coexist_through_edits_and_composition(disabled):
+    caption = Paragraph([TextRun("Собственный пример", style=TextStyle(bold=True))])
+    set_anchor(caption, Anchor("caption"))
+    header = TableCell([Paragraph([TextRun("Значение")])])
+    data = TableCell([Paragraph([TextRun("42")])])
+    table = Table([TableRow([header]), TableRow([data])])
+    set_anchor(table, Anchor("table"))
+    set_table_semantics(table, TableSemantics(("caption",), extra={"fixture": "caption"}))
+    set_table_cell_semantics(header, TableCellSemantics("header", "header", "column"))
+    set_table_cell_semantics(data, TableCellSemantics("data", "data", headers=("header",)))
+    set_preferred_width(table, WidthMeasure("absolute", 480, "pt", extra={"fixture": "width"}))
+    set_preferred_width(data, WidthMeasure("relative", 1, "ratio", "table"))
+    line = Border(style="solid", width_pt=0.75, extra={"fixture": "line"})
+    set_borders(table, BorderSet({"top": line, "inside-horizontal": line}, extra={"fixture": "borders"}))
+    set_borders(data, BorderSet({"top": Border(disabled), "diagonal-down": line}))
+    original = DocumentModel(sections=[Section([caption, table])])
+    before = document_to_json(original)
+    restored = document_from_json(document_to_json(document_from_json(before)))
+    assert compare_documents(original, restored).lossless
+
+    edited_table = resolve_anchor(restored, "table").node
+    set_border(edited_table, "top", replace(get_borders(edited_table).sides["top"], width_pt=2))
+    assert get_preferred_width(edited_table) == get_preferred_width(table)
+    assert get_table_semantics(edited_table) == get_table_semantics(table)
+    assert get_table_cell_semantics(edited_table.rows[1].cells[0]) == get_table_cell_semantics(data)
+    assert get_borders(edited_table.rows[1].cells[0]) == get_borders(data)
+    border_issues = [issue for issue in compare_documents(original, restored).issues if issue.code.startswith("table-")]
+    assert [issue.code for issue in border_issues] == ["table-border-change"]
+
+    extracted = extract_document(restored, next(iter_elements(restored, Table)))
+    assert resolve_anchor(extracted, "caption").node.plain_text == caption.plain_text
+    merged = merge_documents([original, extracted], conflicts="rename")
+    second_table = resolve_anchor(merged.document, "table~2").node
+    assert get_table_semantics(second_table).caption_ids == ("caption~2",)
+    assert get_table_cell_semantics(second_table.rows[1].cells[0]).headers == ("header",)
+    assert get_preferred_width(second_table) == get_preferred_width(table)
+    assert get_borders(second_table) == get_borders(edited_table)
+    second_record = get_borders(second_table)
+    set_border(second_table, "top", replace(second_record.sides["top"], width_pt=4))
+    assert get_borders(edited_table).sides["top"].width_pt == 2
+    assert get_borders(table).sides["top"].width_pt == 0.75
+    assert merged.document.validate() == []
+    assert document_from_json(document_to_json(merged.document)) == merged.document
+    assert document_to_json(original) == before
