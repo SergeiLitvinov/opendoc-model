@@ -50,6 +50,9 @@ Mask — прежняя ссылка на визуальный ресурс; е�
 
 ## Композиция и неизвестное
 
+С 0.16.0 [пространство промежуточной композиции](group-color-space.md) отдельно
+задаётся через GroupCompositing.color_space и не выводится из цвета детей.
+
 `GroupCompositing(opacity=None, isolated=None, knockout=None, blend_mode=None)`
 задаёт композицию **полного результата scope**, а не умножение opacity детей.
 Opacity известна в диапазоне [0, 1]; ноль отличается от неизвестного None.

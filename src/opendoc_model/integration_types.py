@@ -238,6 +238,20 @@ class GroupCompositing(IntegrationRecord):
     isolated: bool | None = None
     knockout: bool | None = None
     blend_mode: BlendMode | None = None
+    color_space: GroupColorSpace | None = field(default=None, kw_only=True, metadata={"omit_default": True})
+
+
+@dataclass(frozen=True)
+class GroupColorSpace(IntegrationRecord):
+    """Declared intermediate blending space; no conversion, ICC parsing or inferred defaults.
+
+    rgb/gray/cmyk name component models, not calibrated colorimetry. ICC requires
+    a profile resource; explicit sRGB has fixed colorimetry and forbids a profile
+    override. Unknown space may retain a known opaque profile reference.
+    """
+
+    space: Literal["rgb", "gray", "cmyk", "srgb", "icc"] | None = None
+    profile_resource_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -460,6 +474,7 @@ class IntegrationModel(IntegrationRecord):
 __all__ = [
     "BlendMode",
     "GroupCompositing",
+    "GroupColorSpace",
     "VectorClip",
     "SceneOccurrence",
     "Accessibility",

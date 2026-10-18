@@ -39,6 +39,7 @@ nav:
       - Межстрочный интервал: docs/guide/line-spacing.md
       - Ссылки на FONT-ресурсы: docs/guide/font-references.md
       - Общие clip/group scopes: docs/guide/graphics-scopes.md
+      - Пространство композиции группы: docs/guide/group-color-space.md
       - Оглавление и закладки: docs/guide/outline.md
       - Непрозрачные пакеты: docs/guide/packages.md
       - Лимиты документа: docs/guide/limits.md

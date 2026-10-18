@@ -1,5 +1,13 @@
 # Изменения библиотеки
 
+## Версия 0.16.0: пространство композиции группы
+
+GroupColorSpace расширяет существующий GroupCompositing: RGB/Gray/CMYK/sRGB/ICC,
+непрозрачный профильный ресурс и unknown без fallback. Getter/setter сохраняют
+остальные параметры scope, правку/удаление и extra. Ссылка участвует в проверке,
+resource uses, remap и замыкании. JSON и старые конструкторы сохранены;
+цветовые преобразования не выполняются, новых зависимостей нет.
+
 ## Версия 0.15.0: общие графические scopes
 
 Существующий VectorScene расширен VectorClip, SceneOccurrence и GroupCompositing.

@@ -6,8 +6,16 @@ from collections.abc import Iterator
 from dataclasses import replace
 from typing import Any, TypeVar
 
-from opendoc_model.document_model import DocumentModel, Resource
-from opendoc_model.integration_types import GroupCompositing, PathCommand, VectorClip, VectorGroup, VectorScene
+from opendoc_model.document_model import DocumentModel, Resource, ResourceKind
+from opendoc_model.integration_types import (
+    GroupColorSpace,
+    GroupCompositing,
+    PathCommand,
+    SceneOccurrence,
+    VectorClip,
+    VectorGroup,
+    VectorScene,
+)
 from opendoc_model.limits import DocumentLimits, _guard_model, _resolve_limits
 
 
@@ -28,11 +36,21 @@ def _commands(commands: tuple[PathCommand, ...], location: str) -> None:
             opened = False
 
 
-def _compositing(value: GroupCompositing | None, path: str) -> None:
-    from opendoc_model.integration import _error
+def _compositing(value: GroupCompositing | None, path: str, resources: dict[str, Resource]) -> None:
+    from opendoc_model.integration import _error, _reference
 
     if value is not None and value.opacity is not None and not 0 <= value.opacity <= 1:
         _error(path + ".opacity", "expected opacity between 0 and 1 or unknown")
+    color = value.color_space if value is not None else None
+    if color is not None:
+        location = path + ".color_space"
+        _reference(color.profile_resource_id, resources, location + ".profile_resource_id")
+        if color.profile_resource_id is not None and resources[color.profile_resource_id].kind != ResourceKind.ATTACHMENT:
+            _error(location + ".profile_resource_id", "profile requires an ATTACHMENT resource")
+        if color.space == "icc" and color.profile_resource_id is None:
+            _error(location + ".profile_resource_id", "ICC space requires an explicit profile resource")
+        if color.space == "srgb" and color.profile_resource_id is not None:
+            _error(location, "fixed sRGB cannot carry a profile override")
 
 
 def _validate_scene(
@@ -71,13 +89,13 @@ def _validate_scene(
         location = f"{path}.groups[{index}]"
         if not 0 <= group.opacity <= 1 or len(set(group.children)) != len(group.children):
             _error(location, "invalid legacy opacity or duplicate children")
-        _compositing(group.compositing, location + ".compositing")
+        _compositing(group.compositing, location + ".compositing", resources)
         for child_index, key in enumerate(group.children):
             _reference(key, shapes, f"{location}.children[{child_index}]")
             counts[key] += 1
     for index, occurrence in enumerate(scene.occurrences):
         _reference(occurrence.node_id, nodes, f"{path}.occurrences[{index}].node_id")
-        _compositing(occurrence.compositing, f"{path}.occurrences[{index}].compositing")
+        _compositing(occurrence.compositing, f"{path}.occurrences[{index}].compositing", resources)
     for name in ("paths", "groups", "occurrences"):
         for index, item in enumerate(getattr(scene, name)):
             location = f"{path}.{name}[{index}]"
@@ -114,6 +132,19 @@ def _scene_unknowns(scene: VectorScene, path: str) -> Iterator[tuple[str, str]]:
             ]
             if unknown:
                 yield f"{path}.{name}[{index}].compositing", "Unknown scope composition: " + ", ".join(unknown)
+
+
+def _color_space_unknowns(scene: VectorScene, path: str) -> Iterator[tuple[str, str]]:
+    if scene.scope_version != 1:
+        return
+    for name in ("groups", "occurrences"):
+        for index, item in enumerate(getattr(scene, name)):
+            color = item.compositing.color_space if item.compositing is not None else None
+            if color is None or color.space is None:
+                yield (
+                    f"{path}.{name}[{index}].compositing.color_space",
+                    "Group blending space is unknown; no colorimetry inferred",
+                )
 
 
 def get_vector_scene(document: DocumentModel, scene_id: str, *, limits: DocumentLimits | None = None) -> VectorScene | None:
@@ -239,4 +270,61 @@ def set_scene_group(
     set_vector_scene(document, changed, limits=limits)
 
 
-__all__ = ["get_vector_scene", "set_vector_scene", "remove_vector_scene", "set_scene_clip", "set_scene_group"]
+def get_scope_color_space(
+    document: DocumentModel, scene_id: str, scope_id: str, *, limits: DocumentLimits | None = None
+) -> GroupColorSpace | None:
+    """Read a detached group/occurrence color-space declaration; no legacy/default lookup."""
+    from opendoc_model.integration import _nonempty
+
+    _nonempty(scope_id, "scope_id")
+    scene = _scene(document, scene_id, limits)
+    items: tuple[VectorGroup | SceneOccurrence, ...] = (*scene.groups, *scene.occurrences)
+    for item in items:
+        if item.id == scope_id:
+            return item.compositing.color_space if item.compositing is not None else None
+    raise ValueError("unknown group/occurrence scope_id")
+
+
+def set_scope_color_space(
+    document: DocumentModel, scene_id: str, scope_id: str, value: GroupColorSpace | None, *, limits: DocumentLimits | None = None
+) -> None:
+    """Atomically replace/remove a common scope's color space, preserving other parameters.
+
+    Removal means unknown, not parent/sRGB/native fallback. Profile bytes remain
+    opaque and unused resources are retained. Old vector scopes require explicit
+    migration to scope_version=1 before edits through this API.
+    """
+    budget = _resolve_limits(limits)
+    if value is not None:
+        if type(value) is not GroupColorSpace or type(value.extra) is not dict:
+            raise ValueError("expected GroupColorSpace with dictionary extra or None")
+        _guard_model(value, budget)
+    previous = get_scope_color_space(document, scene_id, scope_id, limits=budget)
+    scene = _scene(document, scene_id, budget)
+    if scene.scope_version != 1:
+        raise ValueError("color-space editing requires common scope_version=1")
+    if value is not None:
+        value = replace(value, extra={**(previous.extra if previous else {}), **value.extra})
+    items: tuple[VectorGroup | SceneOccurrence, ...] = (*scene.groups, *scene.occurrences)
+    item = next(item for item in items if item.id == scope_id)
+    compositing = replace(item.compositing or GroupCompositing(), color_space=value)
+    changed = replace(
+        scene,
+        groups=tuple(replace(group, compositing=compositing) if group.id == scope_id else group for group in scene.groups),
+        occurrences=tuple(
+            replace(occurrence, compositing=compositing) if occurrence.id == scope_id else occurrence
+            for occurrence in scene.occurrences
+        ),
+    )
+    set_vector_scene(document, changed, limits=budget)
+
+
+__all__ = [
+    "get_vector_scene",
+    "set_vector_scene",
+    "remove_vector_scene",
+    "set_scene_clip",
+    "set_scene_group",
+    "get_scope_color_space",
+    "set_scope_color_space",
+]

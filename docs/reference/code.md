@@ -14,7 +14,7 @@ Document structures, serialization and comparison without application backends.
 
 Импорты: [opendoc_model.checks](#opendoc_model-checks), [opendoc_model.color](#opendoc_model-color), [opendoc_model.composition](#opendoc_model-composition), [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.document_codec](#opendoc_model-document_codec), [opendoc_model.document_model](#opendoc_model-document_model), [opendoc_model.emphasis_quality](#opendoc_model-emphasis_quality), [opendoc_model.extensions](#opendoc_model-extensions), [opendoc_model.fonts](#opendoc_model-fonts), [opendoc_model.footnotes](#opendoc_model-footnotes), [opendoc_model.formula_quality_policy](#opendoc_model-formula_quality_policy), [opendoc_model.graphics](#opendoc_model-graphics), [opendoc_model.inspection](#opendoc_model-inspection), [opendoc_model.integration](#opendoc_model-integration), [opendoc_model.integration_types](#opendoc_model-integration_types), [opendoc_model.limits](#opendoc_model-limits), [opendoc_model.lists](#opendoc_model-lists), [opendoc_model.object_mapping](#opendoc_model-object_mapping), [opendoc_model.object_matching](#opendoc_model-object_matching), [opendoc_model.object_quality_policy](#opendoc_model-object_quality_policy), [opendoc_model.operations](#opendoc_model-operations), [opendoc_model.outline](#opendoc_model-outline), [opendoc_model.page_geometry](#opendoc_model-page_geometry), [opendoc_model.properties](#opendoc_model-properties), [opendoc_model.quality_policy](#opendoc_model-quality_policy), [opendoc_model.references](#opendoc_model-references), [opendoc_model.resources](#opendoc_model-resources), [opendoc_model.result_types](#opendoc_model-result_types), [opendoc_model.semantics](#opendoc_model-semantics), [opendoc_model.spacing](#opendoc_model-spacing), [opendoc_model.storage](#opendoc_model-storage), [opendoc_model.styles](#opendoc_model-styles), [opendoc_model.table_borders](#opendoc_model-table_borders), [opendoc_model.table_semantics](#opendoc_model-table_semantics), [opendoc_model.text_flow_profile](#opendoc_model-text_flow_profile), [opendoc_model.text_quality_policy](#opendoc_model-text_quality_policy), [opendoc_model.traversal](#opendoc_model-traversal), [opendoc_model.units](#opendoc_model-units), [opendoc_model.widths](#opendoc_model-widths).
 
-Прямые импорты в тестах: [tests/test_architecture.py](../../tests/test_architecture.py), [tests/test_checks.py](../../tests/test_checks.py), [tests/test_compatibility.py](../../tests/test_compatibility.py), [tests/test_composition.py](../../tests/test_composition.py), [tests/test_document_api.py](../../tests/test_document_api.py), [tests/test_document_json.py](../../tests/test_document_json.py), [tests/test_document_limits.py](../../tests/test_document_limits.py), [tests/test_document_roundtrip.py](../../tests/test_document_roundtrip.py), [tests/test_extensions.py](../../tests/test_extensions.py), [tests/test_fixed_layout.py](../../tests/test_fixed_layout.py), [tests/test_fonts.py](../../tests/test_fonts.py), [tests/test_footnotes.py](../../tests/test_footnotes.py), [tests/test_formula_xml.py](../../tests/test_formula_xml.py), [tests/test_graphics.py](../../tests/test_graphics.py), [tests/test_headings.py](../../tests/test_headings.py), [tests/test_integration.py](../../tests/test_integration.py), [tests/test_limit_contract.py](../../tests/test_limit_contract.py), [tests/test_line_spacing.py](../../tests/test_line_spacing.py), [tests/test_lists.py](../../tests/test_lists.py), [tests/test_mapping_composition.py](../../tests/test_mapping_composition.py), [tests/test_matching_limits.py](../../tests/test_matching_limits.py), [tests/test_mathml.py](../../tests/test_mathml.py), [tests/test_model_validation.py](../../tests/test_model_validation.py), [tests/test_object_mapping.py](../../tests/test_object_mapping.py), [tests/test_operations.py](../../tests/test_operations.py), [tests/test_outline.py](../../tests/test_outline.py), [tests/test_package_contract.py](../../tests/test_package_contract.py), [tests/test_page_geometry.py](../../tests/test_page_geometry.py), [tests/test_performance_contracts.py](../../tests/test_performance_contracts.py), [tests/test_properties.py](../../tests/test_properties.py), [tests/test_quality_contracts.py](../../tests/test_quality_contracts.py), [tests/test_references.py](../../tests/test_references.py), [tests/test_resources.py](../../tests/test_resources.py), [tests/test_spacing.py](../../tests/test_spacing.py), [tests/test_storage.py](../../tests/test_storage.py), [tests/test_styles.py](../../tests/test_styles.py), [tests/test_table_borders.py](../../tests/test_table_borders.py), [tests/test_table_semantics.py](../../tests/test_table_semantics.py), [tests/test_text_colors.py](../../tests/test_text_colors.py), [tests/test_text_flow_profile.py](../../tests/test_text_flow_profile.py), [tests/test_traversal.py](../../tests/test_traversal.py), [tests/test_widths.py](../../tests/test_widths.py), [tests/test_workflows.py](../../tests/test_workflows.py).
+Прямые импорты в тестах: [tests/test_architecture.py](../../tests/test_architecture.py), [tests/test_checks.py](../../tests/test_checks.py), [tests/test_compatibility.py](../../tests/test_compatibility.py), [tests/test_composition.py](../../tests/test_composition.py), [tests/test_document_api.py](../../tests/test_document_api.py), [tests/test_document_json.py](../../tests/test_document_json.py), [tests/test_document_limits.py](../../tests/test_document_limits.py), [tests/test_document_roundtrip.py](../../tests/test_document_roundtrip.py), [tests/test_extensions.py](../../tests/test_extensions.py), [tests/test_fixed_layout.py](../../tests/test_fixed_layout.py), [tests/test_fonts.py](../../tests/test_fonts.py), [tests/test_footnotes.py](../../tests/test_footnotes.py), [tests/test_formula_xml.py](../../tests/test_formula_xml.py), [tests/test_graphics.py](../../tests/test_graphics.py), [tests/test_group_color_space.py](../../tests/test_group_color_space.py), [tests/test_headings.py](../../tests/test_headings.py), [tests/test_integration.py](../../tests/test_integration.py), [tests/test_limit_contract.py](../../tests/test_limit_contract.py), [tests/test_line_spacing.py](../../tests/test_line_spacing.py), [tests/test_lists.py](../../tests/test_lists.py), [tests/test_mapping_composition.py](../../tests/test_mapping_composition.py), [tests/test_matching_limits.py](../../tests/test_matching_limits.py), [tests/test_mathml.py](../../tests/test_mathml.py), [tests/test_model_validation.py](../../tests/test_model_validation.py), [tests/test_object_mapping.py](../../tests/test_object_mapping.py), [tests/test_operations.py](../../tests/test_operations.py), [tests/test_outline.py](../../tests/test_outline.py), [tests/test_package_contract.py](../../tests/test_package_contract.py), [tests/test_page_geometry.py](../../tests/test_page_geometry.py), [tests/test_performance_contracts.py](../../tests/test_performance_contracts.py), [tests/test_properties.py](../../tests/test_properties.py), [tests/test_quality_contracts.py](../../tests/test_quality_contracts.py), [tests/test_references.py](../../tests/test_references.py), [tests/test_resources.py](../../tests/test_resources.py), [tests/test_spacing.py](../../tests/test_spacing.py), [tests/test_storage.py](../../tests/test_storage.py), [tests/test_styles.py](../../tests/test_styles.py), [tests/test_table_borders.py](../../tests/test_table_borders.py), [tests/test_table_semantics.py](../../tests/test_table_semantics.py), [tests/test_text_colors.py](../../tests/test_text_colors.py), [tests/test_text_flow_profile.py](../../tests/test_text_flow_profile.py), [tests/test_traversal.py](../../tests/test_traversal.py), [tests/test_widths.py](../../tests/test_widths.py), [tests/test_workflows.py](../../tests/test_workflows.py).
 
 <a id="opendoc_model-_integration_codec"></a>
 ## opendoc_model._integration_codec
@@ -277,11 +277,13 @@ Budget changed or removed source formulas using reproducible fingerprints.
 
 Mixed paint scopes in the existing VectorScene; no native interpreter or renderer.
 
-- `get_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L119)
-- `set_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L137)
-- `remove_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L163)
-- `set_scene_clip` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L181)
-- `set_scene_group` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L210)
+- `get_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L150)
+- `set_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L168)
+- `remove_vector_scene` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L194)
+- `set_scene_clip` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L212)
+- `set_scene_group` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L241)
+- `get_scope_color_space` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L273)
+- `set_scope_color_space` — [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L288)
 
 Импорты: [opendoc_model.document_model](#opendoc_model-document_model), [opendoc_model.integration](#opendoc_model-integration), [opendoc_model.integration_types](#opendoc_model-integration_types), [opendoc_model.limits](#opendoc_model-limits).
 
@@ -352,26 +354,27 @@ Format-neutral, inert adapter data; coordinates are points, offsets are Unicode 
 - `VectorPath` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L184)
 - `VectorGroup` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L198)
 - `GroupCompositing` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L230)
-- `VectorClip` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L244)
-- `SceneOccurrence` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L258)
-- `VectorScene` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L274)
-- `ChartSeries` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L288)
-- `ChartAxis` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L297)
-- `Chart` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L306)
-- `SceneStyle` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L317)
-- `Diagram` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L325)
-- `Accessibility` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L335)
-- `DocumentPage` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L343)
-- `Annotation` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L351)
-- `FormControl` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L363)
-- `MediaObject` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L374)
-- `Timing` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L384)
-- `SheetCell` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L393)
-- `Sheet` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L404)
-- `Workbook` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L411)
-- `MathNode` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L417)
-- `FormulaTree` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L424)
-- `IntegrationModel` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L431)
+- `GroupColorSpace` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L245)
+- `VectorClip` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L258)
+- `SceneOccurrence` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L272)
+- `VectorScene` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L288)
+- `ChartSeries` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L302)
+- `ChartAxis` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L311)
+- `Chart` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L320)
+- `SceneStyle` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L331)
+- `Diagram` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L339)
+- `Accessibility` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L349)
+- `DocumentPage` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L357)
+- `Annotation` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L365)
+- `FormControl` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L377)
+- `MediaObject` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L388)
+- `Timing` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L398)
+- `SheetCell` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L407)
+- `Sheet` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L418)
+- `Workbook` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L425)
+- `MathNode` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L431)
+- `FormulaTree` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L438)
+- `IntegrationModel` — [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L445)
 
 Импорты: [opendoc_model.color](#opendoc_model-color), [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.document_model](#opendoc_model-document_model).
 

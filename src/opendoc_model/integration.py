@@ -567,7 +567,7 @@ def _integration_links(document: DocumentModel, limits: DocumentLimits) -> tuple
     nodes, _ = _anchors(document, limits)
     result = []
     pending: list[tuple[Any, str]] = [(model, "metadata['opendoc.integration'].data")]
-    resource_names = {"resource_id", "visual_resource_id", "mask_resource_id", "poster_resource_id"}
+    resource_names = {"resource_id", "visual_resource_id", "mask_resource_id", "poster_resource_id", "profile_resource_id"}
     scene_targets = {value.id for name in ("media", "scenes", "charts", "diagrams") for value in getattr(model, name)}
     while pending:
         value, path = pending.pop()
@@ -652,7 +652,7 @@ def _remap_integration(
     model = get_integration(document, limits=limits)
     if model is None:
         return
-    resource_names = {"resource_id", "visual_resource_id", "mask_resource_id", "poster_resource_id"}
+    resource_names = {"resource_id", "visual_resource_id", "mask_resource_id", "poster_resource_id", "profile_resource_id"}
 
     def rewrite(value: Any) -> Any:
         if is_dataclass(value) and not isinstance(value, type):

@@ -216,10 +216,12 @@ from .footnotes import set_footnote_reference as set_footnote_reference
 from .formula_quality_policy import (
     FormulaLossPolicy as FormulaLossPolicy,
 )
+from .graphics import get_scope_color_space as get_scope_color_space
 from .graphics import get_vector_scene as get_vector_scene
 from .graphics import remove_vector_scene as remove_vector_scene
 from .graphics import set_scene_clip as set_scene_clip
 from .graphics import set_scene_group as set_scene_group
+from .graphics import set_scope_color_space as set_scope_color_space
 from .graphics import set_vector_scene as set_vector_scene
 from .inspection import (
     DocumentComparison as DocumentComparison,
@@ -309,6 +311,7 @@ from .integration_types import (
 from .integration_types import (
     FormulaTree as FormulaTree,
 )
+from .integration_types import GroupColorSpace as GroupColorSpace
 from .integration_types import GroupCompositing as GroupCompositing
 from .integration_types import (
     IntegrationModel as IntegrationModel,
@@ -673,6 +676,9 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "GroupColorSpace",
+    "get_scope_color_space",
+    "set_scope_color_space",
     "BlendMode",
     "GroupCompositing",
     "VectorClip",

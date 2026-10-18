@@ -239,6 +239,15 @@ def main() -> None:
     assert_type(GroupCompositing().opacity, float | None)
     assert_type(VectorClip("empty", ()).fill_rule, Literal["nonzero", "evenodd"] | None)
     assert_type(SceneOccurrence("paint", "anchor").node_id, str)
+    from opendoc_model import GroupColorSpace, VectorGroup, get_scope_color_space, set_scope_color_space
+
+    assert_type(GroupColorSpace("icc", "profile").profile_resource_id, str | None)
+    scope_document = DocumentModel()
+    set_vector_scene(
+        scope_document, VectorScene("space", 100, 100, groups=(VectorGroup("g", ()),), roots=("g",), scope_version=1)
+    )
+    set_scope_color_space(scope_document, "space", "g", GroupColorSpace("gray"))
+    assert_type(get_scope_color_space(scope_document, "space", "g"), GroupColorSpace | None)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

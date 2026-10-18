@@ -1,5 +1,9 @@
 # Завершённые возможности OpenDoc Model
 
+С 0.16.0 реализован модельный [C-GRAPHICS-02](../guide/group-color-space.md):
+пространство промежуточной композиции, непрозрачный профиль, unknown,
+атомарная правка/удаление, JSON, проверка ссылок, remap и лимиты.
+
 С 0.15.0 реализован модельный [C-GRAPHICS-01](../guide/graphics-scopes.md):
 общие clips/groups в прежнем VectorScene, явные paint occurrences якорей,
 композиция с unknown, атомарная правка/удаление, JSON, ссылки и лимиты.

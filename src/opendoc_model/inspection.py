@@ -1040,7 +1040,7 @@ def inspect_document_model(
     report.metrics = dict(sorted(counters.items()))
     report.metadata["text_flow"] = text_flow.to_dict()
     report.metadata["text_emphasis"] = emphasis.to_dict()
-    from opendoc_model.graphics import _scene_unknowns
+    from opendoc_model.graphics import _color_space_unknowns, _scene_unknowns
     from opendoc_model.integration import get_integration
 
     integration = get_integration(document, limits=limits)
@@ -1048,6 +1048,8 @@ def inspect_document_model(
         for index, scene in enumerate(integration.scenes):
             for location, message in _scene_unknowns(scene, f"metadata['opendoc.integration'].data.scenes[{index}]"):
                 report.add(IssueSeverity.INFO, "graphics-scope-unknown", message, location)
+            for location, message in _color_space_unknowns(scene, f"metadata['opendoc.integration'].data.scenes[{index}]"):
+                report.add(IssueSeverity.INFO, "graphics-color-space-unknown", message, location)
     report.fonts = dict(fonts.most_common())
     report.formula_formats = dict(sorted(formula_formats.items()))
     return report
