@@ -22,6 +22,7 @@
 | Межстрочный интервал | [line_spacing.py](../../examples/line_spacing.py) | minimum/exact/relative, модельное наследование, удаление и два JSON-цикла |
 | Структурированный отказ лимита | [structured_limits.py](../../examples/structured_limits.py) | path/quota/maximum и совместимость прежних ошибок |
 | Явная программа шрифта | [font_references.py](../../examples/font_references.py) | Разные FONT при одинаковом family, наследование, удаление и два JSON-цикла |
+| Смешанная графическая группа | [graphics_scopes.py](../../examples/graphics_scopes.py) | Typed clip, общая opacity, полный текст, правка/удаление и два JSON-цикла |
 | Подпись и заголовочные ячейки | [table_semantics.py](../../examples/table_semantics.py) | Владельца подписи, headers, группы, JSON и композицию |
 | Преобразовать геометрию страницы | [page_geometry.py](../../examples/page_geometry.py) | Области, повороты, обратные координаты, JSON и сохранность аннотаций |
 | Сохранить фиксированную компоновку | [fixed_layout.py](../../examples/fixed_layout.py) | Две страницы, координаты, линии, provenance и Unicode-интервалы через два JSON-цикла |

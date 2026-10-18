@@ -1,7 +1,7 @@
 """Typed consumer of the installed library; also executed in its empty environment."""
 
 from pathlib import Path
-from typing import Any, assert_type
+from typing import Any, Literal, assert_type
 
 from opendoc_model import (
     Anchor,
@@ -231,6 +231,14 @@ def main() -> None:
     assert_type(get_font_reference(font_style), FontReference | None)
     for binding in iter_font_references(DocumentModel()):
         assert_type(binding, FontReferenceLocation)
+    from opendoc_model import GroupCompositing, SceneOccurrence, VectorClip, VectorScene, get_vector_scene, set_vector_scene
+
+    graphics_document = DocumentModel()
+    set_vector_scene(graphics_document, VectorScene("empty", 100, 100))
+    assert_type(get_vector_scene(graphics_document, "empty"), VectorScene | None)
+    assert_type(GroupCompositing().opacity, float | None)
+    assert_type(VectorClip("empty", ()).fill_rule, Literal["nonzero", "evenodd"] | None)
+    assert_type(SceneOccurrence("paint", "anchor").node_id, str)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

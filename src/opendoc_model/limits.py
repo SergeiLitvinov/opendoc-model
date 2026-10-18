@@ -113,7 +113,11 @@ def _guard_model(value: object, limits: DocumentLimits) -> tuple[int, int]:
                 _quota(f"{path}.data", "embedded bytes", limits.max_embedded_bytes)
         children = None
         if is_dataclass(item) and not isinstance(item, type):
-            children = [(getattr(item, field.name), f"{path}.{field.name}") for field in fields(item)]
+            children = [
+                (getattr(item, field.name), f"{path}.{field.name}")
+                for field in fields(item)
+                if not (field.metadata.get("omit_default") and getattr(item, field.name) == field.default)
+            ]
             if isinstance(item, DocumentModel):
                 # Absent extensions must not change accepted budgets for old
                 # documents. Populated/malformed fields still consume quotas.

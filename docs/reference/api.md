@@ -100,59 +100,68 @@
 | `set_footnote` | `opendoc_model.footnotes` | [src/opendoc_model/footnotes.py](../../src/opendoc_model/footnotes.py#L131) |
 | `set_footnote_reference` | `opendoc_model.footnotes` | [src/opendoc_model/footnotes.py](../../src/opendoc_model/footnotes.py#L62) |
 | `FormulaLossPolicy` | `opendoc_model.formula_quality_policy` | [src/opendoc_model/formula_quality_policy.py](../../src/opendoc_model/formula_quality_policy.py#L70) |
+| `get_vector_scene` | `opendoc_model.graphics` | [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L119) |
+| `remove_vector_scene` | `opendoc_model.graphics` | [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L163) |
+| `set_scene_clip` | `opendoc_model.graphics` | [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L181) |
+| `set_scene_group` | `opendoc_model.graphics` | [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L210) |
+| `set_vector_scene` | `opendoc_model.graphics` | [src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L137) |
 | `DocumentComparison` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L95) |
 | `DocumentInspection` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L45) |
 | `compare_inspections` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L142) |
 | `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L904) |
 | `INTEGRATION_PROPERTY` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `INTEGRATION_VERSION` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
-| `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L537) |
-| `get_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L401) |
-| `integration_resource_uses` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L658) |
-| `negotiate_capabilities` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484) |
-| `preservation_result` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457) |
-| `resolve_scene_style` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L511) |
-| `set_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L417) |
-| `Accessibility` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L267) |
+| `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L510) |
+| `get_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L374) |
+| `integration_resource_uses` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L631) |
+| `negotiate_capabilities` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457) |
+| `preservation_result` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L430) |
+| `resolve_scene_style` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484) |
+| `set_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L390) |
+| `Accessibility` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L335) |
 | `AffineTransform` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L162) |
-| `Annotation` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L283) |
+| `Annotation` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L351) |
 | `BibliographyEntry` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L126) |
+| `BlendMode` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py) |
 | `CapabilityProfile` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L37) |
-| `Chart` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L238) |
-| `ChartAxis` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L229) |
-| `ChartSeries` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L220) |
+| `Chart` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L306) |
+| `ChartAxis` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L297) |
+| `ChartSeries` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L288) |
 | `Comment` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L135) |
 | `ContentControl` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L153) |
-| `Diagram` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L257) |
-| `DocumentPage` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L275) |
+| `Diagram` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L325) |
+| `DocumentPage` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L343) |
 | `FeatureCapability` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L30) |
 | `Field` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L115) |
-| `FormControl` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L295) |
-| `FormulaTree` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L356) |
-| `IntegrationModel` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L363) |
+| `FormControl` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L363) |
+| `FormulaTree` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L424) |
+| `GroupCompositing` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L230) |
+| `IntegrationModel` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L431) |
 | `IntegrationRecord` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L23) |
-| `MathNode` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L349) |
-| `MediaObject` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L306) |
+| `MathNode` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L417) |
+| `MediaObject` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L374) |
 | `Paint` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L178) |
 | `PathCommand` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L172) |
 | `PreservationRecord` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L44) |
 | `PreservationState` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L14) |
 | `Revision` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L144) |
-| `SceneStyle` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L249) |
-| `Sheet` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L336) |
-| `SheetCell` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L325) |
+| `SceneOccurrence` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L258) |
+| `SceneStyle` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L317) |
+| `Sheet` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L404) |
+| `SheetCell` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L393) |
 | `SourceFile` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L65) |
 | `SourceMap` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L82) |
 | `SourceMapping` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L76) |
 | `SourceSpan` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L54) |
 | `TextPosition` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L101) |
 | `TextRange` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L108) |
-| `Timing` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L316) |
+| `Timing` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L384) |
 | `UnknownFragment` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L89) |
+| `VectorClip` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L244) |
 | `VectorGroup` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L198) |
 | `VectorPath` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L184) |
-| `VectorScene` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L209) |
-| `Workbook` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L343) |
+| `VectorScene` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L274) |
+| `Workbook` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L411) |
 | `DocumentLimits` | `opendoc_model.limits` | [src/opendoc_model/limits.py](../../src/opendoc_model/limits.py#L14) |
 | `LIST_PROPERTY` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py) |
 | `ListItem` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L38) |
@@ -837,6 +846,56 @@ Assign/remove a role atomically, preserving unknown tagged fields.
 
 [src/opendoc_model/formula_quality_policy.py](../../src/opendoc_model/formula_quality_policy.py#L70)
 
+### get_vector_scene
+
+[src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L119)
+
+```python
+get_vector_scene(document: DocumentModel, scene_id: str, *, limits: DocumentLimits | None=None)
+```
+
+Read an independent scene; no fallback to opaque/native properties.
+
+### remove_vector_scene
+
+[src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L163)
+
+```python
+remove_vector_scene(document: DocumentModel, scene_id: str, *, limits: DocumentLimits | None=None)
+```
+
+Remove a scene atomically; references from other integration records must remain valid.
+
+### set_scene_clip
+
+[src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L181)
+
+```python
+set_scene_clip(document: DocumentModel, scene_id: str, clip_id: str, clip: VectorClip | None, *, limits: DocumentLimits | None=None)
+```
+
+Replace geometry, or remove a typed clip and detach its local uses; keep content intact.
+
+### set_scene_group
+
+[src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L210)
+
+```python
+set_scene_group(document: DocumentModel, scene_id: str, group_id: str, group: VectorGroup | None, *, limits: DocumentLimits | None=None)
+```
+
+Replace a scope; removal unwraps its children in place without distributing effects.
+
+### set_vector_scene
+
+[src/opendoc_model/graphics.py](../../src/opendoc_model/graphics.py#L137)
+
+```python
+set_vector_scene(document: DocumentModel, scene: VectorScene, *, limits: DocumentLimits | None=None)
+```
+
+Atomically add/replace one scene, retaining its unknown envelope fields.
+
 ### DocumentComparison
 
 [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L95)
@@ -867,7 +926,7 @@ inspect_document_model(document: DocumentModel, *, source_path: str | Path | Non
 
 ### edit_anchored_text
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L537)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L510)
 
 ```python
 edit_anchored_text(document: DocumentModel, node_id: str, start: int, end: int, text: str, *, limits: DocumentLimits | None=None)
@@ -880,7 +939,7 @@ to affinity. Structural anchor IDs stay stable. No field/formula code executes.
 
 ### get_integration
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L401)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L374)
 
 ```python
 get_integration(document: DocumentModel, *, limits: DocumentLimits | None=None)
@@ -890,7 +949,7 @@ Read schema v1 independently; no I/O, parsing, actions or implicit migration.
 
 ### integration_resource_uses
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L658)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L631)
 
 ```python
 integration_resource_uses(document: DocumentModel, resource_id: str, *, limits: DocumentLimits | None=None)
@@ -900,7 +959,7 @@ Return typed optional-schema resource paths, complementing structural resource u
 
 ### negotiate_capabilities
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457)
 
 ```python
 negotiate_capabilities(source: CapabilityProfile, target: CapabilityProfile, *, limits: DocumentLimits | None=None)
@@ -910,7 +969,7 @@ Return an explicit intersection per source feature; absent/version-mismatched fe
 
 ### preservation_result
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L430)
 
 ```python
 preservation_result(model: IntegrationModel, *, limits: DocumentLimits | None=None)
@@ -920,7 +979,7 @@ Reuse CheckResult; explicit incomplete/opaque/visual assessments cannot prove lo
 
 ### resolve_scene_style
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L511)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484)
 
 ```python
 resolve_scene_style(model: IntegrationModel, style_id: str, *, limits: DocumentLimits | None=None)
@@ -930,7 +989,7 @@ Resolve explicit theme/master/layout/local inheritance on an independent snapsho
 
 ### set_integration
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L417)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L390)
 
 ```python
 set_integration(document: DocumentModel, model: IntegrationModel | None, *, limits: DocumentLimits | None=None)
@@ -940,7 +999,7 @@ Validate and commit an independent envelope atomically; retain unknown fields.
 
 ### Accessibility
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L267)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L335)
 
 ### AffineTransform
 
@@ -948,7 +1007,7 @@ Validate and commit an independent envelope atomically; retain unknown fields.
 
 ### Annotation
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L283)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L351)
 
 ### BibliographyEntry
 
@@ -960,15 +1019,15 @@ Validate and commit an independent envelope atomically; retain unknown fields.
 
 ### Chart
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L238)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L306)
 
 ### ChartAxis
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L229)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L297)
 
 ### ChartSeries
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L220)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L288)
 
 ### Comment
 
@@ -980,11 +1039,11 @@ Validate and commit an independent envelope atomically; retain unknown fields.
 
 ### Diagram
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L257)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L325)
 
 ### DocumentPage
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L275)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L343)
 
 ### FeatureCapability
 
@@ -996,15 +1055,24 @@ Validate and commit an independent envelope atomically; retain unknown fields.
 
 ### FormControl
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L295)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L363)
 
 ### FormulaTree
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L356)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L424)
+
+### GroupCompositing
+
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L230)
+
+Composition of the complete scope, not multiplication of child alphas.
+
+None is unknown; it never implies Normal, isolation, knockout or opacity 1.
+Rendering, backdrop construction and native mode translation are external.
 
 ### IntegrationModel
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L363)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L431)
 
 Optional schema v1 linked to existing anchor IDs, resources and diagnostics.
 
@@ -1016,11 +1084,11 @@ Unknown JSON fields survive round trips without implying semantic support.
 
 ### MathNode
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L349)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L417)
 
 ### MediaObject
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L306)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L374)
 
 ### Paint
 
@@ -1044,17 +1112,26 @@ The existing diagnostic is the explanation; state describes what survived.
 
 [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L144)
 
+### SceneOccurrence
+
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L258)
+
+One scene-local paint occurrence of an anchored structural object.
+
+Occurrence ID, anchor ID and resource ID have different scopes. Several
+occurrences may use one anchor without copying or trimming its content.
+
 ### SceneStyle
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L249)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L317)
 
 ### Sheet
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L336)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L404)
 
 ### SheetCell
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L325)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L393)
 
 ### SourceFile
 
@@ -1082,11 +1159,20 @@ The existing diagnostic is the explanation; state describes what survived.
 
 ### Timing
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L316)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L384)
 
 ### UnknownFragment
 
 [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L89)
+
+### VectorClip
+
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L244)
+
+Clip-local points mapped into the clipped owner&#x27;s local space by transform.
+
+Winding None is unknown. Known winding with empty commands means empty area.
+This stores geometry, without calculating intersections or hiding model text.
 
 ### VectorGroup
 
@@ -1098,11 +1184,11 @@ The existing diagnostic is the explanation; state describes what survived.
 
 ### VectorScene
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L209)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L274)
 
 ### Workbook
 
-[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L343)
+[src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L411)
 
 ### DocumentLimits
 

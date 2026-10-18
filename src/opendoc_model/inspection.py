@@ -1029,12 +1029,25 @@ def inspect_document_model(
     from opendoc_model.fonts import _font_links
 
     referenced_resources.update(link.reference.resource_id for link in _font_links(document, _resolve_limits(limits)))
+    from opendoc_model.integration import _integration_links
+
+    referenced_resources.update(
+        key for domain, key, _ in _integration_links(document, _resolve_limits(limits)) if domain == "resource"
+    )
     for resource_id in sorted(set(document.resources) - referenced_resources):
         report.add(IssueSeverity.WARNING, "unused-resource", f"resource {resource_id!r} is not referenced")
 
     report.metrics = dict(sorted(counters.items()))
     report.metadata["text_flow"] = text_flow.to_dict()
     report.metadata["text_emphasis"] = emphasis.to_dict()
+    from opendoc_model.graphics import _scene_unknowns
+    from opendoc_model.integration import get_integration
+
+    integration = get_integration(document, limits=limits)
+    if integration is not None:
+        for index, scene in enumerate(integration.scenes):
+            for location, message in _scene_unknowns(scene, f"metadata['opendoc.integration'].data.scenes[{index}]"):
+                report.add(IssueSeverity.INFO, "graphics-scope-unknown", message, location)
     report.fonts = dict(fonts.most_common())
     report.formula_formats = dict(sorted(formula_formats.items()))
     return report

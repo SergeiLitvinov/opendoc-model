@@ -203,6 +203,71 @@ class VectorGroup(IntegrationRecord):
     mask_resource_id: str | None = None
     opacity: float = 1.0
     z_order: int = 0
+    compositing: GroupCompositing | None = field(default=None, kw_only=True, metadata={"omit_default": True})
+
+
+BlendMode = Literal[
+    "normal",
+    "multiply",
+    "screen",
+    "overlay",
+    "darken",
+    "lighten",
+    "color-dodge",
+    "color-burn",
+    "hard-light",
+    "soft-light",
+    "difference",
+    "exclusion",
+    "hue",
+    "saturation",
+    "color",
+    "luminosity",
+]
+
+
+@dataclass(frozen=True)
+class GroupCompositing(IntegrationRecord):
+    """Composition of the complete scope, not multiplication of child alphas.
+
+    None is unknown; it never implies Normal, isolation, knockout or opacity 1.
+    Rendering, backdrop construction and native mode translation are external.
+    """
+
+    opacity: float | None = None
+    isolated: bool | None = None
+    knockout: bool | None = None
+    blend_mode: BlendMode | None = None
+
+
+@dataclass(frozen=True)
+class VectorClip(IntegrationRecord):
+    """Clip-local points mapped into the clipped owner's local space by transform.
+
+    Winding None is unknown. Known winding with empty commands means empty area.
+    This stores geometry, without calculating intersections or hiding model text.
+    """
+
+    id: str
+    commands: tuple[PathCommand, ...]
+    fill_rule: Literal["nonzero", "evenodd"] | None = None
+    transform: AffineTransform = field(default_factory=AffineTransform)
+
+
+@dataclass(frozen=True)
+class SceneOccurrence(IntegrationRecord):
+    """One scene-local paint occurrence of an anchored structural object.
+
+    Occurrence ID, anchor ID and resource ID have different scopes. Several
+    occurrences may use one anchor without copying or trimming its content.
+    """
+
+    id: str
+    node_id: str
+    transform: AffineTransform = field(default_factory=AffineTransform)
+    clip_id: str | None = None
+    mask_resource_id: str | None = None
+    compositing: GroupCompositing | None = None
 
 
 @dataclass(frozen=True)
@@ -214,6 +279,9 @@ class VectorScene(IntegrationRecord):
     groups: tuple[VectorGroup, ...] = ()
     roots: tuple[str, ...] = ()
     node_id: str | None = None
+    clips: tuple[VectorClip, ...] = field(default=(), kw_only=True, metadata={"omit_default": True})
+    occurrences: tuple[SceneOccurrence, ...] = field(default=(), kw_only=True, metadata={"omit_default": True})
+    scope_version: Literal[1] | None = field(default=None, kw_only=True, metadata={"omit_default": True})
 
 
 @dataclass(frozen=True)
@@ -390,6 +458,10 @@ class IntegrationModel(IntegrationRecord):
 
 
 __all__ = [
+    "BlendMode",
+    "GroupCompositing",
+    "VectorClip",
+    "SceneOccurrence",
     "Accessibility",
     "AffineTransform",
     "Annotation",

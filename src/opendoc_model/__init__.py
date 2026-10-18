@@ -216,6 +216,11 @@ from .footnotes import set_footnote_reference as set_footnote_reference
 from .formula_quality_policy import (
     FormulaLossPolicy as FormulaLossPolicy,
 )
+from .graphics import get_vector_scene as get_vector_scene
+from .graphics import remove_vector_scene as remove_vector_scene
+from .graphics import set_scene_clip as set_scene_clip
+from .graphics import set_scene_group as set_scene_group
+from .graphics import set_vector_scene as set_vector_scene
 from .inspection import (
     DocumentComparison as DocumentComparison,
 )
@@ -267,6 +272,7 @@ from .integration_types import (
 from .integration_types import (
     BibliographyEntry as BibliographyEntry,
 )
+from .integration_types import BlendMode as BlendMode
 from .integration_types import (
     CapabilityProfile as CapabilityProfile,
 )
@@ -303,6 +309,7 @@ from .integration_types import (
 from .integration_types import (
     FormulaTree as FormulaTree,
 )
+from .integration_types import GroupCompositing as GroupCompositing
 from .integration_types import (
     IntegrationModel as IntegrationModel,
 )
@@ -330,6 +337,7 @@ from .integration_types import (
 from .integration_types import (
     Revision as Revision,
 )
+from .integration_types import SceneOccurrence as SceneOccurrence
 from .integration_types import (
     SceneStyle as SceneStyle,
 )
@@ -363,6 +371,7 @@ from .integration_types import (
 from .integration_types import (
     UnknownFragment as UnknownFragment,
 )
+from .integration_types import VectorClip as VectorClip
 from .integration_types import (
     VectorGroup as VectorGroup,
 )
@@ -664,6 +673,15 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "BlendMode",
+    "GroupCompositing",
+    "VectorClip",
+    "SceneOccurrence",
+    "get_vector_scene",
+    "set_vector_scene",
+    "remove_vector_scene",
+    "set_scene_clip",
+    "set_scene_group",
     "FONT_REFERENCE_PROPERTY",
     "FontReference",
     "FontReferenceLocation",

@@ -84,11 +84,15 @@ def _acyclic(edges: dict[str, tuple[str, ...]], path: str, limits: DocumentLimit
     finished: set[str] = set()
     active: set[str] = set()
     count = 0
+    heights: dict[str, int] = {}
     for start in edges:
         pending = [(start, False)]
         while pending:
             node, leaving = pending.pop()
             if leaving:
+                heights[node] = 1 + max((heights[child] for child in edges.get(node, ())), default=0)
+                if heights[node] > limits.max_depth:
+                    _quota(path, "graph depth", limits.max_depth)
                 active.remove(node)
                 finished.add(node)
                 continue
@@ -251,41 +255,10 @@ def _validate_integration(model: IntegrationModel, document: DocumentModel, limi
     for value in model.comments:
         _reference(value.reply_to, registries["comments"], "comment.reply_to")
     _acyclic({value.id: (value.reply_to,) if value.reply_to else () for value in model.comments}, "comments", limits)
-    arities = {"move": 2, "line": 2, "quadratic": 4, "cubic": 6, "close": 0}
-    for scene in model.scenes:
-        _reference(scene.node_id, nodes, "scene.node_id")
-        if scene.width <= 0 or scene.height <= 0:
-            _error("scene", "scene dimensions must be positive points")
-        shapes = _index((*scene.paths, *scene.groups), "scene.shapes")
-        for key in scene.roots:
-            _reference(key, shapes, "scene.roots")
-        for path in scene.paths:
-            opened = False
-            for command in path.commands:
-                if len(command.values) != arities[command.operation]:
-                    _error("path.commands", "wrong command arity")
-                if command.operation == "move":
-                    opened = True
-                elif not opened:
-                    _error("path.commands", "a subpath must begin with move")
-                elif command.operation == "close":
-                    opened = False
-            if path.stroke_width < 0:
-                _error("path.stroke_width", "stroke width must be nonnegative points")
-            for paint in (path.fill, path.stroke):
-                if paint is not None and not 0 <= paint.opacity <= 1:
-                    _error("paint.opacity", "opacity must be between 0 and 1")
-        for group in scene.groups:
-            if not 0 <= group.opacity <= 1 or len(set(group.children)) != len(group.children):
-                _error("group", "invalid opacity or duplicate children")
-            for key in group.children:
-                _reference(key, shapes, "group.children")
-        edges = {}
-        for value in shapes.values():
-            _reference(value.clip_id, shapes, "shape.clip_id")
-            _visual_reference(value.mask_resource_id, resources, "shape.mask_resource_id")
-            edges[value.id] = (*getattr(value, "children", ()), *((value.clip_id,) if value.clip_id else ()))
-        _acyclic(edges, "scene", limits)
+    from opendoc_model.graphics import _validate_scene
+
+    for scene_index, scene in enumerate(model.scenes):
+        _validate_scene(scene, nodes, resources, limits, f"scenes[{scene_index}]")
     styles = registries["scene_styles"]
     for style in model.scene_styles:
         _reference(style.parent_id, styles, "scene_style.parent_id")

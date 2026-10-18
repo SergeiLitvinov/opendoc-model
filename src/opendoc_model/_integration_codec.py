@@ -103,6 +103,8 @@ def _convert(value: Any, annotation: Any, path: str, *, encode: bool) -> Any:
                 continue
             if encode:
                 raw = getattr(value, item.name)
+                if item.metadata.get("omit_default") and raw == item.default:
+                    continue
             elif item.name in value:
                 raw = value[item.name]
             elif item.default is not MISSING or item.default_factory is not MISSING:

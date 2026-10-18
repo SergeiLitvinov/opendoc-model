@@ -38,6 +38,7 @@ nav:
       - Фиксированная компоновка: docs/guide/fixed-layout.md
       - Межстрочный интервал: docs/guide/line-spacing.md
       - Ссылки на FONT-ресурсы: docs/guide/font-references.md
+      - Общие clip/group scopes: docs/guide/graphics-scopes.md
       - Оглавление и закладки: docs/guide/outline.md
       - Непрозрачные пакеты: docs/guide/packages.md
       - Лимиты документа: docs/guide/limits.md
