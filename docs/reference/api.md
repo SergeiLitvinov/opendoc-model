@@ -16,8 +16,8 @@
 | `IdentifierConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `MetadataConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `PackagePolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
-| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L551) |
-| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L287) |
+| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L565) |
+| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L292) |
 | `CheckResult` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L97) |
 | `ConversionIssue` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L25) |
 | `ConversionReport` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L33) |
@@ -81,6 +81,12 @@
 | `migrate_extension` | `opendoc_model.extensions` | [src/opendoc_model/extensions.py](../../src/opendoc_model/extensions.py#L176) |
 | `remove_extension` | `opendoc_model.extensions` | [src/opendoc_model/extensions.py](../../src/opendoc_model/extensions.py#L165) |
 | `set_extension` | `opendoc_model.extensions` | [src/opendoc_model/extensions.py](../../src/opendoc_model/extensions.py#L149) |
+| `FONT_REFERENCE_PROPERTY` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py) |
+| `FontReference` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L25) |
+| `FontReferenceLocation` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L99) |
+| `get_font_reference` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L46) |
+| `iter_font_references` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L132) |
+| `set_font_reference` | `opendoc_model.fonts` | [src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L69) |
 | `FOOTNOTE_REFERENCE_PROPERTY` | `opendoc_model.footnotes` | [src/opendoc_model/footnotes.py](../../src/opendoc_model/footnotes.py) |
 | `FOOTNOTES_PROPERTY` | `opendoc_model.footnotes` | [src/opendoc_model/footnotes.py](../../src/opendoc_model/footnotes.py) |
 | `FootnoteNumber` | `opendoc_model.footnotes` | [src/opendoc_model/footnotes.py](../../src/opendoc_model/footnotes.py#L34) |
@@ -207,8 +213,8 @@
 | `set_internal_link` | `opendoc_model.references` | [src/opendoc_model/references.py](../../src/opendoc_model/references.py#L117) |
 | `ResourceConflictPolicy` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py) |
 | `add_resource` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L62) |
-| `embed_resources` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L243) |
-| `find_duplicate_resources` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L175) |
+| `embed_resources` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L253) |
+| `find_duplicate_resources` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L185) |
 | `find_resource_uses` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L92) |
 | `remove_resource` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L122) |
 | `replace_resource` | `opendoc_model.resources` | [src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L102) |
@@ -244,8 +250,8 @@
 | `set_tab_stops` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L223) |
 | `set_table_indent` | `opendoc_model.spacing` | [src/opendoc_model/spacing.py](../../src/opendoc_model/spacing.py#L198) |
 | `ArtifactLimitError` | `opendoc_model.storage` | [src/opendoc_model/storage.py](../../src/opendoc_model/storage.py#L10) |
-| `effective_text_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L87) |
-| `resolve_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L62) |
+| `effective_text_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L89) |
+| `resolve_style` | `opendoc_model.styles` | [src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L64) |
 | `CELL_BORDERS_PROPERTY` | `opendoc_model.table_borders` | [src/opendoc_model/table_borders.py](../../src/opendoc_model/table_borders.py) |
 | `TABLE_BORDERS_PROPERTY` | `opendoc_model.table_borders` | [src/opendoc_model/table_borders.py](../../src/opendoc_model/table_borders.py) |
 | `Border` | `opendoc_model.table_borders` | [src/opendoc_model/table_borders.py](../../src/opendoc_model/table_borders.py#L35) |
@@ -348,7 +354,7 @@ Independent merged model and per-input identifier snapshots.
 
 ### extract_document
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L551)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L565)
 
 ```python
 extract_document(document: DocumentModel, location: NodeLocation[ModelNode], *, package_policy: PackagePolicy='error', additional_styles: Iterable[str]=(), additional_resources: Iterable[str]=(), limits: DocumentLimits | None=None)
@@ -364,7 +370,7 @@ partial extraction and keeps the entire opaque graph, without pruning bytes.
 
 ### merge_documents
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L287)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L292)
 
 ```python
 merge_documents(documents: Iterable[DocumentModel], *, conflicts: IdentifierConflictPolicy='error', metadata_conflicts: MetadataConflictPolicy='error', package_policy: PackagePolicy='error', mode: ConversionMode | None=None, limits: DocumentLimits | None=None)
@@ -681,6 +687,59 @@ set_extension(bag: MutableMapping[str, Any], key: str, data: Any, *, version: in
 ```
 
 Set independent JSON data atomically, retaining unknown tagged envelope fields.
+
+### FontReference
+
+[src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L25)
+
+A document-local FONT resource and optional collection face, without parsing bytes.
+
+None is an unknown face index, distinct from explicit zero. No family-name
+matching, default face, embedding permission or system-font lookup is implied.
+
+### FontReferenceLocation
+
+[src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L99)
+
+A live style owner, detached binding and current path, including named styles.
+
+Paths describe this traversal and must be refreshed after structural edits.
+
+### get_font_reference
+
+[src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L46)
+
+```python
+get_font_reference(style: TextStyle, *, limits: DocumentLimits | None=None)
+```
+
+Read an independent tagged binding; absent or opaque values return None.
+
+### iter_font_references
+
+[src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L132)
+
+```python
+iter_font_references(root: ModelNode, *, limits: DocumentLimits | None=None)
+```
+
+Yield direct font bindings in named styles and structural run styles.
+
+Inherited uses are resolved through model styles, without inventing direct
+bindings or choosing resources by family name. This performs no font I/O.
+
+### set_font_reference
+
+[src/opendoc_model/fonts.py](../../src/opendoc_model/fonts.py#L69)
+
+```python
+set_font_reference(style: TextStyle, reference: FontReference | None, *, limits: DocumentLimits | None=None)
+```
+
+Atomically set/remove a direct binding; document validation resolves its ID/kind.
+
+Removing a binding permits normal model inheritance, without selecting by name.
+Unknown envelope fields survive replacement; occupied opaque data is untouched.
 
 ### FootnoteNumber
 
@@ -1520,7 +1579,7 @@ inference of custom references occurs. Failure leaves the model intact.
 
 ### embed_resources
 
-[src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L243)
+[src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L253)
 
 ```python
 embed_resources(document: DocumentModel, *, base_dir: str | Path | None=None, resource_ids: Iterable[str] | None=None, limits: DocumentLimits | None=None)
@@ -1537,7 +1596,7 @@ Filesystem errors propagate. No source file or original model is changed.
 
 ### find_duplicate_resources
 
-[src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L175)
+[src/opendoc_model/resources.py](../../src/opendoc_model/resources.py#L185)
 
 ```python
 find_duplicate_resources(document: DocumentModel, *, limits: DocumentLimits | None=None)
@@ -1556,7 +1615,7 @@ sources are not opened or guessed equal. This never redirects links.
 find_resource_uses(document: DocumentModel, resource_id: str, *, limits: DocumentLimits | None=None)
 ```
 
-Return every known use in traversal order, with live owners and paths.
+Return structural resource slots; font-style bindings use iter_font_references.
 
 ### remove_resource
 
@@ -1803,7 +1862,7 @@ Legacy caller-created errors have unknown fields; no message parsing occurs.
 
 ### effective_text_style
 
-[src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L87)
+[src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L89)
 
 ```python
 effective_text_style(document: DocumentModel, paragraph: Paragraph, run: TextRun | None=None, *, limits: DocumentLimits | None=None)
@@ -1817,7 +1876,7 @@ Paragraph alignment/geometry remain paragraph fields, not text styles.
 
 ### resolve_style
 
-[src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L62)
+[src/opendoc_model/styles.py](../../src/opendoc_model/styles.py#L64)
 
 ```python
 resolve_style(document: DocumentModel, style: str | TextStyle | None=None, *, overrides: TextStyle | None=None, limits: DocumentLimits | None=None)

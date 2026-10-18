@@ -217,6 +217,20 @@ def main() -> None:
     assert_type(quota_error.path, str | None)
     assert_type(quota_error.quota, str | None)
     assert_type(quota_error.maximum, int | None)
+    from opendoc_model import (
+        FontReference,
+        FontReferenceLocation,
+        TextStyle,
+        get_font_reference,
+        iter_font_references,
+        set_font_reference,
+    )
+
+    font_style = TextStyle()
+    set_font_reference(font_style, FontReference("own-font"))
+    assert_type(get_font_reference(font_style), FontReference | None)
+    for binding in iter_font_references(DocumentModel()):
+        assert_type(binding, FontReferenceLocation)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

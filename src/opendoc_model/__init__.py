@@ -195,6 +195,12 @@ from .extensions import (
 )
 from .extensions import remove_extension as remove_extension
 from .extensions import set_extension as set_extension
+from .fonts import FONT_REFERENCE_PROPERTY as FONT_REFERENCE_PROPERTY
+from .fonts import FontReference as FontReference
+from .fonts import FontReferenceLocation as FontReferenceLocation
+from .fonts import get_font_reference as get_font_reference
+from .fonts import iter_font_references as iter_font_references
+from .fonts import set_font_reference as set_font_reference
 from .footnotes import FOOTNOTE_REFERENCE_PROPERTY as FOOTNOTE_REFERENCE_PROPERTY
 from .footnotes import FOOTNOTES_PROPERTY as FOOTNOTES_PROPERTY
 from .footnotes import FootnoteNumber as FootnoteNumber
@@ -658,6 +664,12 @@ from .widths import get_preferred_width as get_preferred_width
 from .widths import set_preferred_width as set_preferred_width
 
 __all__ = [
+    "FONT_REFERENCE_PROPERTY",
+    "FontReference",
+    "FontReferenceLocation",
+    "get_font_reference",
+    "set_font_reference",
+    "iter_font_references",
     "TABLE_INDENT_PROPERTY",
     "TAB_STOPS_PROPERTY",
     "TableIndent",

@@ -33,7 +33,9 @@ def _resolved(document: DocumentModel, style: str | TextStyle | None, limits: Do
     if isinstance(style, TextStyle):
         # Validate an independent override through the same model rules used
         # by persistence, including inline base references and JSON properties.
-        context = DocumentModel(styles=document.styles, sections=[Section(blocks=[Paragraph([TextRun("", style)])])])
+        context = DocumentModel(
+            styles=document.styles, resources=document.resources, sections=[Section(blocks=[Paragraph([TextRun("", style)])])]
+        )
         _require_document(context, limits)
         chain.append(style)
         current = style.properties.get("base_style_id")

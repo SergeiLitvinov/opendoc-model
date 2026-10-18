@@ -37,6 +37,7 @@ nav:
       - Геометрия страниц: docs/guide/page-geometry.md
       - Фиксированная компоновка: docs/guide/fixed-layout.md
       - Межстрочный интервал: docs/guide/line-spacing.md
+      - Ссылки на FONT-ресурсы: docs/guide/font-references.md
       - Оглавление и закладки: docs/guide/outline.md
       - Непрозрачные пакеты: docs/guide/packages.md
       - Лимиты документа: docs/guide/limits.md

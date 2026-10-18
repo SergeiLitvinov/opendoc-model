@@ -92,7 +92,7 @@ def add_resource(
 def find_resource_uses(
     document: DocumentModel, resource_id: str, *, limits: DocumentLimits | None = None
 ) -> tuple[ResourceReference, ...]:
-    """Return every known use in traversal order, with live owners and paths."""
+    """Return structural resource slots; font-style bindings use iter_font_references."""
     resolved = _resolve_limits(limits)
     _require_document(document, resolved)
     _existing(document, resource_id)
@@ -140,6 +140,12 @@ def remove_resource(
         if replacement_id == resource_id:
             raise ValueError("replacement_id must differ from resource_id")
     links = tuple(link for link in iter_resource_references(document, limits=resolved) if link.resource_id == resource_id)
+    from opendoc_model.fonts import FONT_REFERENCE_PROPERTY, _font_links
+
+    fonts = tuple(link for link in _font_links(document, resolved) if link.reference.resource_id == resource_id)
+    font_values = [(link.style, deepcopy(link.style.properties[FONT_REFERENCE_PROPERTY])) for link in fonts]
+    if fonts and replacement_id is None:
+        raise ValueError(f"resource {resource_id!r} is used at {fonts[0].path}")
     from opendoc_model.integration import _integration_links, _remap_integration
 
     integration_links = [
@@ -159,6 +165,8 @@ def remove_resource(
         if replacement_id is not None:
             for link in links:
                 _set_resource_reference(link, replacement_id)
+            for font in fonts:
+                font._set(replacement_id, resolved)
             _remap_integration(candidate, {}, {resource_id: replacement_id}, resolved)
         _require_document(candidate, resolved)
         committed = True
@@ -166,6 +174,8 @@ def remove_resource(
         if not committed:
             for link in links:
                 _set_resource_reference(link, resource_id)
+            for style, raw in font_values:
+                style.properties[FONT_REFERENCE_PROPERTY] = raw
     del document.resources[resource_id]
     if integration_links:
         document.metadata = candidate.metadata

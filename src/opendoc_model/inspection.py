@@ -1026,6 +1026,9 @@ def inspect_document_model(
             }
             for part in document.package.parts.values()
         ]
+    from opendoc_model.fonts import _font_links
+
+    referenced_resources.update(link.reference.resource_id for link in _font_links(document, _resolve_limits(limits)))
     for resource_id in sorted(set(document.resources) - referenced_resources):
         report.add(IssueSeverity.WARNING, "unused-resource", f"resource {resource_id!r} is not referenced")
 

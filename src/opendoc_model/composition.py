@@ -231,6 +231,9 @@ def _package(documents: list[DocumentModel], policy: PackagePolicy) -> PackageGr
 
 
 def _rewrite(document: DocumentModel, identifiers: DocumentIdMap, limits: DocumentLimits) -> None:
+    from opendoc_model.fonts import _font_links
+
+    font_links = list(_font_links(document, limits))
     # Snapshot values before writing: repeated nodes and shared property bags
     # must not apply a mapping again to an already rewritten identifier.
     styles = list(_all_style_links(document, limits))
@@ -270,6 +273,8 @@ def _rewrite(document: DocumentModel, identifiers: DocumentIdMap, limits: Docume
         style_link.set(identifiers.styles[style_link.identifier])
     for resource_link in resources:
         _set_resource_reference(resource_link, identifiers.resources[resource_link.resource_id])
+    for font_link in font_links:
+        font_link._set(identifiers.resources[font_link.reference.resource_id], limits)
     document.styles = {identifiers.styles[identifier]: style for identifier, style in document.styles.items()}
     remapped_resources = {}
     for identifier, resource in document.resources.items():
@@ -455,6 +460,15 @@ def _dependencies(
     needed_resources = {
         reference.resource_id for reference in iter_resource_references(selected, limits=limits)
     } | additional_resources
+    from opendoc_model.fonts import get_font_reference
+
+    for identifier in needed_styles:
+        font = get_font_reference(source.styles[identifier], limits=limits)
+        if font is not None:
+            needed_resources.add(font.resource_id)
+    from opendoc_model.fonts import _font_links
+
+    needed_resources.update(link.reference.resource_id for link in _font_links(selected, limits))
     from opendoc_model.integration import _integration_links
 
     needed_resources.update(key for domain, key, _ in _integration_links(selected, limits) if domain == "resource")
