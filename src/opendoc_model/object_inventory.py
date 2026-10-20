@@ -145,7 +145,15 @@ def _object_entry(
         heading = _heading_payload(value.properties.get(HEADING_PROPERTY), f"{location}.properties[{HEADING_PROPERTY!r}]")
         semantic_data["heading"] = heading.level if heading is not None else None
         item = _list_payload(value.properties.get(LIST_PROPERTY), f"{location}.properties[{LIST_PROPERTY!r}]")
-        semantic_data["list_item"] = asdict(item) if item is not None else None
+        semantic_data["list_item"] = (
+            {
+                name: value
+                for name, value in asdict(item).items()
+                if name not in ("continuation_of", "parent_id") or value is not None
+            }
+            if item is not None
+            else None
+        )
         if item is None or item.kind == "unordered":
             semantic_data["list_number"] = None
     if isinstance(value, Table):

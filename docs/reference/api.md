@@ -16,8 +16,8 @@
 | `IdentifierConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `MetadataConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `PackagePolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
-| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L565) |
-| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L292) |
+| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L571) |
+| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L296) |
 | `CheckResult` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L97) |
 | `ConversionIssue` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L25) |
 | `ConversionReport` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L33) |
@@ -110,7 +110,7 @@
 | `DocumentComparison` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L95) |
 | `DocumentInspection` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L45) |
 | `compare_inspections` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L142) |
-| `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L904) |
+| `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L906) |
 | `INTEGRATION_PROPERTY` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `INTEGRATION_VERSION` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L510) |
@@ -167,13 +167,13 @@
 | `Workbook` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L425) |
 | `DocumentLimits` | `opendoc_model.limits` | [src/opendoc_model/limits.py](../../src/opendoc_model/limits.py#L14) |
 | `LIST_PROPERTY` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py) |
-| `ListItem` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L38) |
+| `ListItem` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L44) |
 | `ListKind` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py) |
-| `ListNumber` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L60) |
-| `get_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L96) |
-| `iter_list_items` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L135) |
-| `iter_list_numbers` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L142) |
-| `set_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L111) |
+| `ListNumber` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L68) |
+| `get_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L106) |
+| `iter_list_items` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L152) |
+| `iter_list_numbers` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L244) |
+| `set_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L121) |
 | `OBJECT_MAPPING_FORMAT` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
 | `MappingPublication` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
 | `MappingReplacement` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L40) |
@@ -189,11 +189,11 @@
 | `MatchingLimits` | `opendoc_model.object_matching` | [src/opendoc_model/object_matching.py](../../src/opendoc_model/object_matching.py#L23) |
 | `ObjectLossPolicy` | `opendoc_model.object_quality_policy` | [src/opendoc_model/object_quality_policy.py](../../src/opendoc_model/object_quality_policy.py#L14) |
 | `clone_model` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L41) |
-| `extract_text` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L194) |
-| `insert_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L138) |
-| `remove_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L182) |
-| `replace_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L162) |
-| `transform_elements` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L258) |
+| `extract_text` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L199) |
+| `insert_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L143) |
+| `remove_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L187) |
+| `replace_node` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L167) |
+| `transform_elements` | `opendoc_model.operations` | [src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L263) |
 | `OUTLINE_PROPERTY` | `opendoc_model.outline` | [src/opendoc_model/outline.py](../../src/opendoc_model/outline.py) |
 | `Outline` | `opendoc_model.outline` | [src/opendoc_model/outline.py](../../src/opendoc_model/outline.py#L101) |
 | `OutlineEntry` | `opendoc_model.outline` | [src/opendoc_model/outline.py](../../src/opendoc_model/outline.py#L80) |
@@ -366,7 +366,7 @@ Independent merged model and per-input identifier snapshots.
 
 ### extract_document
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L565)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L571)
 
 ```python
 extract_document(document: DocumentModel, location: NodeLocation[ModelNode], *, package_policy: PackagePolicy='error', additional_styles: Iterable[str]=(), additional_resources: Iterable[str]=(), limits: DocumentLimits | None=None)
@@ -382,7 +382,7 @@ partial extraction and keeps the entire opaque graph, without pruning bytes.
 
 ### merge_documents
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L292)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L296)
 
 ```python
 merge_documents(documents: Iterable[DocumentModel], *, conflicts: IdentifierConflictPolicy='error', metadata_conflicts: MetadataConflictPolicy='error', package_policy: PackagePolicy='error', mode: ConversionMode | None=None, limits: DocumentLimits | None=None)
@@ -943,7 +943,7 @@ compare_inspections(source: DocumentInspection, target: DocumentInspection, *, m
 
 ### inspect_document_model
 
-[src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L904)
+[src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L906)
 
 ```python
 inspect_document_model(document: DocumentModel, *, source_path: str | Path | None=None, source_format: str | None=None, limits: DocumentLimits | None=None, check_external_sources: bool=True)
@@ -1238,23 +1238,23 @@ recursion limit. Budgets apply separately to input and output trees.
 
 ### ListItem
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L38)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L44)
 
 Membership in an implicit list group; levels are 0–8.
 
-Kind/start must agree within (list_id, level). Restart applies to this
-occurrence only. A shallower item resets deeper counters of the same list.
-IDs describe groups, not references to a consuming application&#x27;s task store.
+Kind/start agree within (list_id, level). Keyword-only continuation_of and
+parent_id reference anchors on earlier primary list paragraphs. A continuation
+shares its primary item&#x27;s configuration and parent, without a new number.
 
 ### ListNumber
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L60)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L68)
 
-One occurrence and its decimal number; unordered items have number None.
+One paragraph and its number; unordered items/continuations have None.
 
 ### get_list_item
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L96)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L106)
 
 ```python
 get_list_item(paragraph: Paragraph, *, limits: DocumentLimits | None=None)
@@ -1264,7 +1264,7 @@ Read only the explicitly tagged list-item bag, preserving opaque extensions.
 
 ### iter_list_items
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L135)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L152)
 
 ```python
 iter_list_items(root: ModelNode, *, limits: DocumentLimits | None=None)
@@ -1274,21 +1274,23 @@ Find marked list paragraphs in the common traversal order.
 
 ### iter_list_numbers
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L142)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L244)
 
 ```python
 iter_list_numbers(root: ModelNode, *, limits: DocumentLimits | None=None)
 ```
 
-Compute occurrence numbers in traversal order, validating all groups first.
+Compute primary-item numbers in traversal order, validating all groups first.
 
 Groups can interleave and resume across sections. Plain paragraphs do not
 reset them. Levels need not have a parent occurrence; only the current
 level&#x27;s decimal number is returned, never a guessed hierarchical label.
+Continuations yield None without changing counters. Explicit parent links do
+not infer levels, marker styles or counter resets for a different list ID.
 
 ### set_list_item
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L111)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L121)
 
 ```python
 set_list_item(paragraph: Paragraph, item: ListItem | None, *, limits: DocumentLimits | None=None)
@@ -1404,7 +1406,7 @@ Cycles, malformed structure and exhausted budgets fail before copying.
 
 ### extract_text
 
-[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L194)
+[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L199)
 
 ```python
 extract_text(root: ModelNode, *, block_separator: str='\n', cell_separator: str='\t', row_separator: str='\n', include_alt_text: bool=True, include_formula_source: bool=False, limits: DocumentLimits | None=None)
@@ -1418,7 +1420,7 @@ Empty containers retain their structural separators; no XML/I/O is involved.
 
 ### insert_node
 
-[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L138)
+[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L143)
 
 ```python
 insert_node(root: ModelNode, parent: NodeLocation[ModelNode], field: str, index: int, node: ModelNode, *, limits: DocumentLimits | None=None)
@@ -1431,7 +1433,7 @@ Failure restores the collection. Semantic references are checked separately.
 
 ### remove_node
 
-[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L182)
+[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L187)
 
 ```python
 remove_node(root: ModelNode, location: NodeLocation[_RootT], *, limits: DocumentLimits | None=None)
@@ -1441,7 +1443,7 @@ Remove a non-root occurrence in place and return the detached live node.
 
 ### replace_node
 
-[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L162)
+[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L167)
 
 ```python
 replace_node(root: ModelNode, location: NodeLocation[ModelNode], node: ModelNode, *, limits: DocumentLimits | None=None)
@@ -1451,7 +1453,7 @@ Replace a non-root occurrence with an independent copy, in place.
 
 ### transform_elements
 
-[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L258)
+[src/opendoc_model/operations.py](../../src/opendoc_model/operations.py#L263)
 
 ```python
 transform_elements(root: _RootT, types: type[_ElementT] | tuple[type[_ElementT], ...], transform: Callable[[NodeLocation[_ElementT]], Element | None], *, predicate: Callable[[NodeLocation[_ElementT]], bool] | None=None, limits: DocumentLimits | None=None)

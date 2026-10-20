@@ -7,6 +7,7 @@ from opendoc_model import (
     ConversionReport,
     DocumentComparison,
     DocumentInspection,
+    ListItem,
     MatchingLimits,
     PathCommand,
     SheetCell,
@@ -19,6 +20,7 @@ def incorrect(
     inspection: DocumentInspection, comparison: DocumentComparison, result: CheckResult, report: ConversionReport
 ) -> None:
     TextRun(123)  # type-error: arg-type
+    ListItem("items", parent_id=42)  # type-error: arg-type
     MatchingLimits(max_work="many")  # type-error: arg-type
     ColorValue.from_hex("#123456", alpha="opaque")  # type-error: arg-type
     inspection.to_dict()["valid"] = "yes"  # type-error: typeddict-item

@@ -239,8 +239,11 @@ def main() -> None:
     assert_type(GroupCompositing().opacity, float | None)
     assert_type(VectorClip("empty", ()).fill_rule, Literal["nonzero", "evenodd"] | None)
     assert_type(SceneOccurrence("paint", "anchor").node_id, str)
-    from opendoc_model import GroupColorSpace, VectorGroup, get_scope_color_space, set_scope_color_space
+    from opendoc_model import GroupColorSpace, ListItem, VectorGroup, get_scope_color_space, set_scope_color_space
 
+    list_item = ListItem("items", continuation_of="primary", parent_id="parent")
+    assert_type(list_item.continuation_of, str | None)
+    assert_type(list_item.parent_id, str | None)
     assert_type(GroupColorSpace("icc", "profile").profile_resource_id, str | None)
     scope_document = DocumentModel()
     set_vector_scene(

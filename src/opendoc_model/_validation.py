@@ -89,6 +89,7 @@ class _Validator:
         self.styles = styles or {}
         self.pending: deque[tuple[str, Any, str]] = deque()
         self.list_configs: dict[tuple[str, int], tuple[str, int]] = {}
+        self.list_links = False
         self.anchors: dict[str, str] = {}
         self.internal_links: list[tuple[str, str]] = []
         self.footnotes: dict[str, str] = {}
@@ -355,6 +356,7 @@ class _Validator:
             try:
                 list_item = _list_payload(properties.get(LIST_PROPERTY), list_path)
                 if list_item is not None:
+                    self.list_links |= list_item.continuation_of is not None or list_item.parent_id is not None
                     list_key, config = (list_item.list_id, list_item.level), (list_item.kind, list_item.start)
                     if list_key in self.list_configs and self.list_configs[list_key] != config:
                         self.error(list_path, "conflicting list kind/start for the same level", code="semantic.list.config")
@@ -617,6 +619,7 @@ def _validate_model(
             )
     if not validator.errors:
         from opendoc_model.fonts import _validate_fonts
+        from opendoc_model.lists import _validate_lists
         from opendoc_model.spacing import _validate_spacing
         from opendoc_model.table_borders import _validate_borders
         from opendoc_model.table_semantics import _validate_tables
@@ -626,6 +629,8 @@ def _validate_model(
             _validate_borders(document, validator.limits)
             _validate_spacing(document, validator.limits)
             _validate_fonts(document, validator.limits)
+            if validator.list_links:
+                _validate_lists(document, validator.limits)
         except ArtifactLimitError:
             raise
         except ValueError as error:

@@ -269,6 +269,10 @@ def _rewrite(document: DocumentModel, identifiers: DocumentIdMap, limits: Docume
     for value, item in lists:
         assert item is not None
         value["list_id"] = identifiers.lists[item.list_id]
+        for name in ("continuation_of", "parent_id"):
+            target = getattr(item, name)
+            if target is not None:
+                value[name] = identifiers.anchors[target]
     for style_link in styles:
         style_link.set(identifiers.styles[style_link.identifier])
     for resource_link in resources:
@@ -488,8 +492,10 @@ def _owner(location: NodeLocation[ModelNode]) -> tuple[str, str | int]:
 
 
 def _semantic_links(root: ModelNode, limits: DocumentLimits) -> Iterator[tuple[str, str]]:
+    from opendoc_model.lists import _list_links
     from opendoc_model.table_semantics import _table_links
 
+    yield from (("anchor", key) for key in _list_links(root, limits))
     yield from (("anchor", key) for key in _table_links(root, limits))
     if isinstance(root, DocumentModel):
         from opendoc_model.integration import _integration_links

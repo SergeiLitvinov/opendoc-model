@@ -118,6 +118,11 @@ def _commit_edit(
         from opendoc_model.table_borders import _validate_borders
 
         _validate_borders(root, limits)
+        if isinstance(root, DocumentModel):
+            from opendoc_model.lists import _list_links, _validate_lists
+
+            if any(_list_links(root, limits)):
+                _validate_lists(root, limits)
         if table_semantics:
             _validate_tables(root, limits)
         if isinstance(root, DocumentModel):

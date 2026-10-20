@@ -277,7 +277,9 @@ def _compare_objects(
         "list_number" in item
         and (
             type(item["list_number"]) is int and item["list_number"] > 0
-            if item["list_item"] is not None and item["list_item"]["kind"] == "ordered"
+            if item["list_item"] is not None
+            and item["list_item"]["kind"] == "ordered"
+            and item["list_item"].get("continuation_of") is None
             else item["list_number"] is None
         )
         for item in (*source_objects, *target_objects)
