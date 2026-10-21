@@ -29,6 +29,7 @@ from opendoc_model import (
     remove_node,
     set_anchor,
     set_list_item,
+    transform_elements,
 )
 
 
@@ -292,3 +293,59 @@ def test_link_changes_remain_visible_in_comparison():
     diff = compare_documents(before, after).metrics["comparison"]["object_diff"]
     assert diff["lists_available"] and diff["list_numbers_available"]
     assert diff["changed_list_items"] == 1 and diff["changed_list_numbers"] > 0
+
+
+@pytest.mark.parametrize("anchor", ["first", "empty"])
+@pytest.mark.parametrize("action", ["delete", "remove-role"])
+def test_transform_refuses_dangling_item_links_and_preserves_source(anchor, action):
+    source = _document()
+    before = document_to_json(source)
+
+    def edit(location):
+        node = location.node
+        if get_anchor(node) == Anchor(anchor):
+            if action == "delete":
+                return None
+            set_list_item(node, None)
+        return node
+
+    with pytest.raises(ValueError, match="anchored list paragraph"):
+        transform_elements(source, Paragraph, edit)
+    assert document_to_json(source) == before
+
+
+def test_transform_can_explicitly_repair_membership_on_independent_copy():
+    source = _document()
+    before = document_to_json(source)
+
+    def edit(location):
+        node = location.node
+        if get_anchor(node) == Anchor("first"):
+            return None
+        item = get_list_item(node)
+        if item is not None and item.continuation_of == "first":
+            set_list_item(node, replace(item, continuation_of=None))
+        return node
+
+    result = transform_elements(source, Paragraph, edit)
+    assert result.validate() == []
+    assert document_to_json(source) == before
+    assert document_from_json(document_to_json(document_from_json(document_to_json(result)))) == result
+
+
+@pytest.mark.parametrize("field", ["list_id", "parent_id", "continuation_of", "level", "kind", "start", "restart"])
+def test_constructor_rejects_cyclic_invalid_fields_without_recursing(field):
+    invalid = []
+    invalid.append(invalid)
+    with pytest.raises(ValueError):
+        ListItem(**{"list_id": "a", field: invalid})
+
+
+def test_transform_forwards_explicit_budget_for_large_list_extension():
+    source = _document()
+    source.sections[0].blocks[1].properties[LIST_PROPERTY]["custom"] = [None] * 100_001
+    limits = DocumentLimits(max_nodes=300_000)
+    with pytest.raises(ArtifactLimitError):
+        transform_elements(source, Paragraph, lambda location: location.node)
+    result = transform_elements(source, Paragraph, lambda location: location.node, limits=limits)
+    assert document_to_json(result, limits=limits) == document_to_json(source, limits=limits)

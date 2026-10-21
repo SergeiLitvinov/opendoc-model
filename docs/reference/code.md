@@ -401,11 +401,11 @@ Per-operation document budgets, independent of application storage.
 Explicit list membership and deterministic per-level numbering.
 
 - `ListItem` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L44)
-- `ListNumber` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L68)
-- `get_list_item` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L106)
-- `set_list_item` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L121)
-- `iter_list_items` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L152)
-- `iter_list_numbers` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L244)
+- `ListNumber` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L76)
+- `get_list_item` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L114)
+- `set_list_item` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L129)
+- `iter_list_items` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L160)
+- `iter_list_numbers` — [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L252)
 
 Импорты: [opendoc_model._json_validation](#opendoc_model-_json_validation), [opendoc_model.diagnostics](#opendoc_model-diagnostics), [opendoc_model.document_model](#opendoc_model-document_model), [opendoc_model.limits](#opendoc_model-limits), [opendoc_model.references](#opendoc_model-references), [opendoc_model.traversal](#opendoc_model-traversal).
 

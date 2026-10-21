@@ -314,6 +314,10 @@ def transform_elements(
 
     _validate_borders(result, budget)
     if isinstance(result, DocumentModel):
+        from opendoc_model.lists import _list_links, _validate_lists
+
+        if any(_list_links(result, budget)):
+            _validate_lists(result, budget)
         _guard_integration_edit(result, snapshot, budget)
     return result
 

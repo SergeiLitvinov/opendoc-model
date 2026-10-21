@@ -169,11 +169,11 @@
 | `LIST_PROPERTY` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py) |
 | `ListItem` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L44) |
 | `ListKind` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py) |
-| `ListNumber` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L68) |
-| `get_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L106) |
-| `iter_list_items` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L152) |
-| `iter_list_numbers` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L244) |
-| `set_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L121) |
+| `ListNumber` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L76) |
+| `get_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L114) |
+| `iter_list_items` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L160) |
+| `iter_list_numbers` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L252) |
+| `set_list_item` | `opendoc_model.lists` | [src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L129) |
 | `OBJECT_MAPPING_FORMAT` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
 | `MappingPublication` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py) |
 | `MappingReplacement` | `opendoc_model.object_mapping` | [src/opendoc_model/object_mapping.py](../../src/opendoc_model/object_mapping.py#L40) |
@@ -1248,13 +1248,13 @@ shares its primary item&#x27;s configuration and parent, without a new number.
 
 ### ListNumber
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L68)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L76)
 
 One paragraph and its number; unordered items/continuations have None.
 
 ### get_list_item
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L106)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L114)
 
 ```python
 get_list_item(paragraph: Paragraph, *, limits: DocumentLimits | None=None)
@@ -1264,7 +1264,7 @@ Read only the explicitly tagged list-item bag, preserving opaque extensions.
 
 ### iter_list_items
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L152)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L160)
 
 ```python
 iter_list_items(root: ModelNode, *, limits: DocumentLimits | None=None)
@@ -1274,7 +1274,7 @@ Find marked list paragraphs in the common traversal order.
 
 ### iter_list_numbers
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L244)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L252)
 
 ```python
 iter_list_numbers(root: ModelNode, *, limits: DocumentLimits | None=None)
@@ -1290,7 +1290,7 @@ not infer levels, marker styles or counter resets for a different list ID.
 
 ### set_list_item
 
-[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L121)
+[src/opendoc_model/lists.py](../../src/opendoc_model/lists.py#L129)
 
 ```python
 set_list_item(paragraph: Paragraph, item: ListItem | None, *, limits: DocumentLimits | None=None)

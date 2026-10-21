@@ -59,7 +59,15 @@ class ListItem:
 
     def __post_init__(self) -> None:
         _list_fields(
-            asdict(self),
+            {
+                "list_id": self.list_id,
+                "level": self.level,
+                "kind": self.kind,
+                "start": self.start,
+                "restart": self.restart,
+                "continuation_of": self.continuation_of,
+                "parent_id": self.parent_id,
+            },
             "list_item",
         )
 
