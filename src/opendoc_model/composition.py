@@ -193,6 +193,15 @@ def _id_maps(
     limits: DocumentLimits | None = None,
 ) -> list[dict[str, str]]:
     reserved = {identifier for document in documents for identifier in _definition_ids(document, domain, limits)}
+    if domain == "anchors":
+        from opendoc_model.integration import get_integration
+
+        # Timing targets share a namespace with anchors. Generated suffixes must
+        # not introduce an ambiguity with retained integration definitions.
+        for document in documents:
+            model = get_integration(document, limits=limits)
+            if model is not None:
+                reserved.update(value.id for name in ("media", "scenes", "charts", "diagrams") for value in getattr(model, name))
     used: set[str] = set()
     next_suffix: dict[str, int] = {}
     maps: list[dict[str, str]] = []

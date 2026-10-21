@@ -16,8 +16,8 @@
 | `IdentifierConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `MetadataConflictPolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
 | `PackagePolicy` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py) |
-| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L571) |
-| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L296) |
+| `extract_document` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L580) |
+| `merge_documents` | `opendoc_model.composition` | [src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L305) |
 | `CheckResult` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L97) |
 | `ConversionIssue` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L25) |
 | `ConversionReport` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L33) |
@@ -366,7 +366,7 @@ Independent merged model and per-input identifier snapshots.
 
 ### extract_document
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L571)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L580)
 
 ```python
 extract_document(document: DocumentModel, location: NodeLocation[ModelNode], *, package_policy: PackagePolicy='error', additional_styles: Iterable[str]=(), additional_resources: Iterable[str]=(), limits: DocumentLimits | None=None)
@@ -382,7 +382,7 @@ partial extraction and keeps the entire opaque graph, without pruning bytes.
 
 ### merge_documents
 
-[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L296)
+[src/opendoc_model/composition.py](../../src/opendoc_model/composition.py#L305)
 
 ```python
 merge_documents(documents: Iterable[DocumentModel], *, conflicts: IdentifierConflictPolicy='error', metadata_conflicts: MetadataConflictPolicy='error', package_policy: PackagePolicy='error', mode: ConversionMode | None=None, limits: DocumentLimits | None=None)
