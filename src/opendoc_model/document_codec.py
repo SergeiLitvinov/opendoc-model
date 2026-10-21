@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import json
 from collections.abc import Iterator
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -58,7 +59,7 @@ SUPPORTED_FORMAT_VERSIONS = frozenset({1, FORMAT_VERSION})
 
 
 def document_to_dict(document: DocumentModel, *, limits: DocumentLimits | None = None) -> dict[str, Any]:
-    """Преобразовать модель в JSON-совместимый словарь без потери ресурсов."""
+    """Создать независимый JSON-совместимый снимок без потери ресурсов."""
 
     budget = _resolve_limits(limits)
     errors = _validate_model(document, budget)
@@ -82,15 +83,15 @@ def document_to_dict(document: DocumentModel, *, limits: DocumentLimits | None =
         },
     }
     _validate_payload(payload, budget)
-    return payload
+    return deepcopy(payload)
 
 
 def document_from_dict(payload: dict[str, Any], *, limits: DocumentLimits | None = None) -> DocumentModel:
-    """Восстановить модель и отклонить неизвестный формат или версию."""
+    """Восстановить независимую модель; проверить формат, версию и ссылки."""
 
     budget = _resolve_limits(limits)
     _validate_payload(payload, budget)
-    raw = payload["document"]
+    raw = deepcopy(payload["document"])
     metadata = dict(raw.get("metadata", {}))
     notes = _decode_notes(metadata.get(FOOTNOTES_PROPERTY), f"$.document.metadata[{FOOTNOTES_PROPERTY!r}]")
     if notes is not None:
@@ -121,12 +122,21 @@ def document_to_json(document: DocumentModel, *, indent: int | None = None, limi
     return "".join(_json_chunks(document, indent, _resolve_limits(limits)))
 
 
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"$: duplicate JSON object key {key!r}")
+        result[key] = value
+    return result
+
+
 def document_from_json(value: str | bytes, *, limits: DocumentLimits | None = None) -> DocumentModel:
     if not isinstance(value, (str, bytes, bytearray)):
         raise ValueError("$: JSON input must be a string or bytes")
     budget = _resolve_limits(limits)
     _check_json_text(value, budget)
-    return document_from_dict(json.loads(value), limits=budget)
+    return document_from_dict(json.loads(value, object_pairs_hook=_unique_json_object), limits=budget)
 
 
 def _validate_payload(payload: Any, limits: DocumentLimits) -> None:

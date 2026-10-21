@@ -25,12 +25,12 @@
 | `IssueSeverity` | `opendoc_model.diagnostics` | [src/opendoc_model/diagnostics.py](../../src/opendoc_model/diagnostics.py#L17) |
 | `FORMAT_NAME` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py) |
 | `FORMAT_VERSION` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py) |
-| `document_from_dict` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L88) |
-| `document_from_json` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L124) |
-| `document_to_dict` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L60) |
-| `document_to_json` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L120) |
-| `load_document` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L164) |
-| `save_document` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L153) |
+| `document_from_dict` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L89) |
+| `document_from_json` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L134) |
+| `document_to_dict` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L61) |
+| `document_to_json` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L121) |
+| `load_document` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L174) |
+| `save_document` | `opendoc_model.document_codec` | [src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L163) |
 | `VECTOR_IMAGE_MEDIA_TYPES` | `opendoc_model.document_model` | [src/opendoc_model/document_model.py](../../src/opendoc_model/document_model.py) |
 | `Block` | `opendoc_model.document_model` | [src/opendoc_model/document_model.py](../../src/opendoc_model/document_model.py) |
 | `Box` | `opendoc_model.document_model` | [src/opendoc_model/document_model.py](../../src/opendoc_model/document_model.py#L111) |
@@ -425,17 +425,17 @@ Machine-readable issue; the message is explanatory, never a parser input.
 
 ### document_from_dict
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L88)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L89)
 
 ```python
 document_from_dict(payload: dict[str, Any], *, limits: DocumentLimits | None=None)
 ```
 
-Восстановить модель и отклонить неизвестный формат или версию.
+Восстановить независимую модель; проверить формат, версию и ссылки.
 
 ### document_from_json
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L124)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L134)
 
 ```python
 document_from_json(value: str | bytes, *, limits: DocumentLimits | None=None)
@@ -443,17 +443,17 @@ document_from_json(value: str | bytes, *, limits: DocumentLimits | None=None)
 
 ### document_to_dict
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L60)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L61)
 
 ```python
 document_to_dict(document: DocumentModel, *, limits: DocumentLimits | None=None)
 ```
 
-Преобразовать модель в JSON-совместимый словарь без потери ресурсов.
+Создать независимый JSON-совместимый снимок без потери ресурсов.
 
 ### document_to_json
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L120)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L121)
 
 ```python
 document_to_json(document: DocumentModel, *, indent: int | None=None, limits: DocumentLimits | None=None)
@@ -461,7 +461,7 @@ document_to_json(document: DocumentModel, *, indent: int | None=None, limits: Do
 
 ### load_document
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L164)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L174)
 
 ```python
 load_document(path: str | Path, *, limits: DocumentLimits | None=None)
@@ -469,7 +469,7 @@ load_document(path: str | Path, *, limits: DocumentLimits | None=None)
 
 ### save_document
 
-[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L153)
+[src/opendoc_model/document_codec.py](../../src/opendoc_model/document_codec.py#L163)
 
 ```python
 save_document(document: DocumentModel, path: str | Path, *, indent: int | None=2, limits: DocumentLimits | None=None)
