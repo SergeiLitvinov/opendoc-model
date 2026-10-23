@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import math
 import types
-from copy import deepcopy
 from dataclasses import MISSING, fields, is_dataclass
 from enum import Enum
 from functools import lru_cache
@@ -25,9 +24,24 @@ def _hints(kind: type[Any]) -> dict[str, Any]:
     return get_type_hints(kind)
 
 
+def _copy_json(value: Any, path: str) -> Any:
+    """Copy JSON containers as builtins, never invoking object deepcopy hooks."""
+    if value is None or type(value) in (str, int, bool):
+        return value
+    if type(value) is float:
+        return value if math.isfinite(value) else _fail(path, "expected a finite JSON number")
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            return _fail(path, "JSON object keys must be strings")
+        return {key: _copy_json(item, f"{path}[{key!r}]") for key, item in value.items()}
+    if isinstance(value, list):
+        return [_copy_json(item, f"{path}[{index}]") for index, item in enumerate(value)]
+    return _fail(path, "expected a JSON value")
+
+
 def _convert(value: Any, annotation: Any, path: str, *, encode: bool) -> Any:
     if annotation is Any:
-        return deepcopy(value)
+        return _copy_json(value, path)
     origin, arguments = get_origin(annotation), get_args(annotation)
     if origin in (types.UnionType, Union):
         # Prefer exact primitive types: bool is not a number, numeric strings are not coerced.
@@ -94,7 +108,7 @@ def _convert(value: Any, annotation: Any, path: str, *, encode: bool) -> Any:
             extras = value.extra if extensible else {}
             if not isinstance(extras, dict) or names.intersection(extras) or "extra" in extras:
                 return _fail(path, "extra fields must not shadow schema fields")
-            result.update(deepcopy(extras))
+            result.update(_copy_json(extras, path + ".extra"))
         elif not extensible and set(value) - names:
             return _fail(path, "unknown fields in existing core record")
         hints = _hints(annotation)
@@ -115,7 +129,7 @@ def _convert(value: Any, annotation: Any, path: str, *, encode: bool) -> Any:
         if encode:
             return result
         if extensible:
-            result["extra"] = deepcopy({key: raw for key, raw in value.items() if key not in names})
+            result["extra"] = _copy_json({key: raw for key, raw in value.items() if key not in names}, path + ".extra")
         try:
             return annotation(**result)
         except (ValueError, TypeError) as error:
@@ -123,8 +137,27 @@ def _convert(value: Any, annotation: Any, path: str, *, encode: bool) -> Any:
     return _fail(path, "unsupported internal schema type")
 
 
+def _guard_json_mappings(model: IntegrationModel, limits: DocumentLimits) -> None:
+    """Check JSON mapping carriers before deepcopy can invoke non-JSON objects.
+
+    Integration mappings (extra, measurement, properties, actions, identifiers)
+    contain JSON values; declared record sequences are traversed separately.
+    The full model has already been bounded and checked for structural cycles.
+    """
+    pending: list[tuple[Any, str]] = [(model, "integration")]
+    while pending:
+        value, path = pending.pop()
+        if isinstance(value, dict):
+            _json_tree(value, path, limits)
+        elif is_dataclass(value) and not isinstance(value, type):
+            pending.extend((getattr(value, item.name), f"{path}.{item.name}") for item in fields(value))
+        elif isinstance(value, (tuple, list)):
+            pending.extend((item, f"{path}[{index}]") for index, item in enumerate(value))
+
+
 def _encode_integration(model: IntegrationModel, limits: DocumentLimits) -> dict[str, Any]:
     _guard_model(model, limits)
+    _guard_json_mappings(model, limits)
     data: dict[str, Any] = _convert(model, IntegrationModel, "integration", encode=True)
     _json_tree(data, "integration", limits)
     return data
