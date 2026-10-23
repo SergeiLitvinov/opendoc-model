@@ -371,12 +371,7 @@ def _validate_integration(model: IntegrationModel, document: DocumentModel, limi
             pending.extend(item.children)
 
 
-def get_integration(document: DocumentModel, *, limits: DocumentLimits | None = None) -> IntegrationModel | None:
-    """Read schema v1 independently; no I/O, parsing, actions or implicit migration."""
-    if not isinstance(document, DocumentModel) or not isinstance(document.metadata, Mapping):
-        raise ValueError("expected DocumentModel with metadata mapping")
-    raw = document.metadata.get(INTEGRATION_PROPERTY)
-    budget = _resolve_limits(limits)
+def _read_integration(raw: Any, budget: DocumentLimits) -> IntegrationModel | None:
     _json_tree(raw, INTEGRATION_PROPERTY, budget)
     if not isinstance(raw, dict) or raw.get("format") != INTEGRATION_PROPERTY:
         return None
@@ -385,6 +380,35 @@ def get_integration(document: DocumentModel, *, limits: DocumentLimits | None = 
     if "data" not in raw:
         _error(INTEGRATION_PROPERTY, "missing integration data")
     return _decode_integration(raw["data"], budget)
+
+
+def integration_to_dict(value: IntegrationModel, *, limits: DocumentLimits | None = None) -> dict[str, Any]:
+    """Encode an independent schema-v1 envelope, without resolving document references."""
+    budget = _resolve_limits(limits)
+    if not isinstance(value, IntegrationModel):
+        _error(INTEGRATION_PROPERTY, "expected IntegrationModel")
+    result = {"format": INTEGRATION_PROPERTY, "version": INTEGRATION_VERSION, "data": _encode_integration(value, budget)}
+    _json_tree(result, INTEGRATION_PROPERTY, budget)
+    return result
+
+
+def integration_from_dict(data: dict[str, Any], *, limits: DocumentLimits | None = None) -> IntegrationModel:
+    """Decode a schema-v1 envelope; owner/reference validation remains separate.
+
+    Unknown record fields are retained in extra. Transport-envelope fields outside
+    format/version/data belong to the owner, as with get_integration.
+    """
+    result = _read_integration(data, _resolve_limits(limits))
+    if result is None:
+        _error(INTEGRATION_PROPERTY, "expected an opendoc.integration envelope")
+    return result
+
+
+def get_integration(document: DocumentModel, *, limits: DocumentLimits | None = None) -> IntegrationModel | None:
+    """Read schema v1 independently; no I/O, parsing, actions or implicit migration."""
+    if not isinstance(document, DocumentModel) or not isinstance(document.metadata, Mapping):
+        raise ValueError("expected DocumentModel with metadata mapping")
+    return _read_integration(document.metadata.get(INTEGRATION_PROPERTY), _resolve_limits(limits))
 
 
 def set_integration(document: DocumentModel, model: IntegrationModel | None, *, limits: DocumentLimits | None = None) -> None:
@@ -688,6 +712,8 @@ def _remap_integration(
 __all__ = [
     "INTEGRATION_PROPERTY",
     "INTEGRATION_VERSION",
+    "integration_to_dict",
+    "integration_from_dict",
     "edit_anchored_text",
     "get_integration",
     "negotiate_capabilities",

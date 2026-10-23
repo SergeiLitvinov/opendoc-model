@@ -37,6 +37,7 @@
 | Расширить модель потребительскими данными | [extensions.py](../../examples/extensions.py) | Явную схему/версию, неизвестную схему и отказ валидатора |
 | Сохранить непрозрачный пакет | [packages.py](../../examples/packages.py) | Нейтральный корень, байты, связи и сохранность JSON |
 | Передать данные из адаптера форматов | [integration_model.py](../../examples/integration_model.py) | Версионированную модель, явную полноту отчёта, JSON и диапазоны Unicode |
+| Сохранить IntegrationModel без документа | [integration_codec.py](../../examples/integration_codec.py) | Прежний конверт, независимые значения и два JSON-цикла |
 
 Один сценарий можно запустить отдельно: `uv run python examples/section_content.py`.
 

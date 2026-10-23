@@ -248,7 +248,13 @@ from .integration import (
     get_integration as get_integration,
 )
 from .integration import (
+    integration_from_dict as integration_from_dict,
+)
+from .integration import (
     integration_resource_uses as integration_resource_uses,
+)
+from .integration import (
+    integration_to_dict as integration_to_dict,
 )
 from .integration import (
     negotiate_capabilities as negotiate_capabilities,
@@ -815,6 +821,8 @@ __all__ = [
     "edit_anchored_text",
     "get_integration",
     "integration_resource_uses",
+    "integration_from_dict",
+    "integration_to_dict",
     "negotiate_capabilities",
     "preservation_result",
     "resolve_scene_style",

@@ -113,13 +113,15 @@
 | `inspect_document_model` | `opendoc_model.inspection` | [src/opendoc_model/inspection.py](../../src/opendoc_model/inspection.py#L906) |
 | `INTEGRATION_PROPERTY` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
 | `INTEGRATION_VERSION` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py) |
-| `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L510) |
-| `get_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L374) |
-| `integration_resource_uses` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L631) |
-| `negotiate_capabilities` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457) |
-| `preservation_result` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L430) |
-| `resolve_scene_style` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484) |
-| `set_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L390) |
+| `edit_anchored_text` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L534) |
+| `get_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L407) |
+| `integration_from_dict` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L395) |
+| `integration_resource_uses` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L655) |
+| `integration_to_dict` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L385) |
+| `negotiate_capabilities` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L481) |
+| `preservation_result` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L454) |
+| `resolve_scene_style` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L508) |
+| `set_integration` | `opendoc_model.integration` | [src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L414) |
 | `Accessibility` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L349) |
 | `AffineTransform` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L162) |
 | `Annotation` | `opendoc_model.integration_types` | [src/opendoc_model/integration_types.py](../../src/opendoc_model/integration_types.py#L365) |
@@ -953,7 +955,7 @@ inspect_document_model(document: DocumentModel, *, source_path: str | Path | Non
 
 ### edit_anchored_text
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L510)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L534)
 
 ```python
 edit_anchored_text(document: DocumentModel, node_id: str, start: int, end: int, text: str, *, limits: DocumentLimits | None=None)
@@ -966,7 +968,7 @@ to affinity. Structural anchor IDs stay stable. No field/formula code executes.
 
 ### get_integration
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L374)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L407)
 
 ```python
 get_integration(document: DocumentModel, *, limits: DocumentLimits | None=None)
@@ -974,9 +976,22 @@ get_integration(document: DocumentModel, *, limits: DocumentLimits | None=None)
 
 Read schema v1 independently; no I/O, parsing, actions or implicit migration.
 
+### integration_from_dict
+
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L395)
+
+```python
+integration_from_dict(data: dict[str, Any], *, limits: DocumentLimits | None=None)
+```
+
+Decode a schema-v1 envelope; owner/reference validation remains separate.
+
+Unknown record fields are retained in extra. Transport-envelope fields outside
+format/version/data belong to the owner, as with get_integration.
+
 ### integration_resource_uses
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L631)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L655)
 
 ```python
 integration_resource_uses(document: DocumentModel, resource_id: str, *, limits: DocumentLimits | None=None)
@@ -984,9 +999,19 @@ integration_resource_uses(document: DocumentModel, resource_id: str, *, limits: 
 
 Return typed optional-schema resource paths, complementing structural resource uses.
 
+### integration_to_dict
+
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L385)
+
+```python
+integration_to_dict(value: IntegrationModel, *, limits: DocumentLimits | None=None)
+```
+
+Encode an independent schema-v1 envelope, without resolving document references.
+
 ### negotiate_capabilities
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L457)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L481)
 
 ```python
 negotiate_capabilities(source: CapabilityProfile, target: CapabilityProfile, *, limits: DocumentLimits | None=None)
@@ -996,7 +1021,7 @@ Return an explicit intersection per source feature; absent/version-mismatched fe
 
 ### preservation_result
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L430)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L454)
 
 ```python
 preservation_result(model: IntegrationModel, *, limits: DocumentLimits | None=None)
@@ -1006,7 +1031,7 @@ Reuse CheckResult; explicit incomplete/opaque/visual assessments cannot prove lo
 
 ### resolve_scene_style
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L484)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L508)
 
 ```python
 resolve_scene_style(model: IntegrationModel, style_id: str, *, limits: DocumentLimits | None=None)
@@ -1016,7 +1041,7 @@ Resolve explicit theme/master/layout/local inheritance on an independent snapsho
 
 ### set_integration
 
-[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L390)
+[src/opendoc_model/integration.py](../../src/opendoc_model/integration.py#L414)
 
 ```python
 set_integration(document: DocumentModel, model: IntegrationModel | None, *, limits: DocumentLimits | None=None)

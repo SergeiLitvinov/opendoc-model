@@ -251,6 +251,11 @@ def main() -> None:
     )
     set_scope_color_space(scope_document, "space", "g", GroupColorSpace("gray"))
     assert_type(get_scope_color_space(scope_document, "space", "g"), GroupColorSpace | None)
+    from opendoc_model import integration_from_dict, integration_to_dict
+
+    integration_payload = integration_to_dict(IntegrationModel())
+    assert_type(integration_payload, dict[str, Any])
+    assert_type(integration_from_dict(integration_payload), IntegrationModel)
     print("Installed typed consumer: runtime and named result fields OK")
 
 

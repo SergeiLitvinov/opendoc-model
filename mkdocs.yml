@@ -34,6 +34,7 @@ nav:
       - JSON и ошибки: docs/guide/json.md
       - Пользовательские расширения: docs/guide/extensions.md
       - Расширенная модель документа: docs/guide/integration.md
+      - Самостоятельный кодек IntegrationModel: docs/guide/integration-codec.md
       - Геометрия страниц: docs/guide/page-geometry.md
       - Фиксированная компоновка: docs/guide/fixed-layout.md
       - Межстрочный интервал: docs/guide/line-spacing.md
