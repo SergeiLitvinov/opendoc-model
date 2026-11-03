@@ -1,0 +1,81 @@
+{% macro doc_url(source) -%}
+{%- for item in nav.pages if item.file.src_uri == source -%}{{ item.url|url }}{%- endfor -%}
+{%- endmacro %}
+{% macro navigation(items) %}
+<ul>{% for item in items %}
+  {% if item.children %}
+  <li><details {% if item.active %}open{% endif %}><summary>{{ item.title }}</summary>{{ navigation(item.children) }}</details></li>
+  {% else %}
+  <li><a href="{{ item.url|url }}" {% if item.active %}aria-current="page"{% endif %}>{{ item.title }}</a></li>
+  {% endif %}
+{% endfor %}</ul>
+{% endmacro %}
+{% macro outline(items) %}
+<ul>{% for item in items %}<li><a href="{{ item.url }}">{{ item.title }}</a>{% if item.children %}{{ outline(item.children) }}{% endif %}</li>{% endfor %}</ul>
+{% endmacro %}
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ config.site_description }}">
+  <title>{% if page and not page.is_homepage %}{{ page.title }} · {% endif %}OpenDoc Model — документация</title>
+  <link rel="icon" type="image/svg+xml" href="{{ 'docs/assets/documentation-logo.svg'|url }}">
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('opendoc.docs.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (_) {}</script>
+  {% for path in config.extra_css %}<link rel="stylesheet" href="{{ path|url }}">{% endfor %}
+</head>
+<body {% if page and page.is_homepage %}class="docs-home"{% endif %}>
+<a class="skip-link" href="#main-content">Перейти к содержимому</a>
+<header class="docs-header">
+  <a class="docs-brand" href="{{ nav.homepage.url|url }}"><img src="{{ 'docs/assets/documentation-logo.svg'|url }}" width="32" height="32" alt=""><span>OpenDoc Model<small>Документация</small></span></a>
+  <button class="docs-search-button" type="button" data-open-search>Поиск <kbd>Ctrl K</kbd></button>
+  <nav class="docs-top-nav" aria-label="Основные разделы">
+    <a href="{{ doc_url('docs/reference/user-guide.md') }}">Руководство</a>
+    <a href="{{ doc_url('docs/reference/code.md') }}">Код</a>
+    <a href="{{ doc_url('docs/development/completed.md') }}">Возможности</a>
+  </nav>
+  <button class="docs-theme-button" type="button" aria-label="Включить тёмную тему" title="Переключить тему">◐</button>
+  <button class="docs-menu-button" type="button" aria-expanded="false" aria-controls="docs-navigation">Разделы</button>
+</header>
+<div class="docs-layout">
+  <aside class="docs-sidebar" id="docs-navigation" aria-label="Разделы документации">
+    <nav>{{ navigation(nav) }}</nav>
+    <p class="docs-sidebar-note">Руководство и исходники<br>в одном месте</p>
+  </aside>
+  <main id="main-content" role="main" tabindex="-1">
+    {% if page and page.is_homepage %}
+    <section class="docs-hero" aria-labelledby="hero-title">
+      <div><p class="eyebrow">Работа с документами</p><h1 id="hero-title"><span>OpenDoc Model</span><br>Документы.<br>Структура. Контроль.</h1>
+      <p class="hero-description">Структуры документов, хранение и проверка изменений. Самостоятельная библиотека для ваших приложений.</p>
+      <div class="hero-actions"><a class="docs-button" href="{{ doc_url('docs/guide/index.md') }}">Начать работу <span aria-hidden="true">→</span></a><a class="docs-button secondary" href="{{ doc_url('docs/reference/code.md') }}">Изучить код</a></div></div>
+      <div class="hero-art" aria-hidden="true"><div class="art-page back"></div><div class="art-page front"><span class="art-label">OD / DOCUMENT</span><strong>Aa</strong><i></i><i></i><i></i><div class="art-formula">x² + y²</div><span class="art-check">✓</span></div></div>
+    </section>
+    <section class="docs-cards" aria-label="Выберите задачу">
+      <a class="docs-card" href="{{ doc_url('docs/reference/user-guide.md') }}"><span class="card-number">01 / РУКОВОДСТВО</span><h2>Сделать задачу</h2><p>Создание модели, сохранение JSON и сравнение документов.</p><span class="card-link">Выбрать действие →</span></a>
+      <a class="docs-card" href="{{ doc_url('docs/guide/index.md') }}"><span class="card-number">02 / ВОЗМОЖНОСТИ</span><h2>Понять границы</h2><p>Контракт модели, совместимость JSON и границы измерений.</p><span class="card-link">Изучить контракт →</span></a>
+      <a class="docs-card" href="{{ doc_url('docs/reference/code.md') }}"><span class="card-number">03 / РАЗРАБОТКА</span><h2>Найти реализацию</h2><p>Модули, определения, импорты и тесты, собранные из исходников.</p><span class="card-link">Открыть навигатор →</span></a>
+    </section>
+    <div class="docs-home-note"><strong>Самодостаточная библиотека.</strong> Руководство описывает законченный вариант OpenDoc Model, а <a href="{{ doc_url('docs/development/completed.md') }}">завершённые возможности</a> связывают его функции с проверками.</div>
+    <details class="docs-overview"><summary>О проекте, установке и примерах</summary><article class="docs-prose">{{ page.content }}</article></details>
+    {% else %}
+    <article class="docs-prose">{{ page.content if page else '<h1>Страница не найдена</h1>' }}</article>
+    {% if page %}<nav class="docs-pagination" aria-label="Соседние страницы">
+      {% if page.previous_page %}<a href="{{ page.previous_page.url|url }}"><small>← Назад</small>{{ page.previous_page.title }}</a>{% endif %}
+      {% if page.next_page %}<a href="{{ page.next_page.url|url }}"><small>Далее →</small>{{ page.next_page.title }}</a>{% endif %}
+    </nav>{% endif %}
+    {% endif %}
+    <footer class="docs-footer">OpenDoc Model · <a href="{{ config.repo_url }}">GitHub</a> · <a href="{{ doc_url('docs/development/dependencies.md') }}">Зависимости и лицензии</a></footer>
+  </main>
+  {% if page and not page.is_homepage %}<aside class="docs-outline" aria-label="На странице"><strong>На странице</strong>{{ outline(page.toc) }}<a class="docs-back-top" href="#main-content">Наверх ↑</a></aside>{% endif %}
+</div>
+<dialog id="docs-search" aria-labelledby="docs-search-title">
+  <div class="search-heading"><h2 id="docs-search-title">Поиск в документации</h2><button type="button" data-close-search aria-label="Закрыть поиск">×</button></div>
+  <label for="mkdocs-search-query">Название, команда или возможность</label>
+  <input id="mkdocs-search-query" type="search" placeholder="Например, DocumentModel или ресурсы" autocomplete="off">
+  <div id="mkdocs-search-results" role="status" aria-live="polite" data-no-results-text="Ничего не найдено"></div>
+  <p class="search-help">Локальный поиск · Esc закрывает окно</p>
+</dialog>
+<script>var base_url = {{ base_url|tojson }};</script>
+{% for script in config.extra_javascript %}{{ script|script_tag }}{% endfor %}
+</body>
+</html>

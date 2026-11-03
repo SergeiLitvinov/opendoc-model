@@ -1,0 +1,7 @@
+graft src/opendoc_model
+graft docs
+graft tools
+graft examples
+graft tests
+include README.md mkdocs.yml uv.lock
+global-exclude __pycache__ *.py[cod]

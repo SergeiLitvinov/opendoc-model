@@ -1,0 +1,87 @@
+name: Library validation
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  library:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          version: "0.11.13"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Prepare requested version
+        if: inputs.version != ''
+        run: python -m tools.release set "$RELEASE_VERSION"
+      - run: uv sync --all-extras --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run pytest
+      - run: uv run mypy
+      - run: uv run python -m tools.dependencies check
+      - run: uv run python -m tools.docs check
+      - run: uv run python -m tools.dependencies check --site .opendoc/docs-site
+      - name: Set reproducible archive timestamp
+        run: echo "SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)" >> "$GITHUB_ENV"
+      - name: Build and verify distributions
+        run: |
+          uv build --out-dir .opendoc/release-dist
+          uv build --wheel .opendoc/release-dist/*.tar.gz --out-dir .opendoc/sdist-dist
+          uv run python -m tools.check_distribution --dist .opendoc/release-dist --rebuilt .opendoc/sdist-dist
+          uv venv --python "$UV_PYTHON" .opendoc/sdist-env
+          uv pip install --python .opendoc/sdist-env/bin/python --no-deps --no-index .opendoc/sdist-dist/*.whl
+          uv run python -m tools.check_wheel --python .opendoc/sdist-env/bin/python
+          uv run python -m tools.check_types --python .opendoc/sdist-env/bin/python
+      - name: Verify independent wheel and optional math
+        run: |
+          uv venv --python "$UV_PYTHON" .opendoc/wheel-env
+          uv pip install --python .opendoc/wheel-env/bin/python --no-deps --no-index .opendoc/release-dist/*.whl
+          uv run python -m tools.check_wheel --python .opendoc/wheel-env/bin/python
+          uv run python -m tools.check_types --python .opendoc/wheel-env/bin/python
+          .opendoc/wheel-env/bin/python -I examples/optional_math.py
+          uv venv --python "$UV_PYTHON" .opendoc/math-env
+          uv pip install --python .opendoc/math-env/bin/python --no-deps --no-index .opendoc/release-dist/*.whl
+          uv export --locked --extra math --no-dev --no-emit-project --no-editable --output-file .opendoc/math-requirements.txt > /dev/null
+          uv pip install --python .opendoc/math-env/bin/python --require-hashes -r .opendoc/math-requirements.txt
+          uv run python -m tools.check_math --python .opendoc/math-env/bin/python --with-math
+          .opendoc/math-env/bin/python -I examples/optional_math.py
+      - name: Prepare release checksums
+        if: matrix.python == '3.12'
+        run: uv run python -m tools.release assets
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: matrix.python == '3.12'
+        with:
+          name: distributions
+          path: .opendoc/release-dist/
+          if-no-files-found: error
+          retention-days: 3
+          overwrite: true
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: matrix.python == '3.12'
+        with:
+          name: documentation
+          path: .opendoc/docs-site/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true

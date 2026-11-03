@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opendoc-model"
+dynamic = ["version"]
+description = "Independent document structures, serialization and structural comparison"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["docs/LICENSE"]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/SergeiLitvinov/opendoc-model"
+Documentation = "https://SergeiLitvinov.github.io/opendoc-model/"
+Repository = "https://github.com/SergeiLitvinov/opendoc-model"
+Issues = "https://github.com/SergeiLitvinov/opendoc-model/issues"
+
+[project.optional-dependencies]
+math = ["lxml>=5.0.0"]
+dev = [
+    "mypy>=2.4,<3",
+    "pytest>=8.0",
+    "ruff>=0.9.0",
+]
+docs = ["mkdocs>=1.6,<2"]
+
+[tool.ruff]
+cache-dir = ".opendoc/ruff-cache"
+line-length = 130
+target-version = "py311"
+exclude = ["build", ".venv", ".opendoc"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "BLE", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+"tools/**" = ["ANN"]
+"examples/**" = ["ANN"]
+
+[tool.pytest.ini_options]
+addopts = "--basetemp=.opendoc/pytest-temp"
+cache_dir = ".opendoc/pytest-cache"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.mypy]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/tools/typing"
+python_version = "3.11"
+files = ["src/opendoc_model"]
+strict = true
+cache_dir = ".opendoc/mypy-cache"
+show_error_codes = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "opendoc_model.__version__"}
+
+[tool.setuptools.package-data]
+opendoc_model = ["py.typed"]
+
+[tool.uv]
+cache-dir = ".opendoc/uv-cache"

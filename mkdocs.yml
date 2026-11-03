@@ -1,0 +1,85 @@
+site_name: OpenDoc Model — документация
+site_url: https://SergeiLitvinov.github.io/opendoc-model/
+repo_url: https://github.com/SergeiLitvinov/opendoc-model
+site_description: Структуры документов, руководство и навигатор по коду
+docs_dir: .opendoc/docs-source
+site_dir: .opendoc/docs-site
+theme:
+  name: mkdocs
+  custom_dir: docs/theme
+  locale: ru
+  highlightjs: false
+plugins:
+  - search:
+      lang: [ru, en]
+extra_css: [docs/assets/documentation.css]
+extra_javascript: [docs/assets/documentation.js]
+markdown_extensions:
+  - tables
+  - fenced_code
+  - toc:
+      slugify: !!python/name:markdown.extensions.toc.slugify_unicode
+hooks: [tools/docs_hook.py]
+watch: [src, docs, examples, README.md]
+validation:
+  links:
+    anchors: warn
+nav:
+  - Главная: README.md
+  - Руководство:
+      - Навигация: docs/reference/user-guide.md
+      - Работа с библиотекой: docs/guide/index.md
+      - Исполняемые сценарии: docs/guide/examples.md
+      - Совместимость: docs/guide/compatibility.md
+      - JSON и ошибки: docs/guide/json.md
+      - Пользовательские расширения: docs/guide/extensions.md
+      - Расширенная модель документа: docs/guide/integration.md
+      - Самостоятельный кодек IntegrationModel: docs/guide/integration-codec.md
+      - Размещённые глифы и текст: docs/guide/text-layout.md
+      - Геометрия страниц: docs/guide/page-geometry.md
+      - Фиксированная компоновка: docs/guide/fixed-layout.md
+      - Межстрочный интервал: docs/guide/line-spacing.md
+      - Ссылки на FONT-ресурсы: docs/guide/font-references.md
+      - Фон и градиентная заливка: docs/guide/backgrounds.md
+      - Общие clip/group scopes: docs/guide/graphics-scopes.md
+      - Пространство композиции группы: docs/guide/group-color-space.md
+      - Оглавление и закладки: docs/guide/outline.md
+      - Непрозрачные пакеты: docs/guide/packages.md
+      - Лимиты документа: docs/guide/limits.md
+      - Стоимость операций: docs/guide/performance.md
+      - Проверка типов: docs/guide/typing.md
+      - Валидация модели: docs/guide/validation.md
+      - Сравнение и качество: docs/guide/quality.md
+      - Измеренный текстовый поток: docs/guide/text-flow-profile.md
+      - Формулы и optional math: docs/guide/formulas.md
+      - Обход и поиск: docs/guide/traversal.md
+      - Копирование и изменения: docs/guide/operations.md
+      - Объединение и извлечение: docs/guide/composition.md
+      - Свойства и стили: docs/guide/styles.md
+      - Семантика таблиц: docs/guide/table-semantics.md
+      - Границы таблиц и ячеек: docs/guide/table-borders.md
+      - Отступ таблицы и табуляция: docs/guide/spacing.md
+      - Соответствие объектов: docs/guide/object-mapping.md
+      - Ресурсы и переносимость: docs/guide/resources.md
+      - Исходная область изображения: docs/guide/image-geometry.md
+      - Известность геометрии страницы: docs/guide/page-defaults.md
+      - Проверка в памяти: docs/guide/checks.md
+      - Семантические заголовки: docs/guide/headings.md
+      - Составные группы потока: docs/guide/block-groups.md
+      - Списки и нумерация: docs/guide/lists.md
+      - Внутренние ссылки и якоря: docs/guide/references.md
+      - Сноски: docs/guide/footnotes.md
+      - Изменения: docs/guide/changes.md
+      - Сборка и выпуск: docs/guide/release.md
+  - Справочник:
+      - API: docs/reference/api.md
+      - Навигатор по коду: docs/reference/code.md
+  - Разработка:
+      - Документация и проверки: docs/development/documentation.md
+      - Контракт разработки: docs/development/AGENTS.md
+      - Стандарты кодирования: docs/development/CODING_STANDARDS.md
+      - Проверка стандартов: docs/development/code-audit.md
+      - Завершённые возможности: docs/development/completed.md
+      - Контракт расширенной модели: docs/development/model-contract.md
+      - Зависимости и лицензии: docs/development/dependencies.md
+      - Аудиты библиотеки: docs/development/audit.md

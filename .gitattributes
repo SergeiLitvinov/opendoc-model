@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.woff binary
+*.woff2 binary
+*.whl binary
+*.gz binary
+docs/LICENSE -text
+docs/licenses/** -text

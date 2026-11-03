@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OpenDoc Model">
+  <rect width="64" height="64" rx="14" fill="#167c80"/>
+  <path d="M10 17q11-5 22 2 11-7 22-2v30q-11-5-22 2-11-7-22-2zM32 19v30" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M16 25h10M16 31h10M16 37h7M39 25v14h6M39 31h6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="39" cy="25" r="3" fill="#8ee1ce"/><circle cx="45" cy="31" r="3" fill="#8ee1ce"/><circle cx="45" cy="39" r="3" fill="#8ee1ce"/>
+</svg>

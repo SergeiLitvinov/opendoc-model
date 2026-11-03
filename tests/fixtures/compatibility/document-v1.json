@@ -1,0 +1,20 @@
+{
+  "format": "opendoc.document",
+  "version": 1,
+  "document": {
+    "metadata": {"custom": {"revision": 3, "tags": ["архив", null, true]}},
+    "styles": {"body": {"font_family": "Archive Serif", "font_size_pt": 11, "color": "#123456", "properties": {"custom": 7}}},
+    "resources": {
+      "docx-footnotes": {"id": "docx-footnotes", "kind": "attachment", "media_type": "application/xml", "data_base64": "PG5vdGVzLz4=", "properties": {"role": "docx-footnotes"}},
+      "photo": {"id": "photo", "kind": "raster_image", "media_type": "image/png", "data_base64": "AAH/", "filename": "photo.png"}
+    },
+    "sections": [{
+      "blocks": [{"type": "paragraph", "style_id": "body", "content": [
+        {"type": "text", "text": "Архивный документ", "style": {"bold": false}, "properties": {"custom": {"source": "v1"}}},
+        {"type": "image", "resource_id": "photo", "alt_text": "Иллюстрация"}
+      ]}],
+      "headers": [{"type": "paragraph", "content": [{"type": "text", "text": "Архив"}]}],
+      "properties": {"custom": "section-v1"}
+    }]
+  }
+}

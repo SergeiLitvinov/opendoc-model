@@ -1,0 +1,154 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "current, patch, minor, major or MAJOR.MINOR.PATCH"
+        default: current
+        required: true
+        type: string
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      published: ${{ steps.existing.outputs.published }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: version
+        env:
+          SELECTOR: ${{ inputs.version || 'current' }}
+        run: |
+          VERSION=$(python -m tools.release plan "$SELECTOR")
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            test "$GITHUB_REF" = refs/heads/main
+            if git show-ref --verify --quiet "refs/tags/v$VERSION" && [ "$GITHUB_RUN_ATTEMPT" = 1 ]; then
+              echo "Version v$VERSION already has a tag; rerun its release workflow instead."
+              exit 1
+            fi
+          else
+            test "$GITHUB_REF_NAME" = "v$VERSION"
+          fi
+      - id: existing
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          PUBLISHED=false
+          if gh release view "v$RELEASE_VERSION" --json isDraft > release-state.json 2>/dev/null; then
+            if [ "$(python -c 'import json; print(json.load(open("release-state.json"))["isDraft"])')" = False ]; then
+              PUBLISHED=true
+            fi
+          fi
+          echo "published=$PUBLISHED" >> "$GITHUB_OUTPUT"
+  checks:
+    needs: plan
+    uses: ./.github/workflows/checks.yml
+    with:
+      version: ${{ needs.plan.outputs.version }}
+  publish:
+    needs: [plan, checks]
+    if: needs.plan.outputs.published != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      RELEASE_VERSION: ${{ needs.plan.outputs.version }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - run: python -m tools.release set "$RELEASE_VERSION"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: distributions
+          path: .opendoc/release-dist
+      - name: Select verified staged assets
+        run: |
+          TAG="v$RELEASE_VERSION"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
+            COUNT=$(gh release view "$TAG" --json assets --jq '.assets | length')
+            if [ "$COUNT" -gt 0 ]; then
+              test "$COUNT" = 3
+              mkdir -p .opendoc/staged-release
+              gh release download "$TAG" --dir .opendoc/staged-release --pattern '*.whl' --pattern '*.tar.gz' --pattern SHA256SUMS
+              (cd .opendoc/staged-release && sha256sum --check SHA256SUMS)
+              python -m tools.check_distribution --dist .opendoc/staged-release
+              cp .opendoc/staged-release/* .opendoc/release-dist/
+            fi
+          fi
+      - run: python -m tools.release assets
+      - name: Commit and tag verified version
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          TAG="v$RELEASE_VERSION"
+          if git show-ref --verify --quiet "refs/tags/$TAG"; then
+            git diff --exit-code "$TAG" -- .
+            git merge-base --is-ancestor "$GITHUB_SHA" "$TAG^{commit}"
+            git merge-base --is-ancestor "$TAG^{commit}" origin/main
+          else
+            if ! git diff --quiet -- src/opendoc_model/__init__.py; then
+              git add src/opendoc_model/__init__.py
+              git commit -m "Release $TAG"
+            fi
+            git tag -a "$TAG" -m "OpenDoc Model $RELEASE_VERSION"
+            git push --atomic origin HEAD:main "refs/tags/$TAG"
+          fi
+      - name: Publish verified assets
+        run: |
+          TAG="v$RELEASE_VERSION"
+          if ! gh release view "$TAG" > /dev/null 2>&1; then
+            gh release create "$TAG" --verify-tag --draft --title "OpenDoc Model $RELEASE_VERSION" --generate-notes
+          fi
+          test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
+          gh release upload "$TAG" .opendoc/release-dist/* --clobber
+          gh release edit "$TAG" --draft=false --latest
+  verify-published:
+    needs: [plan, checks]
+    if: needs.plan.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      RELEASE_VERSION: ${{ needs.plan.outputs.version }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Verify immutable published assets
+        run: |
+          mkdir -p .opendoc/published-release
+          gh release download "v$RELEASE_VERSION" --dir .opendoc/published-release --pattern '*.whl' --pattern '*.tar.gz' --pattern SHA256SUMS
+          (cd .opendoc/published-release && sha256sum --check SHA256SUMS)
+          python -m tools.check_distribution --dist .opendoc/published-release
+  pages:
+    needs: publish
+    if: github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
